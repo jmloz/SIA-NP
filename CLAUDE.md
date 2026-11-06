@@ -59,6 +59,7 @@ Auditoría completa hecha el 6 nov 2026 (ver hallazgos arriba). Clases (22 vs 14
 - Diagramas: draw.io (`.drawio`) editable; PlantUML con `skinparam monochrome true` si se generan por código.
 - Word: Node.js + librería `docx`.
 - PDF: `soffice --headless --convert-to pdf archivo.docx`
+- Cuando solo existe el PDF final (no el .docx fuente) y hay que corregir texto o tablas: `pip install pymupdf --user`, editar con `fitz` (redactar la región y reinsertar texto con `/usr/share/fonts/liberation/LiberationSans-Regular.ttf`, que es la fuente real con la que LibreOffice exportó estos PDF). Para figuras de diagramas de secuencia sin StarUML/PlantUML disponibles: armar el diagrama a mano como SVG y convertir con `rsvg-convert`. Siempre revisar el resultado renderizando con `pdftoppm -png` antes de dar por bueno un cambio.
 - Debe funcionar en Windows y en Ubuntu.
 
 ## Estructura de carpetas
