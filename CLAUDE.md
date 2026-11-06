@@ -38,7 +38,7 @@ SIA-NP = Sistema de Inventario y Almacén para el cliente real Neumática del Pa
 | 1 | Casos de uso y escenarios (CU1–CU8) | Entregado. Typos de portada corregidos (Grupo S4B→S5A, "Materia" decía el título del trabajo) |
 | 2 | Diagramas de actividad | Entregado. Mismo typo de "Materia" corregido |
 | 3 | Tarjetas CRC (14) | Entregado — NO modificar |
-| 4 | Diagramas de secuencia CU1 y CU6 | Subido pero el contenido (SD1/SD2, tablas y figuras) era de una versión VIEJA del sistema — usaba CU14/Venta/Vendedor/Cliente/BitacoraAuditoria, que no existen, y saltaba la capa de interfaz/controlador. Se está rehaciendo para que use las clases y el flujo actor→interfaz→controlador→entidad reales. El párrafo de justificación (sección 1) ya es correcto. |
+| 4 | Diagramas de secuencia CU1 y CU6 | Reescrito completo el 6 nov 2026: SD1 = CU6 (actor Encargada de Compras, vía InterfazRecepcion/ControladorRecepcion), SD2 = CU1 (actor Encargado de Almacén, vía InterfazRegistroMovimientos/ControladorMovimientos, ejemplo con Salida). Clases, tablas y figuras ahora reales; notación `objeto::Clase` consistente. |
 | 5 | Diagrama de clases | Subido .pdf/.drawio; falta .docx y .png. Faltaba la relación Ubicación–Movimiento (ambas CRC se nombran colaboradoras mutuas) — ya agregada al `.drawio`, pero la figura y la tabla de relaciones del PDF siguen sin esa línea/fila; falta reexportar desde draw.io. |
 | 6 | Diagrama de estados | PENDIENTE. Propuesta: OrdenDeCompra (Pendiente → Emitida → Recibida parcial → Recibida total → Cerrada; Cancelada desde Pendiente o Emitida) |
 
