@@ -114,7 +114,7 @@ function imagen(file, maxW, maxH) {
 }
 function codigo(texto) {
   return texto.replace(/\s+$/, '').split('\n').map((l) => new Paragraph({
-    children: [new TextRun({ text: l.length ? l : ' ', font: MONO, size: 15, color: '000000' })],
+    children: [new TextRun({ text: l.length ? l : ' ', font: MONO, size: 14, color: '000000' })],
     spacing: { after: 0, line: 220 },
   }));
 }
@@ -306,7 +306,13 @@ function figuraHorizontal(base, titulo) {
   if (!partes.length) throw new Error(`No existe la figura ${base}`);
   partes.forEach((f, i) => {
     out.push(imagen(path.join(dir, f), 900, 600));
-    const suf = partes.length > 1 ? ` (parte ${i + 1} de ${partes.length})` : '';
+    let suf = '';
+    const m = f.match(/_(\d)_(general|catalogo)\.png$/);
+    if (m && m[2] === 'general') suf = ': vista general';
+    else if (m) {
+      const c = catalogos.find((x) => x.num === Number(m[1]));
+      suf = `: catálogo ${c.num}, ${c.nombre.toLowerCase()} (${c.responsable})`;
+    }
     out.push(pie(`Figura ${++nFig}`, titulo + suf));
     if (i < partes.length - 1) out.push(new Paragraph({ children: [new PageBreak()] }));
   });
@@ -322,7 +328,7 @@ function mer() {
     bullet('**Óvalo**: atributo; el atributo clave va subrayado y el atributo derivado en óvalo punteado. Para que el diagrama sea legible solo se muestran la clave y algunos atributos representativos; la lista completa está en el diccionario de datos.'),
     bullet('**1, N, M**: cardinalidad de cada extremo de la relación.'),
     bullet('**Círculo con «d»**: especialización disjunta de MOVIMIENTO en ENTRADA, SALIDA, AJUSTE y DEVOLUCION; la doble línea indica que es total (todo movimiento es de uno de los cuatro tipos). El discriminador es el atributo tipo.'),
-    p('La figura del modelo se presenta en la página siguiente, en hoja horizontal.'),
+    p('Por su tamaño, el modelo se presenta en hojas horizontales en dos niveles: primero una vista general con todas las entidades y relaciones (sin atributos) y después un diagrama por catálogo con los atributos de sus entidades. En los diagramas por catálogo, las entidades de otros catálogos se dibujan con borde punteado y sin atributos, solo para mostrar con quién se relacionan.'),
     pieTabla('Relaciones del modelo entidad-relación'),
     tabla(['Entidad', 'Relación', 'Entidad', 'Card.', 'Significado'],
       relacionesER, [1700, 1150, 1850, 700, 3960], { size: 16 }),
@@ -365,7 +371,7 @@ function uml() {
     p('El modelo entidad-relación se transformó a un diagrama de clases UML de persistencia, usando la misma notación del libro de Kendall & Kendall que el equipo utilizó en el diagrama de clases del SIA-NP: rectángulo con el nombre de la clase, sus atributos y un compartimento de métodos vacío, ya que aquí solo interesa la estructura de los datos. Las reglas aplicadas fueron las siguientes:'),
     pieTabla('Reglas de transformación del MER a UML'),
     tabla(['Elemento del MER', 'Elemento en UML', 'Ejemplo en el SIA-NP'], reglasPase, [2700, 3260, 3400], { size: 17 }),
-    p('El diagrama UML resultante se presenta en la página siguiente, en hoja horizontal.', { before: 160 }),
+    p('El diagrama UML resultante se presenta en las páginas siguientes, en hoja horizontal: una vista general con todas las clases y asociaciones y un diagrama por catálogo con los atributos de sus clases. Las clases de otros catálogos aparecen con borde punteado y solo con su nombre.', { before: 160 }),
     h2('4.1 Correspondencia con el diagrama de clases del sistema'),
     p('El diagrama de clases del SIA-NP (Fundamentos de Ingeniería de Software) tiene 22 clases. La siguiente tabla indica en qué se convirtió cada una al diseñar la base de datos:'),
     pieTabla('Clases del sistema y su representación en la base de datos'),
@@ -397,7 +403,7 @@ function logico() {
   }
   return [
     h1('5. Base de datos lógica del sistema', false),
-    p('El modelo lógico es el paso del modelo conceptual al modelo relacional: cada entidad y cada relación muchos a muchos se convierte en una tabla, cada atributo en una columna con su tipo de dato de SQL Server, y cada relación uno a muchos en una llave foránea del lado «muchos». La figura de la página siguiente muestra el diagrama de la base de datos en notación de pata de gallo; después se presenta el esquema relacional en texto y la lista de llaves foráneas.'),
+    p('El modelo lógico es el paso del modelo conceptual al modelo relacional: cada entidad y cada relación muchos a muchos se convierte en una tabla, cada atributo en una columna con su tipo de dato de SQL Server, y cada relación uno a muchos en una llave foránea del lado «muchos». Las figuras de las páginas siguientes muestran el diagrama de la base de datos en notación de pata de gallo: una vista general con las 14 tablas y sus 22 relaciones, y un diagrama por catálogo con las columnas, tipos y llaves de cada tabla (las tablas de otros catálogos aparecen con borde punteado y solo con su llave primaria; la etiqueta de cada línea es la columna que funciona como llave foránea). Después se presentan el esquema relacional en texto y la lista de llaves foráneas.'),
     h2('5.1 Reglas de transformación aplicadas'),
     bullet('**Entidad fuerte → tabla** con llave primaria sustituta autoincremental (IDENTITY). Los datos que el usuario ve, como el código interno, el folio o el RFC, se protegen con UNIQUE.'),
     bullet('**Relación 1 : N → llave foránea** en la tabla del lado N. Ejemplo: id_familia en PRODUCTO.'),

@@ -1,0 +1,43 @@
+digraph logico {
+  graph [fontname="Liberation Sans", fontsize=13, bgcolor="white", color="black", fontcolor="black", pad=0.2];
+  node  [fontname="Liberation Sans", fontsize=11, color="black", fontcolor="black"];
+  edge  [fontname="Liberation Sans", fontsize=10, color="black", fontcolor="black"];
+
+  graph [rankdir=LR, splines=polyline, nodesep=0.35, ranksep=0.9];
+  FAMILIA [shape=box, style=filled, fillcolor="#E6E6E6", label=<<B>FAMILIA</B>>, margin="0.15,0.1"];
+  UBICACION [shape=box, style=filled, fillcolor="#E6E6E6", label=<<B>UBICACION</B>>, margin="0.15,0.1"];
+  PRODUCTO [shape=box, style=filled, fillcolor="#E6E6E6", label=<<B>PRODUCTO</B>>, margin="0.15,0.1"];
+  PROVEEDOR [shape=box, style=filled, fillcolor="#E6E6E6", label=<<B>PROVEEDOR</B>>, margin="0.15,0.1"];
+  PRODUCTO_PROVEEDOR [shape=box, style=filled, fillcolor="#E6E6E6", label=<<B>PRODUCTO_PROVEEDOR</B>>, margin="0.15,0.1"];
+  ORDEN_COMPRA [shape=box, style=filled, fillcolor="#E6E6E6", label=<<B>ORDEN_COMPRA</B>>, margin="0.15,0.1"];
+  DETALLE_ORDEN [shape=box, style=filled, fillcolor="#E6E6E6", label=<<B>DETALLE_ORDEN</B>>, margin="0.15,0.1"];
+  ROL [shape=box, style=filled, fillcolor="#E6E6E6", label=<<B>ROL</B>>, margin="0.15,0.1"];
+  USUARIO [shape=box, style=filled, fillcolor="#E6E6E6", label=<<B>USUARIO</B>>, margin="0.15,0.1"];
+  BITACORA_AUDITORIA [shape=box, style=filled, fillcolor="#E6E6E6", label=<<B>BITACORA_AUDITORIA</B>>, margin="0.15,0.1"];
+  RECEPCION [shape=box, style=filled, fillcolor="#E6E6E6", label=<<B>RECEPCION</B>>, margin="0.15,0.1"];
+  INVENTARIO_FISICO [shape=box, style=filled, fillcolor="#E6E6E6", label=<<B>INVENTARIO_FISICO</B>>, margin="0.15,0.1"];
+  DETALLE_CONTEO [shape=box, style=filled, fillcolor="#E6E6E6", label=<<B>DETALLE_CONTEO</B>>, margin="0.15,0.1"];
+  MOVIMIENTO [shape=box, style=filled, fillcolor="#E6E6E6", label=<<B>MOVIMIENTO</B>>, margin="0.15,0.1"];
+  USUARIO -> BITACORA_AUDITORIA [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+  INVENTARIO_FISICO -> DETALLE_CONTEO [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+  PRODUCTO -> DETALLE_CONTEO [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+  UBICACION -> DETALLE_CONTEO [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+  ORDEN_COMPRA -> DETALLE_ORDEN [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+  PRODUCTO -> DETALLE_ORDEN [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+  FAMILIA -> INVENTARIO_FISICO [dir=both, arrowhead=crowodot, arrowtail=teeodot, arrowsize=1.0];
+  USUARIO -> INVENTARIO_FISICO [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+  PRODUCTO -> MOVIMIENTO [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+  UBICACION -> MOVIMIENTO [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+  USUARIO -> MOVIMIENTO [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+  RECEPCION -> MOVIMIENTO [dir=both, arrowhead=crowodot, arrowtail=teeodot, arrowsize=1.0];
+  INVENTARIO_FISICO -> MOVIMIENTO [dir=both, arrowhead=crowodot, arrowtail=teeodot, arrowsize=1.0];
+  PROVEEDOR -> ORDEN_COMPRA [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+  USUARIO -> ORDEN_COMPRA [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+  FAMILIA -> PRODUCTO [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+  UBICACION -> PRODUCTO [dir=both, arrowhead=crowodot, arrowtail=teeodot, arrowsize=1.0];
+  PRODUCTO -> PRODUCTO_PROVEEDOR [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+  PROVEEDOR -> PRODUCTO_PROVEEDOR [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+  ORDEN_COMPRA -> RECEPCION [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+  USUARIO -> RECEPCION [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+  ROL -> USUARIO [dir=both, arrowhead=crowodot, arrowtail=teetee, arrowsize=1.0];
+}
