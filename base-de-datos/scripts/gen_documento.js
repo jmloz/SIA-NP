@@ -159,26 +159,8 @@ function portada() {
 
 // ---------- contenido ----------
 function contenido() {
-  const items = [
-    'Integrantes del equipo y catálogos asignados',
-    '1. Introducción',
-    '    1.1 Descripción del problema',
-    '    1.2 Objetivo general',
-    '    1.3 Objetivos específicos',
-    '    1.4 Alcance de la base de datos',
-    '2. Diccionario de datos',
-    '3. Modelo Entidad-Relación',
-    '4. Pase del Modelo Entidad-Relación a UML',
-    '5. Base de datos lógica del sistema',
-    '6. Creación de la base de datos',
-    '7. Conclusiones',
-    'Referencias',
-  ];
   return [
-    h1('Contenido', false),
-    ...items.map((t) => p(t, { align: AlignmentType.LEFT, after: 80 })),
-    espacio(),
-    h2('Integrantes del equipo y catálogos asignados'),
+    h1('Integrantes del equipo y catálogos asignados', false),
     p('Conforme a la indicación del taller, cada integrante realizó lo correspondiente a un catálogo de la base de datos: su parte del diccionario de datos, sus entidades en el modelo entidad-relación y en UML, y las sentencias de creación de sus tablas con sus restricciones.'),
     pieTabla('Integrantes y catálogo a cargo de cada uno'),
     tabla(['Integrante', 'Catálogo', 'Tablas', 'Requerimientos'],
@@ -203,17 +185,7 @@ function introduccion() {
     bullet('**Sin reglas de validación.** Una hoja de cálculo acepta cantidades negativas, códigos repetidos o fechas incorrectas.'),
     p('Todos estos problemas tienen su origen en que los datos no están organizados en una base de datos con llaves y reglas de integridad. Por eso la confiabilidad, que el encargado de almacén resumió como su expectativa principal, depende en gran medida del diseño de la base de datos.'),
     h2('1.2 Objetivo general'),
-    p('Diseñar y crear la base de datos relacional del SIA-NP en Microsoft SQL Server, partiendo del análisis orientado a objetos del sistema, de modo que almacene de forma única, consistente y verificable los productos, ubicaciones, proveedores, órdenes de compra, recepciones, movimientos de almacén, conteos físicos y usuarios de Neumática del Pacífico.'),
-    h2('1.3 Objetivos específicos'),
-    bullet('Elaborar el diccionario de datos con el tipo, la obligatoriedad, las llaves y las reglas de cada campo.'),
-    bullet('Construir el modelo entidad-relación con sus entidades, atributos, relaciones y cardinalidades.'),
-    bullet('Pasar el modelo entidad-relación a un diagrama de clases UML y relacionarlo con el diagrama de clases del sistema.'),
-    bullet('Obtener el modelo lógico (tablas, llaves primarias y foráneas) en tercera forma normal.'),
-    bullet('Crear la base de datos y sus tablas con restricciones PRIMARY KEY, FOREIGN KEY, UNIQUE, CHECK y DEFAULT, y comprobar que las reglas de integridad funcionan.'),
-    h2('1.4 Alcance de la base de datos'),
-    p('La base de datos cubre los módulos de Seguridad, Catálogos, Almacén y Compras del SIA-NP. Los indicadores del módulo de Dirección (dashboard y reportes) no se guardan en tablas propias: se calculan a partir de los datos mediante vistas. La base de datos se organizó en los cuatro catálogos siguientes:'),
-    ...catalogos.map((c) => bullet(`**Catálogo ${c.num}. ${c.nombre}** (${c.responsable}): ${c.tablas.join(', ')}.`)),
-    p('En total son 14 tablas, 3 vistas y 2 índices adicionales. Quedan fuera de esta primera parte los procedimientos almacenados, los disparadores (triggers) y las integraciones con CONTPAQi y con el PAC para CFDI 4.0, que la ERS también deja para una fase posterior.', { before: 120 }),
+    p('Diseñar y crear la base de datos relacional del SIA-NP en Microsoft SQL Server, partiendo del análisis orientado a objetos del sistema, de modo que almacene de forma única, consistente y verificable los productos, ubicaciones, proveedores, órdenes de compra, recepciones, movimientos de almacén, conteos físicos y usuarios de Neumática del Pacífico. La base de datos tiene 14 tablas organizadas en cuatro catálogos, uno por integrante del equipo (Tabla 1).'),
   ];
 }
 
@@ -248,10 +220,6 @@ function diccionario() {
     bullet('**Nulo**: «No» significa campo obligatorio (NOT NULL); «Sí» significa que puede quedar vacío.'),
     bullet('**IDENTITY(1,1)**: número autoincremental que asigna el SGBD. **Calculada**: columna que SQL Server calcula a partir de otras.'),
     bullet('Tipos usados: INT, BIGINT, SMALLINT y TINYINT (enteros); DECIMAL(p,s) (numéricos con decimales); VARCHAR(n) y CHAR(n) (texto); DATE y DATETIME2 (fechas); BIT (verdadero/falso).'),
-    pieTabla('Resumen de tablas de la base de datos'),
-    tabla(['Catálogo', 'Tabla', 'Campos', 'Descripción'],
-      catalogos.flatMap((c) => c.tablas.map((t) => [`${c.num}. ${c.nombre}`, t, String(meta.filter((m) => m.tabla === t).length), tablas[t]])),
-      [1900, 2100, 860, 4500], { size: 17 }),
   ];
   for (const c of catalogos) {
     out.push(h2(`2.${c.num} Catálogo ${c.num}: ${c.nombre}`));
@@ -277,32 +245,11 @@ function diccionario() {
 }
 
 // ---------- 3. MER ----------
-const relacionesER = [
-  ['ROL', 'asigna', 'USUARIO', '1 : N', 'Un rol se asigna a muchos usuarios; cada usuario tiene un solo rol.'],
-  ['USUARIO', 'genera', 'BITACORA_AUDITORIA', '1 : N', 'Cada operación de la bitácora la hizo un usuario.'],
-  ['USUARIO', 'registra', 'MOVIMIENTO', '1 : N', 'Cada movimiento tiene un usuario responsable.'],
-  ['USUARIO', 'elabora', 'ORDEN_COMPRA', '1 : N', 'La encargada de compras elabora las órdenes.'],
-  ['USUARIO', 'captura', 'RECEPCION', '1 : N', 'Cada recepción la captura un usuario.'],
-  ['USUARIO', 'realiza', 'INVENTARIO_FISICO', '1 : N', 'Cada conteo lo realiza un usuario.'],
-  ['FAMILIA', 'clasifica', 'PRODUCTO', '1 : N', 'Cada producto pertenece a una familia.'],
-  ['FAMILIA', 'abarca', 'INVENTARIO_FISICO', '1 : N', 'Un conteo cíclico abarca una familia (el total, ninguna).'],
-  ['UBICACION', 'contiene', 'PRODUCTO', '1 : N', 'Una ubicación guarda varios productos; un producto tiene una ubicación asignada.'],
-  ['UBICACION', 'ocurre en', 'MOVIMIENTO', '1 : N', 'Cada movimiento se hace en una ubicación.'],
-  ['PRODUCTO', 'afecta', 'MOVIMIENTO', '1 : N', 'Cada movimiento afecta a un solo producto.'],
-  ['PROVEEDOR', 'surte', 'PRODUCTO', 'M : N', 'Un proveedor surte muchos productos y un producto lo surten varios proveedores. Atributos: codigo_proveedor, precio_compra, moneda.'],
-  ['PROVEEDOR', 'recibe', 'ORDEN_COMPRA', '1 : N', 'Cada orden se envía a un proveedor.'],
-  ['ORDEN_COMPRA', 'solicita', 'PRODUCTO', 'M : N', 'Una orden pide varios productos y un producto aparece en varias órdenes. Atributos: cantidad_solicitada, cantidad_recibida, costo_unitario.'],
-  ['ORDEN_COMPRA', 'se surte con', 'RECEPCION', '1 : N', 'Una orden puede recibirse en una o varias entregas (parciales).'],
-  ['RECEPCION', 'genera', 'MOVIMIENTO', '1 : N', 'Cada partida recibida genera una entrada al almacén.'],
-  ['INVENTARIO_FISICO', 'origina', 'MOVIMIENTO', '1 : N', 'Las diferencias autorizadas de un conteo originan ajustes.'],
-  ['INVENTARIO_FISICO', 'incluye', 'DETALLE_CONTEO', '1 : N', 'Relación identificadora: el detalle no existe sin su conteo.'],
-  ['PRODUCTO', 'se cuenta en', 'DETALLE_CONTEO', '1 : N', 'Relación identificadora: cada línea del conteo es de un producto.'],
-  ['UBICACION', 'se verifica en', 'DETALLE_CONTEO', '1 : N', 'Ubicación donde se hizo el conteo del producto.'],
-];
 function figuraHorizontal(base, titulo) {
   const out = [];
   const dir = path.join(BASE, 'diagramas');
-  const partes = fs.readdirSync(dir).filter((f) => f.startsWith(base) && f.endsWith('.png')).sort();
+  const partes = fs.readdirSync(dir).filter((f) => f.startsWith(base) && f.endsWith('.png'))
+    .filter((f) => base.startsWith('01_') || !f.includes('_general')).sort();
   if (!partes.length) throw new Error(`No existe la figura ${base}`);
   partes.forEach((f, i) => {
     out.push(imagen(path.join(dir, f), 900, 600));
@@ -329,9 +276,6 @@ function mer() {
     bullet('**1, N, M**: cardinalidad de cada extremo de la relación.'),
     bullet('**Círculo con «d»**: especialización disjunta de MOVIMIENTO en ENTRADA, SALIDA, AJUSTE y DEVOLUCION; la doble línea indica que es total (todo movimiento es de uno de los cuatro tipos). El discriminador es el atributo tipo.'),
     p('Por su tamaño, el modelo se presenta en hojas horizontales en dos niveles: primero una vista general con todas las entidades y relaciones (sin atributos) y después un diagrama por catálogo con los atributos de sus entidades. En los diagramas por catálogo, las entidades de otros catálogos se dibujan con borde punteado y sin atributos, solo para mostrar con quién se relacionan.'),
-    pieTabla('Relaciones del modelo entidad-relación'),
-    tabla(['Entidad', 'Relación', 'Entidad', 'Card.', 'Significado'],
-      relacionesER, [1700, 1150, 1850, 700, 3960], { size: 16 }),
   ];
 }
 
@@ -351,79 +295,27 @@ function uml() {
     ['Relación «contiene»', 'Agregación (diamante vacío)', 'Ubicacion ◇— Producto'],
     ['Llave foránea', 'No se escribe como atributo; la reemplaza la asociación', 'id_familia → asociación «clasifica»'],
   ];
-  const correspondencia = [
-    ['Usuario', 'USUARIO + ROL', 'El atributo rol: char{E,A,C,D,X} se separó en la tabla ROL para no repetir el nombre del rol.'],
-    ['Producto', 'PRODUCTO + FAMILIA', 'El atributo familia: String se convirtió en catálogo para evitar familias escritas de formas distintas.'],
-    ['Ubicacion', 'UBICACION', 'Igual. claveUbicacion → clave.'],
-    ['Movimiento, Entrada, Salida, Ajuste, Devolucion', 'MOVIMIENTO', 'Las cinco clases se guardan en una sola tabla; tipo indica la subclase y las restricciones CHECK aplican las reglas de cada subclase.'],
-    ['Kardex', 'vw_KARDEX (vista)', 'El kardex es el historial de movimientos de un producto con su saldo: se obtiene de MOVIMIENTO sin duplicar datos.'],
-    ['InventarioFisico', 'INVENTARIO_FISICO + DETALLE_CONTEO', 'cantidadContada y diferencia son por producto, así que se pasaron al detalle del conteo.'],
-    ['Proveedor', 'PROVEEDOR + PRODUCTO_PROVEEDOR', 'La asociación «surte» 1..* — 1..* se resolvió con la tabla intermedia, que además guarda el precio.'],
-    ['OrdenDeCompra', 'ORDEN_COMPRA', 'iva y total se calculan; estado toma los valores del diagrama de estados.'],
-    ['DetalleOrden', 'DETALLE_ORDEN', 'Clase de asociación → tabla con llave compuesta (id_oc, id_producto).'],
-    ['Recepcion', 'RECEPCION', 'cantidadRecibida y saldoPendiente son por partida y ya están en DETALLE_ORDEN.'],
-    ['BitacoraDeAuditoria', 'BITACORA_AUDITORIA', 'Igual.'],
-    ['Reporte, DashboardEjecutivo', 'vw_PRODUCTOS_BAJO_REORDEN, vw_VALOR_INVENTARIO', 'Son resultados de cálculos, no datos que se capturen: se implementan como vistas.'],
-    ['Interfaz, InterfazRegistroMovimientos, InterfazRecepcion, ControladorMovimientos, ControladorRecepcion', '— (no persisten)', 'Las clases de interfaz y de control no guardan datos; solo existen en la aplicación.'],
-  ];
   return [
     h1('4. Pase del Modelo Entidad-Relación a UML', false),
     p('El modelo entidad-relación se transformó a un diagrama de clases UML de persistencia, usando la misma notación del libro de Kendall & Kendall que el equipo utilizó en el diagrama de clases del SIA-NP: rectángulo con el nombre de la clase, sus atributos y un compartimento de métodos vacío, ya que aquí solo interesa la estructura de los datos. Las reglas aplicadas fueron las siguientes:'),
     pieTabla('Reglas de transformación del MER a UML'),
     tabla(['Elemento del MER', 'Elemento en UML', 'Ejemplo en el SIA-NP'], reglasPase, [2700, 3260, 3400], { size: 17 }),
-    p('El diagrama UML resultante se presenta en las páginas siguientes, en hoja horizontal: una vista general con todas las clases y asociaciones y un diagrama por catálogo con los atributos de sus clases. Las clases de otros catálogos aparecen con borde punteado y solo con su nombre.', { before: 160 }),
-    h2('4.1 Correspondencia con el diagrama de clases del sistema'),
-    p('El diagrama de clases del SIA-NP (Fundamentos de Ingeniería de Software) tiene 22 clases. La siguiente tabla indica en qué se convirtió cada una al diseñar la base de datos:'),
-    pieTabla('Clases del sistema y su representación en la base de datos'),
-    tabla(['Clase del sistema', 'Tabla o vista', 'Observación'], correspondencia, [2700, 2500, 4160], { size: 17 }),
+    p('El diagrama UML resultante se presenta en las páginas siguientes, en hoja horizontal, un diagrama por catálogo con los atributos de sus clases. Las clases de otros catálogos aparecen con borde punteado y solo con su nombre.', { before: 160 }),
   ];
 }
 
 // ---------- 5. Modelo lógico ----------
-function esquemaRelacional(t) {
-  const filas = meta.filter((m) => m.tabla === t).sort((a, b) => a.orden - b.orden);
-  return filas.map((r) => {
-    let n = r.columna;
-    if (r.pk) n = `PK:${n}`;
-    if (r.fk) n += ` (FK)`;
-    return n;
-  }).join(', ');
-}
 function logico() {
-  const fks = [];
-  const vistas = new Set();
-  for (const m of meta) if (m.fk) {
-    const k = `${m.tabla}.${m.columna}`;
-    if (vistas.has(k)) continue;
-    vistas.add(k);
-    let accion = 'NO ACTION';
-    if (['PRODUCTO.id_ubicacion'].includes(k)) accion = 'SET NULL';
-    if (['PRODUCTO_PROVEEDOR.id_producto', 'PRODUCTO_PROVEEDOR.id_proveedor', 'DETALLE_ORDEN.id_oc', 'DETALLE_CONTEO.id_conteo'].includes(k)) accion = 'CASCADE';
-    fks.push([m.tabla, m.columna, m.fk, m.nulo ? '0..1' : '1', accion]);
-  }
   return [
     h1('5. Base de datos lógica del sistema', false),
-    p('El modelo lógico es el paso del modelo conceptual al modelo relacional: cada entidad y cada relación muchos a muchos se convierte en una tabla, cada atributo en una columna con su tipo de dato de SQL Server, y cada relación uno a muchos en una llave foránea del lado «muchos». Las figuras de las páginas siguientes muestran el diagrama de la base de datos en notación de pata de gallo: una vista general con las 14 tablas y sus 22 relaciones, y un diagrama por catálogo con las columnas, tipos y llaves de cada tabla (las tablas de otros catálogos aparecen con borde punteado y solo con su llave primaria; la etiqueta de cada línea es la columna que funciona como llave foránea). Después se presentan el esquema relacional en texto y la lista de llaves foráneas.'),
-    h2('5.1 Reglas de transformación aplicadas'),
+    p('El modelo lógico es el paso del modelo conceptual al modelo relacional: cada entidad y cada relación muchos a muchos se convierte en una tabla, cada atributo en una columna con su tipo de dato de SQL Server, y cada relación uno a muchos en una llave foránea del lado «muchos». Las figuras de las páginas siguientes muestran el diagrama de la base de datos en notación de pata de gallo, uno por catálogo, con las columnas, tipos y llaves de cada tabla (las tablas de otros catálogos aparecen con borde punteado y solo con su llave primaria; la etiqueta de cada línea es la columna que funciona como llave foránea).'),
+    h2('Reglas de transformación aplicadas'),
     bullet('**Entidad fuerte → tabla** con llave primaria sustituta autoincremental (IDENTITY). Los datos que el usuario ve, como el código interno, el folio o el RFC, se protegen con UNIQUE.'),
     bullet('**Relación 1 : N → llave foránea** en la tabla del lado N. Ejemplo: id_familia en PRODUCTO.'),
     bullet('**Relación M : N → tabla intermedia** con llave primaria compuesta por las dos llaves foráneas y los atributos propios de la relación: PRODUCTO_PROVEEDOR y DETALLE_ORDEN.'),
     bullet('**Entidad débil → tabla** cuya llave primaria incluye la llave de su entidad dueña: DETALLE_CONTEO (id_conteo, id_producto).'),
-    bullet('**Especialización → una sola tabla** (MOVIMIENTO) con la columna discriminadora tipo. Se eligió esta opción porque las cuatro subclases tienen los mismos atributos y el kardex necesita consultarlas juntas en orden cronológico.'),
-    bullet('**Atributo derivado → columna calculada** (iva, total, importe, diferencia) o vista (kardex, reportes).'),
-    h2('5.2 Normalización'),
-    p('Las tablas se revisaron hasta la tercera forma normal (3FN):'),
-    bullet('**1FN**: todos los campos son atómicos y no hay grupos repetidos. Las partidas de una orden de compra y las líneas de un conteo, que en una hoja de cálculo estarían en columnas repetidas, se separaron en DETALLE_ORDEN y DETALLE_CONTEO.'),
-    bullet('**2FN**: en las tablas con llave compuesta (PRODUCTO_PROVEEDOR, DETALLE_ORDEN, DETALLE_CONTEO) cada campo depende de la llave completa. Por ejemplo, la descripción del producto no se guarda en DETALLE_ORDEN porque depende solo de id_producto.'),
-    bullet('**3FN**: no hay dependencias transitivas. El nombre de la familia, del rol y de la ubicación se guardan una sola vez en su catálogo y las demás tablas solo guardan la llave. Esto corrige la duplicación de números de parte detectada en el Excel actual.'),
-    p('Como excepciones controladas, PRODUCTO.existencia y MOVIMIENTO.saldo_resultante guardan un valor que podría calcularse sumando los movimientos. Se conservan porque la consulta de existencias debe responder en pocos segundos (RNF1) y porque el kardex debe mostrar el saldo de cada movimiento; la aplicación los actualiza dentro de la misma transacción que registra el movimiento (RNF2).'),
-    h2('5.3 Esquema relacional'),
-    p('Notación: PK = llave primaria; (FK) = llave foránea.', { after: 80 }),
-    ...catalogos.flatMap((c) => c.tablas.map((t) => p([run(`${t} `, { bold: true, size: 20 }), run(`(${esquemaRelacional(t)})`, { size: 20 })], { align: AlignmentType.LEFT, after: 80 }))),
-    h2('5.4 Llaves foráneas'),
-    p('La siguiente tabla lista las 22 llaves foráneas de la base de datos. La columna «Mult.» indica si la relación es obligatoria (1) u opcional (0..1, la llave foránea admite nulos). La acción ON DELETE indica qué pasa con los registros hijos al borrar el registro padre: NO ACTION impide el borrado, CASCADE borra los hijos y SET NULL deja la llave foránea vacía.'),
-    pieTabla('Llaves foráneas y regla de borrado'),
-    tabla(['Tabla hija', 'Columna', 'Tabla padre', 'Mult.', 'ON DELETE'], fks, [2400, 1900, 2300, 900, 1860], { size: 17 }),
+    bullet('**Especialización → una sola tabla** (MOVIMIENTO) con la columna discriminadora tipo. Se eligió esta opción porque las cuatro subclases tienen los mismos atributos y el kardex necesita consultarlas juntas.'),
+    bullet('**Atributo derivado → columna calculada** (iva, total, importe, diferencia).'),
   ];
 }
 
@@ -436,36 +328,6 @@ function bloque(desde, hasta) {
 }
 function creacion() {
   const conteo = { 'PRIMARY KEY': 14, 'FOREIGN KEY': 22, UNIQUE: 11, CHECK: 42, DEFAULT: 29 };
-  const pruebas = [
-    ['UNIQUE', 'Clave de rol repetida (E)', 'UQ_ROL_clave'],
-    ['CHECK', 'Rol con clave Z', 'CK_ROL_clave'],
-    ['FOREIGN KEY', 'Usuario con un rol que no existe', 'FK_USUARIO_ROL'],
-    ['CHECK', 'Cuatro intentos fallidos de inicio de sesión', 'CK_USUARIO_intentos'],
-    ['CHECK', 'Correo sin arroba', 'CK_USUARIO_correo'],
-    ['UNIQUE', 'Código interno de producto repetido', 'UQ_PRODUCTO_codigo_interno'],
-    ['UNIQUE (índice)', 'Código de barras repetido', 'UX_PRODUCTO_codigo_barras'],
-    ['CHECK', 'Existencia negativa', 'CK_PRODUCTO_existencia'],
-    ['CHECK', 'Máximo menor que el mínimo', 'CK_PRODUCTO_maximo'],
-    ['CHECK', 'Unidad de medida CAJA', 'CK_PRODUCTO_unidad'],
-    ['CHECK', 'Anaquel 9', 'CK_UBICACION_anaquel'],
-    ['CHECK', 'Ubicación de pasillo sin nivel', 'CK_UBICACION_estructura'],
-    ['CHECK', 'Proveedor con clasificación EXTRANJERO', 'CK_PROVEEDOR_clasificacion'],
-    ['CHECK', 'RFC de 6 caracteres', 'CK_PROVEEDOR_rfc'],
-    ['CHECK', 'Precio de compra en cero', 'CK_PRODPROV_precio'],
-    ['CHECK', 'Orden de compra en estado PERDIDA', 'CK_OC_estado'],
-    ['CHECK', 'Fecha de entrega anterior a la emisión', 'CK_OC_fecha_entrega'],
-    ['PRIMARY KEY', 'Mismo producto dos veces en una orden', 'PK_DETALLE_ORDEN'],
-    ['CHECK', 'Partida con cantidad cero', 'CK_DETORD_solicitada'],
-    ['FOREIGN KEY', 'Recepción de una orden inexistente', 'FK_RECEPCION_OC'],
-    ['CHECK', 'Movimiento de tipo T', 'CK_MOV_tipo'],
-    ['CHECK', 'Salida con cantidad negativa', 'CK_MOV_cantidad'],
-    ['CHECK', 'Salida ligada a una recepción', 'CK_MOV_recepcion'],
-    ['CHECK', 'Ajuste sin motivo', 'CK_MOV_motivo'],
-    ['CHECK', 'Entrada sin documento de referencia', 'CK_MOV_documento'],
-    ['CHECK', 'Conteo cíclico sin familia', 'CK_INVFIS_familia'],
-    ['CHECK', 'Acción de bitácora BORRAR', 'CK_BITACORA_accion'],
-    ['FOREIGN KEY', 'Borrar un producto con historial', 'FK_DETORD_PRODUCTO'],
-  ];
   const secciones = [
     ['Catálogo 3: Usuarios y seguridad', 'CREATE TABLE ROL', 'CATÁLOGO 1'],
     ['Catálogo 1: Productos y ubicaciones', 'CREATE TABLE FAMILIA', 'CATÁLOGO 2'],
@@ -475,10 +337,7 @@ function creacion() {
   const resp = { 'Catálogo 1': catalogos[0].responsable, 'Catálogo 2': catalogos[1].responsable, 'Catálogo 3': catalogos[2].responsable, 'Catálogo 4': catalogos[3].responsable };
   const out = [
     h1('6. Creación de la base de datos', false),
-    p('La base de datos se creó en Microsoft SQL Server con el lenguaje T-SQL. El script se probó en SQL Server 2022 y es compatible con SQL Server 2019 y con SQL Server Express; puede ejecutarse desde SQL Server Management Studio en Windows o con la herramienta sqlcmd en Ubuntu. Los scripts se entregan junto con este documento:'),
-    bullet('**01_creacion_SIA_NP.sql**: crea la base de datos, las 14 tablas, los índices y las 3 vistas.'),
-    bullet('**02_datos_prueba.sql**: inserta algunos registros de ejemplo en cada catálogo.'),
-    bullet('**03_pruebas_integridad.sql**: intenta 28 operaciones inválidas para comprobar que las restricciones las rechazan.'),
+    p('La base de datos se creó en Microsoft SQL Server con el lenguaje T-SQL. El script se probó en SQL Server 2022 y es compatible con SQL Server 2019 y con SQL Server Express; puede ejecutarse desde SQL Server Management Studio en Windows o con la herramienta sqlcmd en Ubuntu. El script completo se entrega junto con este documento en el archivo 01_creacion_SIA_NP.sql.'),
     p('Las tablas se crean en el orden de sus dependencias (primero las tablas padre y después las que tienen llaves foráneas hacia ellas), por eso el catálogo de usuarios va primero: casi todas las tablas de operación registran qué usuario hizo cada cosa.'),
     h2('6.1 Creación de la base de datos'),
     p('Se usa la intercalación Modern_Spanish_CI_AS para que las comparaciones y los ordenamientos respeten el español (ñ y acentos) y no distingan mayúsculas de minúsculas. Si la base de datos ya existe, el script la elimina para poder ejecutarse de nuevo desde cero.'),
@@ -495,40 +354,13 @@ function creacion() {
       ['Columnas calculadas', '4', 'iva y total de la orden, importe de la partida y diferencia del conteo (PERSISTED).'],
     ], [2100, 1300, 5960], { size: 17 }),
     h2('6.3 Creación de las tablas por catálogo'),
-    p('A continuación se muestra el script de cada catálogo, con el integrante que lo realizó. El script completo se entrega en el archivo 01_creacion_SIA_NP.sql.'),
+    p('A continuación se muestra el script de cada catálogo, con el integrante que lo realizó.'),
   ];
   for (const [titulo, desde, hasta] of secciones) {
     out.push(h3(`${titulo} — ${resp[titulo.slice(0, 10)]}`));
     out.push(...codigo(bloque(desde, hasta).replace(/\/\* =+\s*$/, '')));
   }
-  out.push(
-    h2('6.4 Vistas'),
-    p('Las clases Kardex, Reporte y DashboardEjecutivo del diagrama de clases se implementaron como vistas, porque su información se calcula a partir de otras tablas:'),
-    bullet('**vw_KARDEX**: historial cronológico de cada producto con entradas, salidas, saldo, documento y usuario (RF4).'),
-    bullet('**vw_PRODUCTOS_BAJO_REORDEN**: productos cuya existencia llegó al punto de reorden, con la cantidad sugerida para llegar al máximo (RF14).'),
-    bullet('**vw_VALOR_INVENTARIO**: valor del inventario por familia para el dashboard ejecutivo (RF17).'),
-    ...codigo(bloque('CREATE VIEW vw_KARDEX')),
-    h2('6.5 Comprobación'),
-    p('Se ejecutaron los tres scripts en SQL Server 2022. El primero terminó sin errores y creó las 14 tablas; el segundo cargó los datos de prueba (5 roles, 5 usuarios, 5 familias, 5 ubicaciones, 5 productos, 3 proveedores, 2 órdenes de compra, 1 recepción parcial, 1 conteo cíclico y 4 movimientos); el tercero intentó 28 operaciones que violan las reglas de integridad. Las 28 fueron rechazadas por la restricción esperada:'),
-    pieTabla('Pruebas de las reglas de integridad (todas rechazadas correctamente)'),
-    tabla(['#', 'Tipo', 'Operación intentada', 'Restricción que la rechazó'],
-      pruebas.map((r, i) => [String(i + 1), r[0], r[1], r[2]]), [500, 1600, 4060, 3200], { size: 16, monoCols: [] }),
-    p('Además, las vistas devolvieron los resultados esperados con los datos de prueba. Por ejemplo, el kardex de la manguera MAN-PU-08 muestra la entrada de 100 m por la recepción REC-2026-0001 (saldo 420) y la salida de 30 m con el vale V-2231 (saldo 390); la orden OC-2026-0001 con subtotal de $2,512.50 calcula automáticamente un IVA de $402.00 y un total de $2,914.50.', { before: 160 }),
-  );
   return out;
-}
-
-function conclusiones() {
-  return [
-    h1('7. Conclusiones'),
-    p('Partir del análisis orientado a objetos hecho en Fundamentos de Ingeniería de Software facilitó el diseño de la base de datos: las clases de entidad del diagrama de clases y las propiedades de las tarjetas CRC se convirtieron casi directamente en entidades y atributos. Las diferencias aparecieron al normalizar: atributos como la familia del producto o el rol del usuario se separaron en catálogos, la jerarquía de movimientos se guardó en una sola tabla, y clases como el Kardex y los reportes resultaron ser vistas y no tablas.'),
-    p('Las restricciones CHECK, UNIQUE y FOREIGN KEY trasladan a la base de datos reglas que hoy dependen de la atención del personal, como no tener existencias negativas, no repetir códigos o no registrar una entrada sin factura. Así la propia base de datos ayuda a cumplir el requisito de confiabilidad que pidió el encargado de almacén y la meta de la dirección de bajar la diferencia entre el inventario físico y el del sistema a menos del 1 %.'),
-    h1('Referencias', false),
-    p('Kendall, K. E. y Kendall, J. E. (2011). Análisis y diseño de sistemas (8.ª ed.). Pearson Educación. Cap. 10: Análisis y diseño de sistemas orientados a objetos mediante el uso de UML.', { align: AlignmentType.LEFT }),
-    p('Microsoft. (2024). Documentación de Transact-SQL: CREATE TABLE, restricciones y columnas calculadas. Microsoft Learn.', { align: AlignmentType.LEFT }),
-    p('Equipo SIA-NP. (2026). Especificación de Requisitos de Software — Sistema de Inventario y Almacén, Neumática del Pacífico. Instituto Tecnológico de Hermosillo.', { align: AlignmentType.LEFT }),
-    p('Equipo SIA-NP. (2026). Diagrama de clases del SIA-NP. Fundamentos de Ingeniería de Software, Instituto Tecnológico de Hermosillo.', { align: AlignmentType.LEFT }),
-  ];
 }
 
 // ---------- documento ----------
@@ -543,7 +375,7 @@ const secUML = uml();
 const figUML = figuraHorizontal('02_modelo_uml', 'Diagrama de clases UML obtenido del modelo entidad-relación');
 const secLog = logico();
 const figLog = figuraHorizontal('03_diagrama_logico', 'Diagrama de la base de datos lógica del SIA-NP (notación pata de gallo; en negritas los campos NOT NULL)');
-const secFin = [...creacion(), ...conclusiones()];
+const secFin = [...creacion()];
 
 const doc = new Document({
   creator: 'Equipo SIA-NP',

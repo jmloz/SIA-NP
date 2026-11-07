@@ -370,8 +370,6 @@ if __name__ == '__main__':
     mer('01_modelo_entidad_relacion_0_general', list(ATRS_ER), general=True)
     for num, _, ts in CATALOGOS:
         mer(f'01_modelo_entidad_relacion_{num}_catalogo', [t for t in ts if t in ATRS_ER])
-    uml('02_modelo_uml_0_general', list(CLASES.values()) + SUBCLASES, general=True)
-    logico('03_diagrama_logico_0_general', TODAS, general=True)
     for num, _, ts in CATALOGOS:
         clases = [CLASES[t] for t in ts] + (SUBCLASES if 'MOVIMIENTO' in ts else [])
         uml(f'02_modelo_uml_{num}_catalogo', clases)
