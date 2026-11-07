@@ -10,7 +10,7 @@ Integrantes: Hernández Castro José Martín, Moreno Ramos Adolfo, Peñuñuri Fe
 | `sql/01_creacion_SIA_NP.sql` | Crea la BD, 14 tablas, índices y 3 vistas |
 | `sql/02_datos_prueba.sql` | Datos de ejemplo por catálogo |
 | `sql/03_pruebas_integridad.sql` | 28 operaciones inválidas que las restricciones deben rechazar |
-| `diagramas/` | MER (Chen), UML y diagrama lógico (.svg y .png) |
+| `diagramas/` | MER (Chen), UML y diagrama lógico: vista general + uno por catálogo (.dot editable, .svg y .png) |
 | `scripts/` | Generadores del documento y de los diagramas |
 
 ## Ejecutar los scripts
@@ -22,7 +22,7 @@ Integrantes: Hernández Castro José Martín, Moreno Ramos Adolfo, Peñuñuri Fe
 
 ```
 cd base-de-datos/scripts
-node gen_diagramas.js        # requiere playwright
+python3 gen_diagramas.py      # requiere Graphviz (dot)
 node gen_documento.js        # requiere docx
 cd .. && soffice --headless --convert-to pdf Proyecto_BD_Parte_I_SIA-NP.docx
 ```
