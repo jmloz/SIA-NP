@@ -44,13 +44,13 @@ Los 6 tienen .docx y .pdf. Cada .docx sale de su generador `scripts/docx/0N_*.js
 | 3 | Tarjetas CRC (14) | Entregado — NO modificar. El PDF es el original; el .docx (`03_crc.js`) lo replica. |
 | 4 | Diagramas de secuencia CU1 y CU6 | SD1 = CU6, SD2 = CU1. El 9 nov 2026: el mensaje 6 de las figuras ya lleva los parámetros de la tabla, los alternos citados siguen la numeración nueva de los CU y la tabla de la sección 1 está corregida. Las figuras son PNG de 300 dpi en `figuras/`, recortados del PDF vectorial anterior: para cambiar una figura hay que editar ese PDF (`git show f6827ff:...`) o redibujarla. |
 | 5 | Diagrama de clases | .drawio (5 páginas) generado con `scripts/`. El PDF de 13 págs. junta las págs. de Word (portada, intro y tablas) con las figuras vectoriales (págs. 3–7) del PDF de scripts. Se agregaron DashboardEjecutivo a "Tipos de clases" y una tabla de los 5 métodos que no salen de una responsabilidad CRC. `verificar_clases.py` da TODO OK. |
-| 6 | Diagrama de estados (OrdenDeCompra) | Hecho el 9 nov 2026: Pendiente → Emitida → Parcialmente recibida (con autotransición) → Recibida → Cerrada; Cancelada desde Pendiente o Emitida. Fuente: `scripts/estados/diagrama_estados.py` (genera .drawio, `_figura.pdf` y .png). Sigue siendo propuesta del equipo: falta su aprobación. |
+| 6 | Diagrama de estados (OrdenDeCompra) | Hecho el 9 nov 2026: Pendiente → Emitida → Parcialmente recibida (con autotransición) → Recibida → Cerrada; Cancelada desde Pendiente o Emitida. Fuente: `scripts/estados/diagrama_estados.py` (genera .drawio, `_figura.pdf` y .png). **Entregado el 9 nov 2026 tal cual (la imagen PNG generada por script). La consigna pedía dibujarlo en StarUML; se envió así. NO modificar.** |
 
 Las CRC ya están entregadas: si algo no cuadra, se corrige en el diagrama, no en las tarjetas.
 
 Pendientes:
 - Ningún `.drawio` (actividades, clases, estados) se ha abierto en draw.io: hay que abrirlos una vez para confirmar que se ven igual que los PNG/PDF.
-- El equipo debe aprobar el diagrama de estados. Notas: T4 (cancelar una orden Emitida) y T9 (cerrar) no tienen CU propio; el diccionario de datos de la ERS usa otros estatus (Abierta/Parcial/Cerrada/Cancelada).
+- Diagrama de estados ya entregado; notas por si se pregunta: T4 (cancelar una orden Emitida) y T9 (cerrar) no tienen CU propio; el diccionario de datos de la ERS usa otros estatus (Abierta/Parcial/Cerrada/Cancelada).
 - Sin corregir (menores): en CU1, CU4 y CU5 la precondición dice que el producto, cliente o proveedor existe, pero un alterno trata el caso de que no exista; CU2 y CU7 registran la consulta en la bitácora, cosa que la ERS no pide; en SD1/SD2, `validarUbicacion(clave)` recibe "clave" aunque los mensajes anteriores pasan `ubicacion`; en la tabla de clases, el origen de `actualizarGraficas()` (CU7) no se comparó con el Apéndice C.
 
 ## Reglas de formato (obligatorias)
