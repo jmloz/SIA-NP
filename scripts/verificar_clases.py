@@ -154,7 +154,7 @@ def main(drawio, pdf, original=None):
 
     print("== pdf")
     doc = pymupdf.open(pdf)
-    ok(len(doc) == 11, "11 paginas: %d" % len(doc))
+    ok(len(doc) == 13, "13 paginas (portada e intro de Word, figuras 3-7 vectoriales, tablas): %d" % len(doc))
     ok(all(abs(max(p.rect.width, p.rect.height) - 792) < 0.5 and abs(min(p.rect.width, p.rect.height) - 612) < 0.5
            for p in doc), "todas las paginas tamano carta")
     todo = norm(" ".join(p.get_text() for p in doc))

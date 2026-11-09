@@ -1,0 +1,114 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="estados" name="Figura 1. Diagrama de estados de OrdenDeCompra">
+    <mxGraphModel dx="1000" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ini" value="" style="ellipse;html=1;fillColor=#000000;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="295" y="10" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="pend" value="Pendiente" style="swimlane;html=1;rounded=1;absoluteArcSize=1;arcSize=16;fontStyle=0;horizontal=1;startSize=28;collapsible=0;fillColor=#FFFFFF;swimlaneFillColor=#FFFFFF;fontSize=11;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="200" y="70" width="210" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="pend_act" value="entry / guardarBorrador()&lt;br&gt;do / agregarProducto(producto, cantidad)" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;strokeColor=none;fillColor=none;fontFamily=Arial;fontSize=10;fontColor=#000000;whiteSpace=nowrap;" vertex="1" parent="pend">
+          <mxGeometry x="0" y="28" width="210" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="emit" value="Emitida" style="swimlane;html=1;rounded=1;absoluteArcSize=1;arcSize=16;fontStyle=0;horizontal=1;startSize=28;collapsible=0;fillColor=#FFFFFF;swimlaneFillColor=#FFFFFF;fontSize=11;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="200" y="230" width="210" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="emit_act" value="entry / generarDocumento()" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;strokeColor=none;fillColor=none;fontFamily=Arial;fontSize=10;fontColor=#000000;whiteSpace=nowrap;" vertex="1" parent="emit">
+          <mxGeometry x="0" y="28" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="parc" value="Parcialmente recibida" style="swimlane;html=1;rounded=1;absoluteArcSize=1;arcSize=16;fontStyle=0;horizontal=1;startSize=28;collapsible=0;fillColor=#FFFFFF;swimlaneFillColor=#FFFFFF;fontSize=11;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="200" y="400" width="210" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="parc_act" value="entry / actualizarEstado(diferencias)" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;strokeColor=none;fillColor=none;fontFamily=Arial;fontSize=10;fontColor=#000000;whiteSpace=nowrap;" vertex="1" parent="parc">
+          <mxGeometry x="0" y="28" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="rec" value="Recibida" style="swimlane;html=1;rounded=1;absoluteArcSize=1;arcSize=16;fontStyle=0;horizontal=1;startSize=28;collapsible=0;fillColor=#FFFFFF;swimlaneFillColor=#FFFFFF;fontSize=11;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="200" y="570" width="210" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="rec_act" value="entry / actualizarEstado(diferencias)" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;strokeColor=none;fillColor=none;fontFamily=Arial;fontSize=10;fontColor=#000000;whiteSpace=nowrap;" vertex="1" parent="rec">
+          <mxGeometry x="0" y="28" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="cer" value="Cerrada" style="rounded=1;absoluteArcSize=1;arcSize=16;whiteSpace=wrap;html=1;fillColor=#FFFFFF;fontSize=11;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="200" y="700" width="210" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="fin" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="293" y="790" width="24" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="can" value="Cancelada" style="rounded=1;absoluteArcSize=1;arcSize=16;whiteSpace=wrap;html=1;fillColor=#FFFFFF;fontSize=11;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="470" y="168" width="120" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="fin2" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="620" y="173" width="24" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="t1" value="se creó la orden / crearOrden()" style="edgeStyle=none;html=1;rounded=0;endArrow=open;endFill=0;endSize=10;fontSize=10;labelBackgroundColor=#FFFFFF;align=center;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" edge="1" parent="1" source="ini" target="pend">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-76.6" y="0.0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t2" value="se confirmó la emisión&lt;br&gt;[total &amp;gt; 0]&lt;br&gt;/ emitirOrden()" style="edgeStyle=none;html=1;rounded=0;endArrow=open;endFill=0;endSize=10;fontSize=10;labelBackgroundColor=#FFFFFF;align=center;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" edge="1" parent="1" source="pend" target="emit">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="57.7" y="0.0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t3" value="se canceló la orden&lt;br&gt;/ cancelarOrden()" style="edgeStyle=none;html=1;rounded=0;endArrow=open;endFill=0;endSize=10;fontSize=10;labelBackgroundColor=#FFFFFF;align=center;exitX=1;exitY=0.3;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" edge="1" parent="1" source="pend" target="can">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="530" y="90.4" />
+            </Array>
+            <mxPoint x="-38.8" y="-21.0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t4" value="se canceló la orden&lt;br&gt;/ cancelarOrden()" style="edgeStyle=none;html=1;rounded=0;endArrow=open;endFill=0;endSize=10;fontSize=10;labelBackgroundColor=#FFFFFF;align=center;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" edge="1" parent="1" source="emit" target="can">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="530" y="257" />
+            </Array>
+            <mxPoint x="-27.5" y="21.0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t5" value="se recibió mercancía&lt;br&gt;[calcularSaldoPendiente() &amp;gt; 0]&lt;br&gt;/ compararCantidades(cantidades)" style="edgeStyle=none;html=1;rounded=0;endArrow=open;endFill=0;endSize=10;fontSize=10;labelBackgroundColor=#FFFFFF;align=center;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" edge="1" parent="1" source="emit" target="parc">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="84.7" y="0.0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t6" value="se recibió mercancía&lt;br&gt;[calcularSaldoPendiente() = 0]&lt;br&gt;/ compararCantidades(cantidades)" style="edgeStyle=none;html=1;rounded=0;endArrow=open;endFill=0;endSize=10;fontSize=10;labelBackgroundColor=#FFFFFF;align=center;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" edge="1" parent="1" source="emit" target="rec">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="20" y="257" />
+              <mxPoint x="20" y="597" />
+            </Array>
+            <mxPoint x="84.7" y="0.0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t7" value="se recibió mercancía&lt;br&gt;[calcularSaldoPendiente() &amp;gt; 0]&lt;br&gt;/ compararCantidades(cantidades)" style="edgeStyle=none;html=1;rounded=0;endArrow=open;endFill=0;endSize=10;fontSize=10;labelBackgroundColor=#FFFFFF;align=center;exitX=1;exitY=0.3;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.8;entryDx=0;entryDy=0;entryPerimeter=0;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" edge="1" parent="1" source="parc" target="parc">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="445" y="416.2" />
+              <mxPoint x="445" y="443.2" />
+            </Array>
+            <mxPoint x="84.7" y="0.0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t8" value="se recibió mercancía&lt;br&gt;[calcularSaldoPendiente() = 0]&lt;br&gt;/ compararCantidades(cantidades)" style="edgeStyle=none;html=1;rounded=0;endArrow=open;endFill=0;endSize=10;fontSize=10;labelBackgroundColor=#FFFFFF;align=center;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" edge="1" parent="1" source="parc" target="rec">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="84.7" y="0.0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t9" value="se cerró la orden / cerrarOrden()" style="edgeStyle=none;html=1;rounded=0;endArrow=open;endFill=0;endSize=10;fontSize=10;labelBackgroundColor=#FFFFFF;align=center;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" edge="1" parent="1" source="rec" target="cer">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="80.0" y="0.0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t10" value="" style="edgeStyle=none;html=1;rounded=0;endArrow=open;endFill=0;endSize=10;fontSize=10;labelBackgroundColor=#FFFFFF;align=center;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" edge="1" parent="1" source="cer" target="fin">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t11" value="" style="edgeStyle=none;html=1;rounded=0;endArrow=open;endFill=0;endSize=10;fontSize=10;labelBackgroundColor=#FFFFFF;align=center;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;fontFamily=Arial;fontColor=#000000;strokeColor=#000000;" edge="1" parent="1" source="can" target="fin2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
