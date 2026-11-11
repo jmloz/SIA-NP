@@ -1,0 +1,2 @@
+Fuente del diccionario de datos (entregable 7). Copiados de la rama claude/kind-noether-97derd,
+base-de-datos/scripts/ (Taller de Base de Datos, Parte I, SIA-NP). metadatos_columnas.json se extrajo de sys.columns de SQL Server.
