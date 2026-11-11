@@ -67,6 +67,7 @@ Pendientes:
 Cada vez que se cree o modifique un entregable (o su fuente: `scripts/docx/0N_*.js`, `definiciones.py`, `modelo_clases.py`, `diagrama_estados.py`), actualizar también la sección correspondiente del explicador:
 - Editar `explicador/secciones/0N-nombre.html` para que coincida con el entregable (textos, pasos, mensajes, atributos, numeración de alternos).
 - Regenerar con `bash explicador/armar.sh` (escribe `explicador/index.html`).
+- La sección 7 (diccionario) se actualiza sola con `node scripts/docx/actualizar_explicador_dic.js`, que lee de `base-de-datos/scripts/` y llama a `armar.sh`.
 - Seguir `explicador/BRIEF.md`. El explicador no es entregable: nunca modifica `entregables/` ni `scripts/`; si hay contradicción entre entregables, se anota, no se corrige ahí.
 - Incluir los cambios del explicador en el mismo commit que el entregable.
 
