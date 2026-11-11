@@ -94,6 +94,7 @@ sia-np/
     04-secuencia/      SIA-NP_Diagramas_de_Secuencia.docx/.pdf, figuras/
     05-clases/         Diagrama_de_Clases_SIA-NP.docx/.pdf, .drawio, .png
     06-estados/        Diagrama_de_Estados_SIA-NP.docx/.pdf, .drawio, .png, _figura.pdf
+    07-diccionario-datos/  Diccionario_de_Datos_SIA-NP (.docx/.pdf)
   scripts/             generadores y verificadores del diagrama de clases (Python + PyMuPDF)
     docx/              generadores .docx (01..06_*.js), comun.js, a_pdf.py, NOTAS_01.md (node_modules ignorado en .git/info/exclude)
     actividades/       definiciones.py + diagramas_actividad.py
