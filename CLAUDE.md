@@ -62,6 +62,13 @@ Pendientes:
 - Notación del libro: `objeto::Clase` en secuencias, `-` privado, `+` público, tipos y valores iniciales (`existencia: Decimal=0.0`), valores finitos entre llaves (`char{E,S,A,D}`), multiplicidades 1, 0..*, 1..*.
 - Entregar en .docx y .pdf.
 
+## Explicador animado (regla)
+Cada vez que se cree o modifique un entregable (o su fuente: `scripts/docx/0N_*.js`, `definiciones.py`, `modelo_clases.py`, `diagrama_estados.py`), actualizar también la sección correspondiente del explicador:
+- Editar `explicador/secciones/0N-nombre.html` para que coincida con el entregable (textos, pasos, mensajes, atributos, numeración de alternos).
+- Regenerar con `bash explicador/armar.sh` (escribe `explicador/index.html`).
+- Seguir `explicador/BRIEF.md`. El explicador no es entregable: nunca modifica `entregables/` ni `scripts/`; si hay contradicción entre entregables, se anota, no se corrige ahí.
+- Incluir los cambios del explicador en el mismo commit que el entregable.
+
 ## Herramientas
 - Diagramas: draw.io (`.drawio`) editable; PlantUML con `skinparam monochrome true` si se generan por código.
 - Word: Node.js + librería `docx`.
