@@ -1,0 +1,1116 @@
+<style>
+#sec-act .act-barra-esc{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 4px}
+#sec-act .act-barra-esc button{font:inherit;font-size:13px;padding:4px 9px;border:1px solid var(--tinta);background:var(--papel);border-radius:4px;cursor:pointer}
+#sec-act .act-barra-esc button.normal{font-weight:bold}
+#sec-act .act-barra-esc button.activo{background:var(--tinta);color:var(--papel)}
+#sec-act .act-barra-esc .etq{font-size:13px;color:var(--texto2);align-self:center;margin-right:4px}
+#sec-act .act-resumen{font-size:14px;margin:6px 0 10px;padding:8px 12px;background:var(--papel);border:1px dashed var(--tinta);border-radius:6px}
+#sec-act .act-rejilla{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;align-items:start}
+#sec-act .act-lado{position:sticky;top:64px}
+#sec-act .act-lienzo{max-height:78vh;overflow:auto}
+#sec-act .act-lienzo svg{max-width:none;width:100%;min-width:640px}
+#sec-act .act-datos{margin:8px 0;padding:10px 12px}
+#sec-act .act-datos h3{margin:0 0 6px;font-size:15px}
+#sec-act .act-datos table{margin:0;font-size:13px}
+#sec-act .act-datos td.cambio{color:var(--acento);font-weight:bold}
+#sec-act .act-g{display:inline-block;padding:0 4px;border:1px solid var(--acento);border-radius:3px;color:var(--acento);font-weight:bold;background:#fff8f3;white-space:nowrap}
+#sec-act .narracion ul{margin:4px 0 0;padding-left:20px}
+#sec-act .narracion code,#sec-act .ejemplo code{font-size:13.5px}
+#sec-act .act-leyenda{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
+#sec-act .act-leyenda div{display:flex;gap:10px;align-items:center;background:var(--papel);border:1px solid var(--tinta);border-radius:6px;padding:8px 10px;font-size:14px}
+#sec-act .act-leyenda svg{flex:0 0 auto}
+#sec-act svg .carril rect.cuerpo{fill:#fff;stroke:#111;stroke-width:1}
+#sec-act svg .carril rect.cab{fill:#E6E6E6;stroke:#111;stroke-width:.8}
+#sec-act svg .carril.activo rect.cuerpo{fill:#fff6f0}
+#sec-act svg .carril.activo rect.cab{fill:#ffd8c2}
+#sec-act svg .carril text{font-size:12px;font-weight:bold;fill:#111}
+#sec-act svg .ar path{fill:none;stroke:#111;stroke-width:1}
+#sec-act svg .ar polygon{fill:#111;stroke:#111;stroke-width:.5}
+#sec-act svg .ar.rec path{stroke-width:2.2}
+#sec-act svg .ar.sig path{stroke:var(--acento);stroke-dasharray:5 3;stroke-width:1.8}
+#sec-act svg .ar.sig polygon{fill:var(--acento);stroke:var(--acento)}
+#sec-act svg .ar.actual path{stroke:var(--acento);stroke-width:2.6;stroke-dasharray:none}
+#sec-act svg .ar.actual polygon{fill:var(--acento);stroke:var(--acento)}
+#sec-act svg .gu text{font-size:10px;fill:#111}
+#sec-act svg .gu.actual text{fill:var(--acento);font-weight:bold}
+#sec-act svg .nd rect.forma,#sec-act svg .nd polygon{fill:#fff;stroke:#111;stroke-width:1}
+#sec-act svg .nd text{font-size:11px;fill:#111}
+#sec-act svg .nd circle.lleno{fill:#111;stroke:#111}
+#sec-act svg .nd circle.anillo{fill:#fff;stroke:#111;stroke-width:1}
+#sec-act svg .nd rect.barra{fill:#111;stroke:none}
+#sec-act svg .nd.rec rect.forma,#sec-act svg .nd.rec polygon,#sec-act svg .nd.rec circle.anillo{stroke-width:2.2}
+#sec-act svg .nd.actual rect.forma,#sec-act svg .nd.actual polygon{fill:#ffe8d9;stroke:var(--acento);stroke-width:2.6}
+#sec-act svg .nd.actual circle.anillo{stroke:var(--acento);stroke-width:2.6}
+#sec-act svg .nd.actual circle.lleno{stroke:var(--acento);stroke-width:3}
+#sec-act svg .nd.actual rect.barra{fill:var(--acento)}
+#sec-act svg .ficha{fill:var(--acento);stroke:#fff;stroke-width:2;pointer-events:none}
+@media (max-width:920px){#sec-act .act-rejilla{grid-template-columns:1fr}#sec-act .act-lado{position:static}}
+</style>
+
+<section id="sec-act" class="sec">
+  <h1>2. Diagramas de actividad con carriles</h1>
+  <p class="lead">Un diagrama por caso de uso (CU1–CU8). Cada uno dice <i>en qué orden</i> pasan las cosas, <i>quién</i> las hace (actor o Sistema SIA-NP) y <i>qué camino</i> se toma en cada decisión. La ficha naranja recorre el flujo normal y cada flujo alterno.</p>
+
+  <div class="panel">
+    <h3 style="margin-top:0">Qué es este entregable</h3>
+    <p>Según Kendall &amp; Kendall, los diagramas de actividad «muestran la secuencia de actividades en un proceso, incluyendo las actividades secuenciales y paralelas, además de las decisiones que se toman»; por lo general se crea uno por caso de uso y puede mostrar sus distintos escenarios (p. 290).</p>
+    <p>Los <b>carriles</b> (<i>swimlanes</i>) «indican particionamiento»: muestran qué actividades realiza cada plataforma o cada grupo de usuarios, y «pueden describir tanto la lógica como la responsabilidad de una clase» (p. 291). En SIA-NP cada diagrama tiene un carril para el actor y otro para el <b>Sistema SIA-NP</b>; CU8 agrega un tercero, el del <b>Administrador</b>.</p>
+    <p>«Cada ruta a través de las diversas decisiones incluidas en el caso de uso es un escenario distinto» (p. 292), y el diagrama sirve para armar planes de prueba: «hay que evaluar cada decisión para ver si se toma la ruta correcta» (p. 294). Eso es lo que hace la ficha: evalúa cada guarda con los datos del ejemplo.</p>
+    <p class="nota-fuente">Fuente: Kendall &amp; Kendall, cap. 10, págs. 290–294. Diagramas: <code>scripts/actividades/definiciones.py</code> (mismas posiciones, textos y guardas que el .drawio y las figuras del entregable 2); flujos del entregable 1, versión del 9 nov 2026.</p>
+  </div>
+
+  <h2>Los 8 diagramas</h2>
+  <div class="tabs act-tabs-cu" role="tablist"></div>
+  <div class="act-barra-esc"></div>
+  <div class="act-resumen"></div>
+  <div class="act-rejilla">
+    <div class="lienzo act-lienzo"></div>
+    <div class="act-lado">
+      <div class="act-repro"></div>
+      <div class="panel act-datos"><h3>Datos del ejemplo</h3><div class="act-tabla"></div></div>
+    </div>
+  </div>
+  <div class="ejemplo act-ejemplo"></div>
+
+  <h2>Cómo leer la notación</h2>
+  <div class="act-leyenda">
+    <div><svg width="40" height="30" viewBox="0 0 40 30"><circle cx="20" cy="15" r="9" fill="#111"/></svg><span><b>Nodo inicial</b>: círculo negro relleno.</span></div>
+    <div><svg width="40" height="30" viewBox="0 0 40 30"><circle cx="20" cy="15" r="10" fill="#fff" stroke="#111"/><circle cx="20" cy="15" r="6" fill="#111"/></svg><span><b>Nodo final</b>: círculo negro con anillo. Un diagrama puede tener varios (p. ej. al cancelar).</span></div>
+    <div><svg width="70" height="30" viewBox="0 0 70 30"><rect x="2" y="4" width="66" height="22" rx="8" fill="#fff" stroke="#111"/><text x="35" y="19" font-size="10" text-anchor="middle">Acción</text></svg><span><b>Acción</b>: rectángulo redondeado, en el carril de quien la hace.</span></div>
+    <div><svg width="40" height="30" viewBox="0 0 40 30"><polygon points="20,3 32,15 20,27 8,15" fill="#fff" stroke="#111"/></svg><span><b>Decisión</b> (entra una flecha, salen varias con guarda) o <b>fusión</b> (entran varias, sale una, sin guarda).</span></div>
+    <div><svg width="70" height="30" viewBox="0 0 70 30"><text x="2" y="19" font-size="11">[existe]</text></svg><span><b>Condición de guardia</b> entre corchetes junto a la flecha que sale de la decisión.</span></div>
+    <div><svg width="70" height="30" viewBox="0 0 70 30"><rect x="4" y="12" width="62" height="5" fill="#111"/></svg><span><b>Barra de sincronización</b>: bifurcación (acciones en paralelo) o unión (espera a que terminen todas).</span></div>
+    <div><svg width="70" height="30" viewBox="0 0 70 30"><rect x="2" y="2" width="33" height="26" fill="#fff" stroke="#111"/><rect x="2" y="2" width="33" height="8" fill="#E6E6E6" stroke="#111" stroke-width=".8"/><rect x="35" y="2" width="33" height="26" fill="#fff" stroke="#111"/><rect x="35" y="2" width="33" height="8" fill="#E6E6E6" stroke="#111" stroke-width=".8"/></svg><span><b>Carril</b>: columna con el nombre del actor o del Sistema SIA-NP en el encabezado.</span></div>
+    <div><svg width="70" height="30" viewBox="0 0 70 30"><path d="M4 15 H58" stroke="#111" fill="none"/><polygon points="66,15 58,11.5 58,18.5" fill="#111"/><circle cx="34" cy="15" r="6" fill="#d9480f" stroke="#fff" stroke-width="2"/></svg><span><b>Flujo</b> (flecha). La <b>ficha</b> naranja es solo de esta animación: marca por dónde va el escenario.</span></div>
+  </div>
+  <p class="nota-fuente">Notación: Kendall &amp; Kendall, fig. 10.8 (p. 291) y sección «Notación utilizada» del entregable 2. En la animación, las líneas que ya recorrió la ficha se engruesan; lo naranja es solo el paso actual.</p>
+
+  <h2>Para la exposición</h2>
+  <details class="pregunta"><summary>¿Para qué sirven los carriles y por qué el «Sistema SIA-NP» tiene el suyo?</summary>
+    <p>Indican particionamiento y responsabilidad: cada acción va en el carril de quien la hace (Kendall, p. 291). Lo del carril del actor es lo que el usuario hace en pantalla; lo del carril del sistema es lo que después hacen el controlador y las entidades (en CU1: ControladorMovimientos, Producto, Kardex, BitacoraDeAuditoria). Cuando una flecha cruza de carril, hay un intercambio de datos entre actor y sistema. CU8 tiene un tercer carril, el Administrador, porque restablece la contraseña y recibe el aviso de bloqueo.</p></details>
+  <details class="pregunta"><summary>¿Por qué hay rombos sin guardas?</summary>
+    <p>Son <b>fusiones</b>: entran varias flechas y sale una (p. 291). En CU1, después de dar de alta un producto nuevo, el flujo se une al normal en un rombo de fusión; y después de las alertas 8a y 8b, otras dos fusiones lo regresan a la captura (un ciclo). Solo los rombos de <b>decisión</b> llevan guardas en sus salidas.</p></details>
+  <details class="pregunta"><summary>¿Por qué en CU1 y CU6 primero se confirma y después se valida?</summary>
+    <p>Así quedaron los CU al corregirlos el 9 nov 2026, para que coincidan con los diagramas de secuencia (SD2 = CU1, SD1 = CU6): el usuario confirma y el controlador valida. Por eso cambió la numeración de los alternos: CU1 7a cancelar, 8a salida mayor a la existencia, 8b falta un campo; CU6 6a defectos, 7a excedente. CU1 y CU6 son los críticos por criterio del equipo (la ERS no los marca así); cubren RF3, RF8 y RF9, y RF13, en la numeración del Apéndice C de la ERS.</p></details>
+  <details class="pregunta"><summary>¿Qué significa la barra negra de CU1?</summary>
+    <p>Es una <b>bifurcación</b>: actualizar la existencia, registrar en el kardex y asentar en la bitácora ocurren en paralelo (paso 9 del CU). La segunda barra es la <b>unión</b>: espera a que terminen las tres antes de mostrar el folio (paso 10). Así nunca queda una existencia cambiada sin su kardex ni su bitácora, que es la «confiabilidad» que pidió Lodevar.</p></details>
+  <details class="pregunta"><summary>¿Cómo sirve el diagrama para probar el sistema?</summary>
+    <p>Cada ruta es un escenario (p. 292) y cada decisión se prueba para ver si toma la ruta correcta (p. 294). Para CU1 salen cinco casos de prueba, uno por botón de esta página: salida de 12 pza (pasa), 50 pza (alerta 8a), documento vacío (8b), cancelar (7a) y un código que no existe (4a, con alta o cancelación).</p></details>
+</section>
+
+<script>
+(function(){
+  var SIS = 'Sistema SIA-NP', ALM = 'Encargado / Auxiliar de Almacén';
+
+  /* ---- Datos de scripts/actividades/definiciones.py (copiados tal cual) ---- */
+  var CASOS = [
+  { clave:'CU1', titulo:'CU1. Registrar Movimientos', corto:'CU1 Movimientos',
+    carriles:[[ALM,270],[SIS,560]],
+    nodos:[['ini','ini',135,46,''],['a1','acc',135,86,'Selecciona "Registrar movimiento"'],['a2','acc',500,130,'Muestra el formulario de captura'],
+      ['a3','acc',135,174,'Elige el tipo de movimiento (entrada o salida)'],['a4','acc',135,216,'Busca el producto por código o descripción'],
+      ['d1','dec',500,260,''],['n1','acc',375,308,'Notifica que no existe y ofrece\ndarlo de alta o cancelar'],['d2','dec',135,308,''],['f1','fin',25,356,''],
+      ['alta','acc',135,360,'Captura los datos\ndel nuevo producto'],['m1','dec',500,400,''],['a5','acc',500,442,'Muestra la existencia actual y la ubicación'],
+      ['m2','dec',135,490,''],['a6','acc',135,538,'Captura cantidad, ubicación y\nnúmero de documento de referencia'],['a7','acc',135,584,'Confirma o cancela la operación'],
+      ['d3','dec',135,628,''],['n7','acc',370,628,'Descarta la captura sin\nmodificar el inventario'],['f2','fin',470,628,''],
+      ['a8','acc',555,690,'Valida los datos y, si es salida,\nque la existencia sea suficiente'],['d4','dec',555,744,''],
+      ['al1','acc',375,744,'Señala el campo faltante\ny pide completarlo'],['d5','dec',555,800,''],['al2','acc',375,800,'Muestra una alerta y no\nguarda el movimiento'],
+      ['m3','dec',25,744,''],['b1','bar',555,850,510],['p1','acc',385,892,'Actualiza la existencia\ndel producto'],['p2','acc',555,892,'Registra el movimiento\nen el kardex'],
+      ['p3','acc',725,892,'Asienta la operación en\nla bitácora de auditoría'],['b2','bar',555,934,510],['a10','acc',555,974,'Muestra la confirmación con el folio'],['f3','fin',555,1018,'']],
+    aristas:[['ini','a1'],['a1','a2'],['a2','a3'],['a3','a4'],['a4','d1'],
+      ['d1','n1','[no existe]',{s:'l'}],['n1','d2',null,{s:'l',t:'r'}],['d2','f1','[cancela]',{s:'l'}],['d2','alta','[lo da de alta]',{gp:[139,321]}],
+      ['alta','m1',null,{t:'l'}],['d1','m1','[existe]',{gp:[504,272]}],['m1','a5'],['a5','m2'],['m2','a6'],['a6','a7'],['a7','d3'],
+      ['d3','n7','[cancela]',{s:'r',t:'l'}],['n7','f2',null,{s:'r',t:'l'}],['d3','a8','[confirma]',{ym:656,gp:[88,641]}],['a8','d4'],
+      ['d4','al1','[falta un campo\nobligatorio]',{s:'l',t:'r'}],['al1','m3',null,{s:'l',t:'r'}],['d4','d5','[datos completos]'],
+      ['d5','al2','[salida mayor\na la existencia]',{s:'l',t:'r'}],['al2','m3',null,{s:'l',t:'b'}],['m3','m2',null,{s:'t',t:'l'}],
+      ['d5','b1','[datos válidos]'],['b1','p1'],['b1','p2'],['b1','p3'],['p1','b2'],['p2','b2'],['p3','b2'],['b2','a10'],['a10','f3']],
+    ej:'<b>Ejemplo: Ricardo surte 12 racores</b>Ricardo Mendoza Quintero (Auxiliar de Almacén) recibe la orden de surtido del pedido de un cliente taller, escanea <code>RAC-0408</code> (Racor recto 1/4" NPT × 8 mm, ubicación <code>B-04-2</code>) con la pistola y registra la salida de 12 pza con la nota de salida <code>NS-2026-0318</code>: la existencia baja de 40 a 28, por debajo del mínimo de 30. Folio <code>MOV-2026-01542</code>. CU1 cubre RF3, RF8 y RF9 (numeración del Apéndice C de la ERS).',
+    datos:{'Tipo':'—','Producto':'—','Existencia':'—','Ubicación':'—','Cantidad':'—','Documento':'—','Folio':'—'},
+    normal:{ desc:'Flujo normal (pasos 1–10 del escenario): salida de 12 racores RAC-0408.',
+      elec:{d1:['m1'],d3:['a8'],d4:['d5'],d5:['b1']},
+      txt:{
+        ini:'Ricardo Mendoza (Auxiliar de Almacén) tiene en la mano la orden de surtido del pedido de un cliente taller. La ficha empieza en el nodo inicial de su carril.',
+        a1:'Ricardo selecciona «Registrar movimiento» en la terminal del almacén.',
+        a2:'La ficha cruza al carril del <b>Sistema SIA-NP</b>: el sistema muestra el formulario de captura.',
+        a3:['Ricardo elige <b>salida</b>: los racores salen para el pedido del taller.',{'Tipo':'Salida'}],
+        a4:['Escanea el código <code>RAC-0408</code> con la pistola (búsqueda por código), en vez de leer la orden impresa.',{'Producto':'RAC-0408'}],
+        'd1>m1':'El sistema busca el código. {[existe]} → sí: <code>RAC-0408</code>, Racor recto 1/4" NPT × 8 mm, está en el catálogo. La flecha pasa por un rombo de <b>fusión</b> (ahí llegaría también la rama del alta).',
+        a5:['Muestra la existencia actual, <b>40 pza</b>, y la ubicación <code>B-04-2</code> (pasillo B, anaquel 4, nivel 2).',{'Existencia':'40','Ubicación':'B-04-2'}],
+        a6:['Ricardo captura <b>12 pza</b>, la ubicación <code>B-04-2</code> y el documento de referencia <code>NS-2026-0318</code> (nota de salida).',{'Cantidad':'12','Documento':'NS-2026-0318'}],
+        a7:'Ricardo revisa la captura y pulsa <b>Confirmar</b>. Primero confirma el usuario y después valida el sistema, igual que en SD2.',
+        'd3>a8':'Esta decisión está en el carril del usuario: {[confirma]} → sí. La ficha cruza al carril del sistema.',
+        a8:'El sistema valida los datos y, como es salida, compara lo pedido con la existencia: 12 contra 40.',
+        'd4>d5':'¿Falta algún campo? No: {[datos completos]}. Cantidad, ubicación y documento están capturados.',
+        'd5>b1':'¿La salida es mayor a la existencia? {[12 ≤ 40]} → no, alcanza: {[datos válidos]}.',
+        p1:['Actualiza la existencia: <b>40 → 28</b>.',{'Existencia':'40 → 28'}],
+        p2:'Registra en el kardex la salida de 12 pza con fecha, usuario y <code>NS-2026-0318</code>.',
+        p3:'Asienta en la bitácora quién (Ricardo), qué y cuándo: justo lo que hoy no existe en el Excel «INV ALMACÉN».',
+        b2:'La barra de <b>unión</b> espera a que terminen las tres acciones; solo entonces sigue un único flujo.',
+        a10:['Muestra la confirmación con el folio <code>MOV-2026-01542</code>. Como 28 &lt; mínimo 30, el racor queda bajo mínimo: de ahí sale la orden de compra de CU5.',{'Folio':'MOV-2026-01542'}],
+        f3:'Fin del flujo normal: existencia 28, movimiento en el kardex y en la bitácora.' } },
+    alternos:[
+      { id:'4a-alta', nombre:'4a. No existe → lo da de alta', desc:'4a. El producto no existe en el catálogo: el sistema lo notifica y ofrece dar de alta el producto o cancelar la operación. Aquí Ricardo lo da de alta.',
+        elec:{d1:['n1'],d2:['alta']},
+        txt:{ a3:['Ricardo elige el tipo de movimiento.',{'Tipo':'(entrada o salida)'}],
+          a4:['Escanea un código que <b>no existe</b> en el catálogo (un producto que nunca se dio de alta).',{'Producto':'(código desconocido)'}],
+          'd1>n1':'{[no existe]} → sí: el código no está en el catálogo. La ficha se desvía a la izquierda.',
+          n1:'Notifica que el producto no existe y ofrece darlo de alta o cancelar.',
+          'd2>alta':'Ahora decide el usuario, en su carril: {[lo da de alta]}.',
+          alta:['Ricardo captura los datos del nuevo producto. La flecha vuelve al rombo de fusión y desde ahí el flujo es el normal.',{'Producto':'(nuevo, dado de alta)'}],
+          a5:['Muestra la existencia actual del producto nuevo y su ubicación.',{'Existencia':'(la del alta)','Ubicación':'(la del alta)'}],
+          a6:['Captura cantidad, ubicación y número de documento de referencia.',{'Cantidad':'(capturada)','Documento':'(capturado)'}],
+          a8:'Valida los datos (y, si es salida, que la existencia alcance).',
+          'd5>b1':'{[datos válidos]} → sí.',
+          p1:['Actualiza la existencia del producto nuevo.',{'Existencia':'actualizada'}],
+          p2:'Registra el movimiento en el kardex.', p3:'Asienta la operación en la bitácora de auditoría.',
+          a10:['Muestra la confirmación con el folio del movimiento.',{'Folio':'(folio nuevo)'}],
+          f3:'Fin: la rama del alta se unió al flujo normal en el rombo de fusión.' } },
+      { id:'4a-cancela', base:'4a-alta', nombre:'4a. No existe → cancela', desc:'4a. El producto no existe en el catálogo y el usuario elige cancelar la operación.',
+        elec:{d2:['f1']},
+        txt:{ 'd2>f1':'Decide el usuario: {[cancela]}. La ficha llega a un nodo final propio.', f1:'Fin: no se registró nada; el inventario no cambió.' } },
+      { id:'7a', nombre:'7a. Cancela', desc:'7a. El usuario cancela la operación: el sistema descarta la captura y no modifica el inventario.',
+        elec:{d3:['n7']},
+        txt:{ a7:'Ricardo nota que la orden de surtido pedía un racor de otro diámetro (la confusión que contó en su entrevista) y pulsa <b>Cancelar</b>.',
+          'd3>n7':'{[cancela]} → la ficha va a la derecha, sin llegar a la validación.',
+          n7:['Descarta la captura sin modificar el inventario.',{'Existencia':'40 (sin cambio)'}],
+          f2:'Fin: la existencia sigue en 40; no hay movimiento, kardex ni folio.' } },
+      { id:'8a', nombre:'8a. Salida mayor a la existencia', desc:'8a. La cantidad solicitada en una salida es mayor a la existencia: el sistema muestra una alerta y no permite guardar el movimiento.',
+        elec:{d5:['al2','b1']},
+        txt:{ a6:['Ricardo captura <b>50 pza</b>, la ubicación B-04-2 y <code>NS-2026-0318</code>.',{'Cantidad':'50','Documento':'NS-2026-0318'}],
+          a8:'Valida: es salida y pide 50 contra una existencia de 40.',
+          'd5>al2':'¿La salida es mayor a la existencia? {[50 > 40]} → sí: {[salida mayor a la existencia]}.',
+          al2:['Muestra una alerta y no guarda el movimiento. La existencia sigue en 40.',{'Existencia':'40 (sin cambio)'}],
+          'a6#2':['La flecha regresa por dos fusiones a la captura (un ciclo). Ricardo corrige a <b>12 pza</b>.',{'Cantidad':'12'}],
+          'a7#2':'Confirma de nuevo.', 'a8#2':'Vuelve a validar: 12 contra 40.' } },
+      { id:'8b', nombre:'8b. Falta un campo', desc:'8b. Falta capturar un campo obligatorio: el sistema lo señala y solicita completarlo.',
+        elec:{d4:['al1','d5']},
+        txt:{ a6:['Ricardo captura 12 pza y la ubicación, pero deja <b>vacío</b> el número de documento.',{'Cantidad':'12','Documento':'(vacío)'}],
+          'd4>al1':'{[falta un campo obligatorio]} → sí: falta el documento de referencia.',
+          al1:'Señala el campo faltante y pide completarlo. No se guarda nada.',
+          'a6#2':['De vuelta en la captura (por las fusiones), Ricardo escribe <code>NS-2026-0318</code>.',{'Documento':'NS-2026-0318'}],
+          'a7#2':'Confirma de nuevo.', 'a8#2':'Valida otra vez: todo completo y 12 ≤ 40.' } }
+    ] },
+
+  { clave:'CU2', titulo:'CU2. Consultar Kardex', corto:'CU2 Kardex',
+    carriles:[[ALM,270],[SIS,560]],
+    nodos:[['ini','ini',135,46,''],['a1','acc',135,86,'Selecciona "Consultar kardex"'],['a2','acc',500,128,'Muestra la pantalla de búsqueda de productos'],
+      ['m0','dec',135,176,''],['a3','acc',135,218,'Ingresa código, descripción o familia'],['d1','dec',500,262,''],
+      ['n1','acc',710,262,'Informa que no hay coincidencias\ny permite una nueva búsqueda'],['a4','acc',500,306,'Despliega los resultados de la búsqueda'],
+      ['a5','acc',135,350,'Selecciona el producto deseado'],['b1','bar',550,394,530],['p1','acc',370,436,'Muestra la existencia actual\ny la ubicación'],
+      ['d2','dec',650,430,''],['p2','acc',560,476,'Muestra el historial\nordenado por fecha'],['p3','acc',735,476,'Muestra la existencia inicial e\nindica que no hay historial'],
+      ['m4','dec',650,520,''],['b2','bar',550,556,530],['d3','dec',135,600,''],['a6','acc',135,646,'Define rango de fechas o\ntipo de movimiento'],
+      ['a7','acc',500,692,'Actualiza la vista del kardex'],['m5','dec',135,736,''],['d4','dec',135,780,''],['a8','acc',500,824,'Genera el archivo en Excel o CSV'],
+      ['m6','dec',135,868,''],['a9','acc',500,912,'Registra la consulta en la bitácora de auditoría'],['fin','fin',500,956,'']],
+    aristas:[['ini','a1'],['a1','a2'],['a2','m0',null,{ym:152}],['m0','a3'],['a3','d1'],
+      ['d1','n1','[sin\ncoincidencias]',{s:'r',t:'l'}],['n1','m0',null,{s:'t',t:'r'}],['d1','a4','[hay coincidencias]'],
+      ['a4','a5'],['a5','b1'],['b1','p1'],['b1','d2'],['d2','p2','[con\nmovimientos]',{s:'l'}],['d2','p3','[sin\nmovimientos]',{s:'r'}],
+      ['p2','m4',null,{t:'l'}],['p3','m4',null,{t:'r'}],['m4','b2'],['p1','b2'],['b2','d3'],
+      ['d3','a6','[aplica filtros]'],['d3','m5','[sin filtros]',{s:'l',t:'l',xm:25}],['a6','a7'],['a7','m5'],['m5','d4'],
+      ['d4','a8','[exporta]',{gizq:true}],['d4','m6','[no exporta]',{s:'l',t:'l',xm:25}],['a8','m6'],['m6','a9'],['a9','fin']],
+    ej:'<b>Ejemplo: Lodevar revisa el kardex del racor</b>Después del surtido de CU1, Lodevar Pablovich (Encargado de Almacén) consulta <code>RAC-0408</code>: existencia 28, ubicación <code>B-04-2</code> y, en el historial, la salida de 12 pza con <code>NS-2026-0318</code>. Es el «kardex confiable» que pidió en su entrevista.',
+    datos:{'Búsqueda':'—','Producto':'—','Existencia':'—','Ubicación':'—','Historial':'—','Filtro':'—','Exportado':'—'},
+    normal:{ desc:'Flujo normal (pasos 1–8): consulta del kardex de RAC-0408 con filtro.',
+      elec:{d1:['a4'],d2:['p2'],d3:['a6'],d4:['m6']},
+      txt:{
+        ini:'Lodevar Pablovich (Encargado de Almacén) quiere comprobar qué pasó con el racor RAC-0408 después del surtido de Ricardo.',
+        a1:'Lodevar selecciona «Consultar kardex».',
+        a2:'Muestra la pantalla de búsqueda. La flecha baja a un rombo de fusión: ahí regresaría una búsqueda sin resultados.',
+        a3:['Ingresa el código <code>RAC-0408</code> (también podría buscar por descripción o por la familia Racores).',{'Búsqueda':'RAC-0408'}],
+        'd1>a4':'¿Hay coincidencias? {[hay coincidencias]} → sí.',
+        a4:'Despliega los resultados de la búsqueda.',
+        a5:['Lodevar selecciona el Racor recto 1/4" NPT × 8 mm.',{'Producto':'RAC-0408'}],
+        p1:['Muestra la existencia actual, 28 pza, y la ubicación B-04-2.',{'Existencia':'28','Ubicación':'B-04-2'}],
+        'd2>p2':'Dentro de la rama paralela hay una decisión: ¿tiene movimientos? {[con movimientos]} → sí, al menos la salida de CU1.',
+        p2:['Muestra el historial ordenado por fecha; ahí está la salida de 12 pza con NS-2026-0318.',{'Historial':'… salida 12 pza (NS-2026-0318)'}],
+        b2:'Unión: la vista queda completa cuando terminan las dos ramas (existencia y ubicación, e historial).',
+        'd3>a6':'Decide el usuario: {[aplica filtros]}.',
+        a6:['Define el tipo de movimiento «salidas» y el rango del mes en curso.',{'Filtro':'salidas, mes en curso'}],
+        a7:'Actualiza la vista del kardex con el filtro.',
+        'd4>m6':'¿Exporta? {[no exporta]}: Lodevar solo quería revisar en pantalla. La flecha rodea por la izquierda hasta la fusión.',
+        a9:'Registra la consulta en la bitácora de auditoría.',
+        fin:'Fin del flujo normal.' } },
+    alternos:[
+      { id:'4a', nombre:'4a. Sin coincidencias', desc:'4a. No hay coincidencias: el sistema muestra un mensaje y permite una nueva búsqueda.',
+        elec:{d1:['n1','a4']},
+        txt:{ a3:['Escribe mal el código (por ejemplo «RAC-4008»).',{'Búsqueda':'RAC-4008 (mal escrito)'}],
+          'd1>n1':'{[sin coincidencias]} → sí: ningún producto tiene ese código.',
+          n1:'Informa que no hay coincidencias y permite una nueva búsqueda: la flecha sube al rombo de fusión que está antes de la captura (ciclo).',
+          'a3#2':['Ahora escribe <code>RAC-0408</code>.',{'Búsqueda':'RAC-0408'}] } },
+      { id:'6a', nombre:'6a. Sin movimientos', desc:'6a. El producto no tiene movimientos: el sistema muestra la existencia inicial e indica que no hay historial.',
+        elec:{d2:['p3'],d3:['m5']},
+        txt:{ ini:'Lodevar consulta un producto recién dado de alta, que todavía no tiene movimientos.',
+          a3:['Ingresa el código del producto nuevo.',{'Búsqueda':'(producto nuevo)'}],
+          a5:['Selecciona el producto.',{'Producto':'(producto nuevo)'}],
+          p1:['Muestra su existencia actual y su ubicación.',{'Existencia':'(inicial)','Ubicación':'(asignada)'}],
+          'd2>p3':'¿Tiene movimientos? {[sin movimientos]} → la rama derecha.',
+          p3:['Muestra la existencia inicial e indica que no hay historial.',{'Historial':'sin movimientos'}],
+          'd3>m5':'Decide el usuario: {[sin filtros]}, no hay historial que filtrar.' } },
+      { id:'8a', nombre:'8a. Exporta', desc:'8a. El usuario pide exportar: el sistema genera el archivo en Excel o CSV.',
+        elec:{d4:['a8']},
+        txt:{ 'd4>a8':'¿Exporta? {[exporta]} → sí: Lodevar quiere el kardex en una hoja de cálculo.',
+          a8:['Genera el archivo en Excel o CSV.',{'Exportado':'Excel / CSV'}] } }
+    ] },
+
+  { clave:'CU3', titulo:'CU3. Realizar Inventario Físico', corto:'CU3 Inventario',
+    carriles:[[ALM,270],[SIS,560]],
+    nodos:[['ini','ini',135,46,''],['a1','acc',135,86,'Selecciona "Inventario físico"'],['a2','acc',135,128,'Elige el tipo de conteo (parcial\npor familia o completo)'],
+      ['a3','acc',500,186,'Genera la hoja de conteo con\nlos productos y sus ubicaciones'],['m1','dec',135,236,''],['a4','acc',135,278,'Captura la cantidad física contada'],
+      ['d1','dec',135,322,''],['n4','acc',400,322,'Guarda el avance para\nretomarlo después'],['f1','fin',500,322,''],['m2','dec',580,372,''],
+      ['a5','acc',580,414,'Compara lo contado contra la existencia\ny calcula las diferencias'],['a6','acc',580,460,'Muestra el reporte de diferencias'],
+      ['d2','dec',580,504,''],['n6','acc',760,504,'Cierra el conteo sin\ngenerar ajustes'],['a7','acc',135,560,'Revisa las diferencias'],['d3','dec',135,604,''],
+      ['n7','acc',395,604,'Descarta el conteo sin\nmodificar las existencias'],['f2','fin',500,604,''],['d3b','dec',135,650,''],
+      ['a8','acc',135,696,'Corrige la cantidad\ncapturada'],['b1','bar',550,700,340],['p1','acc',460,742,'Genera los ajustes\nde inventario'],
+      ['p2','acc',640,742,'Actualiza las existencias\ndel sistema'],['b2','bar',550,784,340],['mf','dec',550,826,''],
+      ['a10','acc',550,868,'Registra el conteo y los ajustes\nen la bitácora de auditoría'],['fin','fin',550,914,'']],
+    aristas:[['ini','a1'],['a1','a2'],['a2','a3'],['a3','m1'],['m1','a4'],['a4','d1'],
+      ['d1','m1','[faltan\nproductos]',{s:'l',t:'l',xm:25}],['d1','n4','[deja pendiente el conteo]',{s:'r',t:'l'}],['n4','f1',null,{s:'r',t:'l'}],
+      ['d1','m2','[conteo terminado]'],['m2','a5'],['a5','a6'],['a6','d2'],['d2','n6','[sin\ndiferencias]',{s:'r',t:'l'}],['d2','a7','[con diferencias]'],
+      ['a7','d3'],['d3','n7','[cancela el conteo]',{s:'r',t:'l'}],['n7','f2',null,{s:'r',t:'l'}],['d3','d3b','[continúa]'],
+      ['d3b','b1','[confirma el cierre]',{s:'r'}],['d3b','a8','[recuenta un producto]'],['a8','m2',null,{s:'l',t:'l',pts:[[12,696],[12,372]]}],
+      ['b1','p1'],['b1','p2'],['p1','b2'],['p2','b2'],['b2','mf'],['n6','mf',null,{t:'r'}],['mf','a10'],['a10','fin']],
+    ej:'<b>Ejemplo: conteo de la familia Racores</b>Lodevar organiza un conteo parcial de la familia Racores. Para <code>RAC-0408</code> el sistema dice 28 y en el anaquel <code>B-04-2</code> hay 26: diferencia −2, que se corrige con un <b>Ajuste</b> −2. Es lo que busca Paulina: bajar la diferencia físico vs sistema del 5 % a menos de 1 %.',
+    datos:{'Conteo':'—','Sistema (RAC-0408)':'—','Contado (RAC-0408)':'—','Diferencia':'—','Existencia':'—'},
+    normal:{ desc:'Flujo normal (pasos 1–9): conteo de Racores con una diferencia de −2.',
+      elec:{d1:['m1','m2'],d2:['a7'],d3:['d3b'],d3b:['b1']},
+      txt:{
+        ini:'Lodevar organiza un conteo físico de la familia Racores: quiere un sistema «confiable».',
+        a1:'Selecciona «Inventario físico».',
+        a2:['Elige conteo <b>parcial por familia</b>: Racores.',{'Conteo':'parcial, familia Racores'}],
+        a3:['Genera la hoja de conteo con los racores y sus ubicaciones (entre ellos RAC-0408 en B-04-2).',{'Sistema (RAC-0408)':'28','Existencia':'28'}],
+        a4:['Ricardo cuenta en el anaquel B-04-2 y captura <b>26</b> pza de RAC-0408.',{'Contado (RAC-0408)':'26'}],
+        'd1>m1':'¿Terminó? {[faltan productos]} → sí, quedan racores en la hoja. La flecha rodea por la izquierda y regresa a la captura (ciclo).',
+        'a4#2':'Captura las cantidades del resto de los racores de la hoja.',
+        'd1>m2':'{[conteo terminado]} → ya no faltan productos; la ficha cruza al sistema.',
+        a5:['Compara lo contado contra la existencia: RAC-0408 tiene 28 en el sistema y 26 en el anaquel.',{'Diferencia':'−2'}],
+        a6:'Muestra el reporte de diferencias: RAC-0408, −2 pza.',
+        'd2>a7':'¿Hay diferencias? {[26 ≠ 28]} → {[con diferencias]}.',
+        a7:'Lodevar revisa las diferencias.',
+        'd3>d3b':'Primera decisión del usuario: {[continúa]}, no cancela el conteo.',
+        'd3b>b1':'Segunda decisión: {[confirma el cierre]}, el −2 es correcto.',
+        p1:'Genera el ajuste de inventario: un <b>Ajuste −2</b> para RAC-0408.',
+        p2:['Actualiza la existencia del sistema: <b>28 → 26</b>.',{'Existencia':'28 → 26'}],
+        b2:'Unión: ajustes generados y existencias actualizadas. Después hay una fusión, donde también llega el caso sin diferencias.',
+        a10:'Registra el conteo y los ajustes en la bitácora de auditoría.',
+        fin:'Fin: el sistema vuelve a coincidir con lo físico.' } },
+    alternos:[
+      { id:'4a', nombre:'4a. Deja pendiente', desc:'4a. El usuario deja pendiente el conteo: el sistema guarda el avance para retomarlo después.',
+        elec:{d1:['n4']},
+        txt:{ 'd1>n4':'Se acaba el turno: {[deja pendiente el conteo]}.', n4:'Guarda el avance para retomarlo después.', f1:'Fin: el conteo queda guardado, sin ajustes.' } },
+      { id:'6a', nombre:'6a. Sin diferencias', desc:'6a. No hay diferencias: el sistema cierra el conteo sin generar ajustes.',
+        elec:{d1:['m2'],d2:['n6']},
+        txt:{ a4:['Ricardo captura 28 pza de RAC-0408 (y el resto de la hoja).',{'Contado (RAC-0408)':'28'}],
+          a5:['Compara: 28 en el sistema y 28 en el anaquel.',{'Diferencia':'0'}],
+          a6:'Muestra el reporte: sin diferencias.',
+          'd2>n6':'¿Hay diferencias? {[28 = 28]} → {[sin diferencias]}.',
+          n6:'Cierra el conteo sin generar ajustes; la flecha llega a la fusión de abajo.',
+          fin:'Fin: no hubo que ajustar nada.' } },
+      { id:'7a', nombre:'7a. Recuenta un producto', desc:'7a. El usuario recuenta un producto: corrige la cantidad antes del cierre.',
+        elec:{d3b:['a8','b1']},
+        txt:{ 'd3b>a8':'Lodevar duda del −2: {[recuenta un producto]}.',
+          a8:'Ricardo vuelve a contar RAC-0408 y corrige la cantidad capturada: confirma 26. La flecha sube por la izquierda hasta la fusión de la comparación.',
+          'a5#2':'Compara otra vez: 28 contra 26.', 'a6#2':'El reporte sigue mostrando −2.', 'a7#2':'Lodevar revisa de nuevo.' } },
+      { id:'7b', nombre:'7b. Cancela el conteo', desc:'7b. El usuario cancela el conteo: se descarta y las existencias no cambian.',
+        elec:{d3:['n7']},
+        txt:{ 'd3>n7':'{[cancela el conteo]}.', n7:['Descarta el conteo sin modificar las existencias.',{'Existencia':'28 (sin cambio)'}], f2:'Fin: no hay ajustes.' } }
+    ] },
+
+  { clave:'CU4', titulo:'CU4. Registrar Devolución de Cliente', corto:'CU4 Devolución',
+    carriles:[[ALM,270],[SIS,560]],
+    nodos:[['ini','ini',135,46,''],['a1','acc',135,86,'Selecciona "Registrar devolución de cliente"'],['a2','acc',135,128,'Busca y selecciona al cliente'],
+      ['d1','dec',500,172,''],['n1','acc',375,218,'Ofrece dar de alta al\ncliente o cancelar'],['d2','dec',135,218,''],['f1','fin',25,262,''],
+      ['alta','acc',135,270,'Captura los datos\ndel nuevo cliente'],['m1','dec',500,312,''],['a3','acc',500,354,'Muestra los documentos de salida del cliente'],
+      ['d3','dec',135,400,''],['n3','acc',400,400,'Permite el registro manual\ncon autorización'],['a4','acc',135,446,'Selecciona el documento original\ny los productos a devolver'],
+      ['m3','dec',135,500,''],['a5','acc',135,546,'Captura cantidad devuelta, motivo\ny estado de la mercancía'],['d4','dec',500,600,''],
+      ['n4','acc',690,600,'Muestra una alerta y\nno permite continuar'],['f2','fin',690,648,''],['a6','acc',135,648,'Confirma la devolución'],['d5','dec',500,694,''],
+      ['p1','acc',390,740,'Ingresa la mercancía al\ninventario disponible'],['p2','acc',630,740,'Envía la mercancía a una\nubicación de resguardo'],['m5','dec',500,790,''],
+      ['b1','bar',500,828,420],['q1','acc',390,870,'Actualiza la existencia\ndel producto'],['q2','acc',610,870,'Registra el movimiento en el\nkardex y en la bitácora'],
+      ['b2','bar',500,912,420],['a7','acc',500,952,'Muestra el folio de la devolución'],['fin','fin',500,996,'']],
+    aristas:[['ini','a1'],['a1','a2'],['a2','d1'],['d1','n1','[no existe]',{s:'l'}],['n1','d2',null,{s:'l',t:'r'}],['d2','f1','[cancela]',{s:'l'}],
+      ['d2','alta','[lo da de alta]',{gp:[139,231]}],['alta','m1',null,{t:'l'}],['d1','m1','[existe]',{gp:[504,184]}],['m1','a3'],['a3','d3'],
+      ['d3','n3','[no se localiza el documento]',{s:'r',t:'l'}],['d3','a4','[documento localizado]'],['n3','m3',null,{t:'r'}],['a4','m3'],['m3','a5'],['a5','d4'],
+      ['d4','n4','[excede la\nvendida]',{s:'r',t:'l'}],['n4','f2'],['d4','a6','[no excede]'],['a6','d5'],
+      ['d5','p1','[en buen estado]',{s:'l'}],['d5','p2','[marcada como dañada]',{s:'r'}],['p1','m5',null,{t:'l'}],['p2','m5',null,{t:'r'}],
+      ['m5','b1'],['b1','q1'],['b1','q2'],['q1','b2'],['q2','b2'],['b2','a7'],['a7','fin']],
+    ej:'<b>Ejemplo: el taller devuelve 2 racores</b>El cliente taller del pedido de CU1 devuelve 2 racores <code>RAC-0408</code> de la nota de salida <code>NS-2026-0318</code> (le salieron 12). Están en buen estado: vuelven al inventario disponible y la existencia pasa de 28 a 30.',
+    datos:{'Cliente':'—','Documento':'—','Producto':'—','Devueltas':'—','Estado':'—','Existencia':'—'},
+    normal:{ desc:'Flujo normal (pasos 1–9): devolución de 2 racores en buen estado.',
+      elec:{d1:['m1'],d3:['a4'],d4:['a6'],d5:['p1']},
+      txt:{
+        ini:'El cliente taller regresa 2 racores RAC-0408 que venían en la nota de salida NS-2026-0318. Los recibe Ricardo.',
+        a1:'Ricardo selecciona «Registrar devolución de cliente».',
+        a2:['Busca y selecciona al cliente taller.',{'Cliente':'cliente taller'}],
+        'd1>m1':'¿Existe el cliente? {[existe]} → sí.',
+        a3:'Muestra los documentos de salida del cliente; entre ellos, NS-2026-0318.',
+        'd3>a4':'Decide el usuario: {[documento localizado]}.',
+        a4:['Selecciona NS-2026-0318 y el producto RAC-0408.',{'Documento':'NS-2026-0318','Producto':'RAC-0408','Existencia':'28'}],
+        a5:['Captura 2 pza, el motivo y el estado de la mercancía: en buen estado.',{'Devueltas':'2','Estado':'buen estado'}],
+        'd4>a6':'El sistema valida contra lo vendido: {[2 ≤ 12]} → {[no excede]}.',
+        a6:'Ricardo confirma la devolución.',
+        'd5>p1':'¿En qué estado viene? {[en buen estado]} → la rama izquierda.',
+        p1:'Ingresa los 2 racores al inventario disponible (B-04-2). La rama se une en una fusión.',
+        q1:['Actualiza la existencia: <b>28 → 30</b>.',{'Existencia':'28 → 30'}],
+        q2:'Registra el movimiento (Devolucion) en el kardex y en la bitácora.',
+        a7:'Muestra el folio de la devolución.',
+        fin:'Fin del flujo normal.' } },
+    alternos:[
+      { id:'2a-alta', nombre:'2a. Cliente no existe → alta', desc:'2a. El cliente no existe: se da de alta o se cancela. Aquí se da de alta.',
+        elec:{d1:['n1'],d2:['alta'],d3:['n3']},
+        txt:{ ini:'Llega a devolver mercancía un cliente que no está en el catálogo.',
+          a2:['Busca al cliente y no aparece.',{'Cliente':'(no registrado)'}],
+          'd1>n1':'{[no existe]} → sí.', n1:'Ofrece dar de alta al cliente o cancelar.',
+          'd2>alta':'Decide el usuario: {[lo da de alta]}.',
+          alta:['Captura los datos del nuevo cliente; la flecha vuelve a la fusión y sigue el flujo normal.',{'Cliente':'(nuevo)'}],
+          a3:'Muestra los documentos de salida del cliente: como es nuevo, no tiene.',
+          'd3>n3':'{[no se localiza el documento]}.',
+          n3:['Permite el registro manual con autorización.',{'Documento':'manual (con autorización)','Producto':'(el devuelto)'}],
+          a5:['Captura cantidad, motivo y estado.',{'Devueltas':'(capturadas)','Estado':'buen estado'}],
+          'd4>a6':'{[no excede]}.', p1:'Ingresa la mercancía al inventario disponible.',
+          q1:['Actualiza la existencia del producto.',{'Existencia':'actualizada'}] } },
+      { id:'2a-cancela', base:'2a-alta', nombre:'2a. Cliente no existe → cancela', desc:'2a. El cliente no existe y el usuario cancela.',
+        elec:{d2:['f1']},
+        txt:{ 'd2>f1':'Decide el usuario: {[cancela]}.', f1:'Fin: no se registra nada.' } },
+      { id:'3a', nombre:'3a. No se localiza el documento', desc:'3a. No se localiza el documento original: se permite el registro manual con autorización.',
+        elec:{d3:['n3']},
+        txt:{ a3:'Muestra los documentos de salida del cliente, pero el taller no trae su nota y no aparece en la lista.',
+          'd3>n3':'{[no se localiza el documento]}.',
+          n3:['Permite el registro manual con autorización; la flecha se une al flujo en una fusión.',{'Documento':'manual (con autorización)','Producto':'RAC-0408','Existencia':'28'}],
+          'd4>a6':'{[no excede]}.' } },
+      { id:'6a', nombre:'6a. Excede lo vendido', desc:'6a. La cantidad devuelta excede la vendida: alerta; no permite continuar.',
+        elec:{d4:['n4']},
+        txt:{ a5:['Captura 15 pza.',{'Devueltas':'15','Estado':'buen estado'}],
+          'd4>n4':'El sistema valida: {[15 > 12]} → {[excede la vendida]}.',
+          n4:'Muestra una alerta y no permite continuar.', f2:'Fin: no se registra la devolución; la existencia sigue en 28.' } },
+      { id:'7a', nombre:'7a. Mercancía dañada', desc:'7a. Mercancía dañada: se marca como no disponible y entra a una ubicación de resguardo.',
+        elec:{d5:['p2']},
+        txt:{ a5:['Captura 2 pza, el motivo y el estado: dañada.',{'Devueltas':'2','Estado':'dañada'}],
+          'd5>p2':'¿En qué estado viene? {[marcada como dañada]} → la rama derecha.',
+          p2:'Envía los 2 racores a una ubicación de resguardo: no quedan disponibles para la venta.',
+          q1:['Actualiza la existencia del producto (los 2 racores quedan en resguardo, no disponibles).',{'Existencia':'28 disponibles + 2 en resguardo'}] } }
+    ] },
+
+  { clave:'CU5', titulo:'CU5. Generar Orden de Compra', corto:'CU5 Orden de compra',
+    carriles:[['Encargada de Compras',270],[SIS,560]],
+    nodos:[['ini','ini',135,46,''],['a1','acc',135,86,'Selecciona "Generar orden de compra"'],['a2','acc',500,130,'Muestra el formulario con la fecha actual'],
+      ['a3','acc',135,174,'Selecciona el proveedor'],['d1','dec',500,218,''],['n1','acc',375,264,'Ofrece dar de alta al\nproveedor o cancelar'],['d2','dec',135,264,''],
+      ['f1','fin',25,308,''],['alta','acc',135,316,'Captura los datos\ndel nuevo proveedor'],['m1','dec',500,358,''],['d3','dec',135,402,''],
+      ['n3','acc',420,402,'Precarga los productos bajo\nel punto de reorden'],['m3','dec',135,450,''],['a4','acc',135,494,'Agrega productos con cantidad\ny precio unitario'],
+      ['a5','acc',500,548,'Calcula subtotales, impuestos y total'],['d4','dec',500,592,''],['a6','acc',135,640,'Captura los costos adicionales\nde importación'],
+      ['m4','dec',135,690,''],['a7','acc',135,732,'Captura las condiciones de\nentrega y de pago'],['a8','acc',135,782,'Elige emitir la orden o\nguardarla como borrador'],
+      ['d5','dec',135,828,''],['n8','acc',400,828,'Guarda la orden con estado\n"Pendiente" sin folio definitivo'],['f2','fin',530,828,''],
+      ['a9','acc',600,880,'Asigna el folio consecutivo'],['b1','bar',600,920,420],['q1','acc',490,962,'Guarda la orden con\nestado "Emitida"'],
+      ['q2','acc',710,962,'Genera el documento en\nformato corporativo'],['b2','bar',600,1004,420],['a10','acc',600,1044,'Registra la emisión en la bitácora de auditoría'],['fin','fin',600,1088,'']],
+    aristas:[['ini','a1'],['a1','a2'],['a2','a3'],['a3','d1'],['d1','n1','[no existe]',{s:'l'}],['n1','d2',null,{s:'l',t:'r'}],['d2','f1','[cancela]',{s:'l'}],
+      ['d2','alta','[lo da de alta]',{gp:[139,277]}],['alta','m1',null,{t:'l'}],['d1','m1','[existe]',{gp:[504,230]}],['m1','d3'],
+      ['d3','n3','[parte de una sugerencia de reorden]',{s:'r',t:'l'}],['d3','m3','[sin sugerencia]'],['n3','m3',null,{t:'r'}],
+      ['m3','a4'],['a4','a5'],['a5','d4'],['d4','a6','[producto de importación]',{s:'l'}],['d4','m4','[sin importación]',{t:'r'}],
+      ['a6','m4'],['m4','a7'],['a7','a8'],['a8','d5'],['d5','n8','[guarda como borrador]',{s:'r',t:'l'}],['n8','f2',null,{s:'r',t:'l'}],
+      ['d5','a9','[confirma la emisión]',{gizq:true}],['a9','b1'],['b1','q1'],['b1','q2'],['q1','b2'],['q2','b2'],['b2','a10'],['a10','fin']],
+    ej:'<b>Ejemplo: Karla genera la OC-2026-0147</b>Karla Patricia Domínguez Rivera (Encargada de Compras) hace en el sistema, y ya no en Word, la orden <code>OC-2026-0147</code> al proveedor nacional de neumática (lead time 7 días): 100 × <code>RAC-0408</code> (quedó en 28, mínimo 30) y 10 × <code>CIL-32100</code> (existencia 3, mínimo 5). Sale con estado «Emitida».',
+    datos:{'Proveedor':'—','Partidas':'—','Importación':'—','Entrega':'—','Folio':'—','Estado':'—'},
+    normal:{ desc:'Flujo normal (pasos 1–8): emisión de la OC-2026-0147.',
+      elec:{d1:['m1'],d3:['m3'],d4:['m4'],d5:['a9']},
+      txt:{
+        ini:'RAC-0408 quedó en 28 (mínimo 30) y CIL-32100 tiene 3 (mínimo 5). Karla prepara la orden de compra que hoy haría en Word.',
+        a1:'Karla selecciona «Generar orden de compra».',
+        a2:'Muestra el formulario de la orden con la fecha actual.',
+        a3:['Selecciona al proveedor nacional de neumática.',{'Proveedor':'nacional (lead time 7 días)'}],
+        'd1>m1':'¿Existe el proveedor? {[existe]} → sí, está en el catálogo.',
+        'd3>m3':'Decide la usuaria: {[sin sugerencia]}; captura ella misma las partidas.',
+        a4:['Agrega 100 × RAC-0408 y 10 × CIL-32100, cada uno con su precio unitario.',{'Partidas':'100 × RAC-0408; 10 × CIL-32100'}],
+        a5:'Calcula subtotales, impuestos y total.',
+        'd4>m4':'¿Hay producto de importación? {[clasificación Nacional]} → {[sin importación]}.',
+        a7:['Captura las condiciones de entrega (7 días de lead time) y de pago.',{'Importación':'no','Entrega':'7 días'}],
+        a8:'Elige emitir la orden.',
+        'd5>a9':'Decide la usuaria: {[confirma la emisión]}.',
+        a9:['Asigna el folio consecutivo <code>OC-2026-0147</code>.',{'Folio':'OC-2026-0147'}],
+        q1:['Guarda la orden con estado «Emitida».',{'Estado':'Emitida'}],
+        q2:'Genera el documento en formato corporativo (en lugar de la plantilla de Word).',
+        a10:'Registra la emisión en la bitácora de auditoría.',
+        fin:'Fin: la OC-2026-0147 sale «Emitida». En CU6 se recibe y en el diagrama de estados se sigue su vida.' } },
+    alternos:[
+      { id:'3a-alta', nombre:'3a. Proveedor no existe → alta', desc:'3a. El proveedor no existe: se da de alta o se cancela. Aquí se da de alta.',
+        elec:{d1:['n1'],d2:['alta']},
+        txt:{ a3:['Busca un proveedor que todavía no está en el catálogo.',{'Proveedor':'(no registrado)'}],
+          'd1>n1':'{[no existe]} → sí.', n1:'Ofrece dar de alta al proveedor o cancelar.',
+          'd2>alta':'Decide la usuaria: {[lo da de alta]}.',
+          alta:['Captura los datos del nuevo proveedor (clasificación y lead time). La flecha vuelve a la fusión.',{'Proveedor':'(nuevo)'}],
+          'd4>m4':'¿Hay producto de importación? {[sin importación]}.',
+          a7:['Captura las condiciones de entrega y de pago.',{'Importación':'no','Entrega':'(la del proveedor)'}],
+          a9:['Asigna el folio consecutivo.',{'Folio':'(consecutivo)'}],
+          fin:'Fin: la orden sale «Emitida» con el proveedor recién dado de alta.' } },
+      { id:'3a-cancela', base:'3a-alta', nombre:'3a. Proveedor no existe → cancela', desc:'3a. El proveedor no existe y la usuaria cancela.',
+        elec:{d2:['f1']},
+        txt:{ 'd2>f1':'Decide la usuaria: {[cancela]}.', f1:'Fin: no se genera la orden.' } },
+      { id:'4a', nombre:'4a. Sugerencia de reorden', desc:'4a. Se parte de una sugerencia de reorden: el sistema precarga los productos bajo el punto de reorden.',
+        elec:{d3:['n3']},
+        txt:{ 'd3>n3':'Decide la usuaria: {[parte de una sugerencia de reorden]}.',
+          n3:['Precarga los productos bajo el punto de reorden: RAC-0408 (28 &lt; 30) y CIL-32100 (3 &lt; 5).',{'Partidas':'precargadas: RAC-0408, CIL-32100'}],
+          a4:['Karla ajusta cantidades y precios: 100 × RAC-0408 y 10 × CIL-32100.',{'Partidas':'100 × RAC-0408; 10 × CIL-32100'}] } },
+      { id:'5a', nombre:'5a. Producto de importación', desc:'5a. Hay un producto de importación: se capturan los costos adicionales de importación.',
+        elec:{d4:['a6']},
+        txt:{ ini:'Variante: Karla compra a un proveedor de clasificación Importación.',
+          a3:['Selecciona un proveedor de importación.',{'Proveedor':'(clasificación Importación)'}],
+          a4:['Agrega los productos con cantidad y precio unitario.',{'Partidas':'(las del pedido)'}],
+          'd4>a6':'¿Hay producto de importación? {[clasificación Importación]} → {[producto de importación]}.',
+          a6:['Karla captura los costos adicionales de importación (el «landed cost» que pidió en su entrevista).',{'Importación':'costos adicionales'}],
+          a7:['Captura las condiciones de entrega y de pago.',{'Entrega':'(lead time del proveedor)'}],
+          a9:['Asigna el folio consecutivo.',{'Folio':'(consecutivo)'}],
+          fin:'Fin: la orden de importación sale «Emitida».' } },
+      { id:'7a', nombre:'7a. Guarda como borrador', desc:'7a. Se guarda como borrador: estado «Pendiente», sin folio definitivo.',
+        elec:{d5:['n8']},
+        txt:{ a8:'Karla todavía no tiene la cotización final y elige guardar la orden como borrador.',
+          'd5>n8':'Decide la usuaria: {[guarda como borrador]}.',
+          n8:['Guarda la orden con estado «Pendiente», sin folio definitivo.',{'Estado':'Pendiente','Folio':'(sin folio)'}],
+          f2:'Fin: borrador «Pendiente». En el diagrama de estados, después pasaría a «Emitida».' } }
+    ] },
+
+  { clave:'CU6', titulo:'CU6. Recibir Mercancía contra Orden de Compra', corto:'CU6 Recepción',
+    carriles:[['Encargada de Compras /\nEncargado de Almacén',270],[SIS,560]], cab:42,
+    nodos:[['ini','ini',135,62,''],['a1','acc',135,102,'Selecciona "Recibir mercancía"'],['m0','dec',135,144,''],['a2','acc',135,186,'Busca la orden por folio o proveedor'],
+      ['d1','dec',500,230,''],['n1','acc',375,276,'Informa que no se\nlocaliza la orden'],['d2','dec',135,276,''],['f1','fin',135,320,''],
+      ['a3','acc',500,322,'Muestra los productos y las\ncantidades pendientes'],['a4','acc',135,384,'Captura las cantidades recibidas\ny la ubicación'],
+      ['a5','acc',135,430,'Registra la factura o remisión'],['d3','dec',135,474,''],['a6','acc',135,520,'Registra la mercancía\ncomo no conforme'],['m3','dec',135,566,''],
+      ['a7','acc',135,608,'Confirma la recepción'],['a8','acc',500,660,'Valida que lo recibido no\nexceda lo solicitado'],['d4','dec',500,708,''],
+      ['n4','acc',700,708,'Muestra una alerta y solicita\nautorización para continuar'],['m4','dec',500,756,''],['b1','bar',500,796,440],
+      ['q1','acc',390,838,'Genera la entrada al inventario\n(sin la mercancía no conforme)'],['q2','acc',620,838,'Actualiza las existencias\ny el kardex'],
+      ['b2','bar',500,880,440],['d5','dec',500,920,''],['r1','acc',380,966,'Cambia la orden\na "Recibida"'],
+      ['r2','acc',650,966,'Cambia la orden a "Parcialmente\nrecibida" y conserva el saldo'],['m5','dec',500,1014,''],
+      ['a9','acc',500,1056,'Registra la recepción en la bitácora de auditoría'],['fin','fin',500,1100,'']],
+    aristas:[['ini','a1'],['a1','m0'],['m0','a2'],['a2','d1'],['d1','n1','[no se localiza]',{s:'l'}],['n1','d2',null,{s:'l',t:'r'}],
+      ['d2','m0','[nueva búsqueda]',{s:'l',t:'l',xm:25}],['d2','f1','[cancela]'],['d1','a3','[orden localizada]'],['a3','a4'],['a4','a5'],['a5','d3'],
+      ['d3','a6','[con defectos]'],['d3','m3','[sin defectos]',{s:'l',t:'l',xm:25}],['a6','m3'],['m3','a7'],['a7','a8'],['a8','d4'],
+      ['d4','n4','[excede lo\nsolicitado]',{s:'r',t:'l'}],['d4','m4','[no excede]'],['n4','m4',null,{t:'r'}],['m4','b1'],
+      ['b1','q1'],['b1','q2'],['q1','b2'],['q2','b2'],['b2','d5'],['d5','r1','[recepción total]',{s:'l'}],['d5','r2','[recepción parcial]',{s:'r'}],
+      ['r1','m5',null,{t:'l'}],['r2','m5',null,{t:'r'}],['m5','a9'],['a9','fin']],
+    ej:'<b>Ejemplo: llega la OC-2026-0147 en dos entregas</b>Llega la mercancía del proveedor nacional con la factura <code>F-A-88213</code>. Karla Patricia Domínguez Rivera (Encargada de Compras, actor principal de CU6) busca la <code>OC-2026-0147</code>. 1.ª entrega: 60 racores y 10 cilindros → la orden queda «Parcialmente recibida» (botón 4a). 2.ª entrega: los 40 racores restantes → «Recibida» (flujo normal). Variantes: 2 cilindros con defecto (6a) y 110 racores en vez de 100 (7a). CU6 cubre RF13 (numeración del Apéndice C).',
+    datos:{'Orden':'—','Pendiente RAC-0408':'—','Pendiente CIL-32100':'—','Recibido':'—','Documento':'—','Existencia RAC-0408':'—','Estado OC':'—'},
+    normal:{ desc:'Flujo normal (pasos 1–9): 2.ª entrega de la OC-2026-0147, que la completa. La 1.ª entrega, parcial, es el alterno 4a.',
+      elec:{d1:['a3'],d3:['m3'],d4:['m4'],d5:['r1']},
+      txt:{
+        ini:'Llega la <b>2.ª entrega</b> de la OC-2026-0147: los 40 racores que faltaban. (La 1.ª entrega, de 60 racores y 10 cilindros, está en el botón 4a.) La recibe Karla (Encargada de Compras); Lodevar (Encargado de Almacén) es actor secundario.',
+        a1:'Karla selecciona «Recibir mercancía». La flecha pasa por una fusión: ahí regresaría una búsqueda fallida.',
+        a2:['Busca la orden por folio: <code>OC-2026-0147</code>.',{'Orden':'OC-2026-0147'}],
+        'd1>a3':'¿Se localiza? {[orden localizada]} → sí.',
+        a3:['Muestra los productos y lo pendiente: 40 × RAC-0408 y 0 × CIL-32100. La orden está «Parcialmente recibida».',{'Pendiente RAC-0408':'40','Pendiente CIL-32100':'0','Existencia RAC-0408':'88','Estado OC':'Parcialmente recibida'}],
+        a4:['Captura 40 racores recibidos y la ubicación B-04-2.',{'Recibido':'40 × RAC-0408'}],
+        a5:['Registra la factura o remisión del proveedor de esta entrega.',{'Documento':'factura / remisión de la 2.ª entrega'}],
+        'd3>m3':'¿Hay defectos? Karla revisa: {[sin defectos]}. La flecha rodea por la izquierda.',
+        a7:'Confirma la recepción. Primero confirma el usuario y después valida el sistema, igual que en SD1.',
+        a8:'Valida que lo recibido no exceda lo solicitado: 40 contra 40 pendientes.',
+        'd4>m4':'{[40 ≤ 40]} → {[no excede]}.',
+        q1:'Genera la entrada al inventario por 40 racores.',
+        q2:['Actualiza existencias y kardex: RAC-0408 <b>88 → 128</b> (28 + 60 de la 1.ª entrega = 88).',{'Existencia RAC-0408':'88 → 128','Pendiente RAC-0408':'0'}],
+        'd5>r1':'¿Queda saldo pendiente? {[pendiente = 0]} → {[recepción total]}.',
+        r1:['Cambia la orden a «Recibida».',{'Estado OC':'Recibida'}],
+        a9:'Registra la recepción en la bitácora de auditoría.',
+        fin:'Fin: OC-2026-0147 «Recibida». En el diagrama de estados, después se cierra.' } },
+    alternos:[
+      { id:'4a', nombre:'4a. Recepción parcial (1.ª entrega)', desc:'4a. Recepción parcial: se conserva el saldo pendiente y la orden sigue abierta. Es la 1.ª entrega del ejemplo.',
+        elec:{d5:['r2']},
+        txt:{ ini:'Llega la <b>1.ª entrega</b> de la OC-2026-0147 con la factura F-A-88213. La recibe Karla (Encargada de Compras); Lodevar (Encargado de Almacén) es actor secundario.',
+          a3:['Muestra los productos y lo pendiente: 100 × RAC-0408 y 10 × CIL-32100. La orden está «Emitida».',{'Pendiente RAC-0408':'100','Pendiente CIL-32100':'10','Existencia RAC-0408':'28','Estado OC':'Emitida'}],
+          a4:['Captura 60 racores en B-04-2 y 10 cilindros en C-02-1.',{'Recibido':'60 × RAC-0408; 10 × CIL-32100'}],
+          a5:['Registra la factura <code>F-A-88213</code>.',{'Documento':'F-A-88213'}],
+          a8:'Valida: 60 de 100 racores y 10 de 10 cilindros.',
+          'd4>m4':'{[60 ≤ 100 y 10 ≤ 10]} → {[no excede]}.',
+          q1:'Genera la entrada al inventario por 60 racores y 10 cilindros.',
+          q2:['Actualiza existencias y kardex: RAC-0408 28 → 88 y CIL-32100 3 → 13.',{'Existencia RAC-0408':'28 → 88','Pendiente RAC-0408':'40','Pendiente CIL-32100':'0'}],
+          'd5>r2':'¿Queda saldo pendiente? {[faltan 40 racores]} → {[recepción parcial]}.',
+          r2:['Cambia la orden a «Parcialmente recibida» y conserva el saldo de 40 racores.',{'Estado OC':'Parcialmente recibida'}],
+          fin:'Fin: la orden sigue abierta; la 2.ª entrega es el flujo normal.' } },
+      { id:'2a-nueva', nombre:'2a. No se localiza → nueva búsqueda', desc:'2a. No se localiza la orden: el usuario hace una nueva búsqueda (o cancela).',
+        elec:{d1:['n1','a3'],d2:['m0']},
+        txt:{ a2:['Teclea mal el folio (por ejemplo «OC-2026-0174»).',{'Orden':'OC-2026-0174 (mal escrito)'}],
+          'd1>n1':'¿Se localiza? {[no se localiza]}.',
+          n1:'Informa que no se localiza la orden.',
+          'd2>m0':'Decide el usuario: {[nueva búsqueda]}. La flecha sube por la izquierda a la fusión (ciclo).',
+          'a2#2':['Busca ahora por proveedor (el proveedor nacional) y encuentra <code>OC-2026-0147</code>.',{'Orden':'OC-2026-0147'}] } },
+      { id:'2a-cancela', base:'2a-nueva', nombre:'2a. No se localiza → cancela', desc:'2a. No se localiza la orden y el usuario cancela.',
+        elec:{d1:['n1'],d2:['f1']},
+        txt:{ 'd2>f1':'Decide el usuario: {[cancela]}.', f1:'Fin: no se registra ninguna recepción.' } },
+      { id:'6a', base:'4a', nombre:'6a. Mercancía con defectos', desc:'6a. Mercancía con defectos: se registra como no conforme y no se suma al inventario disponible. Aquí, en la 1.ª entrega, 2 cilindros vienen dañados.',
+        elec:{d3:['a6']},
+        txt:{ 'd3>a6':'Karla revisa la mercancía: {[con defectos]}, 2 cilindros vienen dañados.',
+          a6:['Registra los 2 cilindros como no conformes.',{'Recibido':'60 × RAC-0408; 8 × CIL-32100 (+2 no conformes)'}],
+          q1:'Genera la entrada al inventario sin la mercancía no conforme: 60 racores y 8 cilindros.',
+          q2:['Actualiza existencias y kardex: RAC-0408 28 → 88 y CIL-32100 3 → 11.',{'Existencia RAC-0408':'28 → 88','Pendiente RAC-0408':'40','Pendiente CIL-32100':'¿0 o 2? (no lo dice el CU)'}] } },
+      { id:'7a', nombre:'7a. Excede lo solicitado', desc:'7a. La cantidad recibida excede la solicitada: alerta y solicitud de autorización para continuar.',
+        elec:{d4:['n4'],d5:['r1']},
+        txt:{ ini:'Variante del ejemplo: el proveedor manda de una vez <b>110 racores</b> (se pidieron 100) y los 10 cilindros, con la factura F-A-88213.',
+          a3:['Muestra los productos y lo pendiente: 100 × RAC-0408 y 10 × CIL-32100.',{'Pendiente RAC-0408':'100','Pendiente CIL-32100':'10','Existencia RAC-0408':'28','Estado OC':'Emitida'}],
+          a4:['Captura 110 racores en B-04-2 y 10 cilindros en C-02-1.',{'Recibido':'110 × RAC-0408; 10 × CIL-32100'}],
+          a5:['Registra la factura <code>F-A-88213</code>.',{'Documento':'F-A-88213'}],
+          a8:'Valida: 110 racores contra 100 solicitados.',
+          'd4>n4':'{[110 > 100]} → {[excede lo solicitado]}.',
+          n4:'Muestra una alerta y solicita autorización para continuar. Con la autorización, la flecha regresa a la fusión.',
+          q1:'Genera la entrada al inventario: 110 racores y 10 cilindros.',
+          q2:['Actualiza existencias y kardex: RAC-0408 28 → 138 y CIL-32100 3 → 13.',{'Existencia RAC-0408':'28 → 138','Pendiente RAC-0408':'0','Pendiente CIL-32100':'0'}],
+          'd5>r1':'¿Queda saldo pendiente? {[no queda]} → {[recepción total]}.',
+          fin:'Fin: la orden queda «Recibida», con un excedente autorizado.' } }
+    ] },
+
+  { clave:'CU7', titulo:'CU7. Visualizar Dashboard de KPIs', corto:'CU7 Dashboard',
+    carriles:[['Dirección General, Encargado\nde Almacén o Encargada de Compras',280],[SIS,560]], cab:42,
+    nodos:[['ini','ini',140,62,''],['a1','acc',140,102,'Selecciona "Dashboard"'],['a2','acc',520,146,'Calcula los indicadores del periodo actual'],
+      ['d1','dec',520,190,''],['n1','acc',720,190,'Muestra el tablero con indicadores\nen cero e informa la situación'],['f1','fin',720,238,''],
+      ['b1','bar',560,276,520],['q1','acc',380,318,'Muestra el valor del\ninventario y la rotación'],['q2','acc',560,318,'Muestra los productos bajo\nel punto de reorden'],
+      ['q3','acc',740,318,'Muestra entradas, salidas y\nórdenes de compra pendientes'],['b2','bar',560,360,520],['a3','acc',140,404,'Selecciona el periodo\n(semanal o mensual)'],
+      ['a4','acc',520,452,'Actualiza las gráficas e indicadores'],['d2','dec',140,498,''],['n2','acc',520,542,'Genera el reporte en Excel o CSV'],
+      ['m2','dec',140,586,''],['d3','dec',140,630,''],['a5','acc',140,676,'Consulta el detalle de un indicador'],['d4','dec',520,722,''],
+      ['n5','acc',520,768,'Despliega el desglose del indicador'],['n6','acc',720,768,'Muestra solo la\ninformación resumida'],['m3','dec',520,812,''],
+      ['a6','acc',520,856,'Registra la consulta en la bitácora de auditoría'],['fin','fin',520,900,'']],
+    aristas:[['ini','a1'],['a1','a2'],['a2','d1'],['d1','n1','[información\ninsuficiente]',{s:'r',t:'l'}],['n1','f1'],
+      ['d1','b1','[información suficiente]',{gizq:true}],['b1','q1'],['b1','q2'],['b1','q3'],['q1','b2'],['q2','b2'],['q3','b2'],
+      ['b2','a3'],['a3','a4'],['a4','d2'],['d2','n2','[exporta el tablero]',{gizq:true}],['d2','m2','[no exporta]',{s:'l',t:'l',xm:40}],
+      ['n2','m2'],['m2','d3'],['d3','a5','[consulta el detalle]'],['d3','m3','[no consulta\nel detalle]',{s:'l',t:'l',xm:25}],['a5','d4'],
+      ['d4','n5','[con permiso]'],['d4','n6','[sin permiso]',{s:'r'}],['n5','m3'],['n6','m3',null,{t:'r'}],['m3','a6'],['a6','fin']],
+    ej:'<b>Ejemplo: Paulina revisa el tablero</b>Paulina Pérez Estrada (CEO, Dirección General) pierde 8–10 % del margen anual por inventario mal controlado y quiere bajar la diferencia físico vs sistema del 5 % a menos de 1 %. En el tablero ve los productos bajo reorden (<code>RAC-0408</code>, <code>CIL-32100</code>) y la orden pendiente <code>OC-2026-0147</code>.',
+    datos:{'Usuario':'—','Periodo':'—','Bajo reorden':'—','OC pendientes':'—','Exportado':'—','Detalle':'—'},
+    normal:{ desc:'Flujo normal (pasos 1–7): Paulina consulta el tablero y el detalle de un indicador.',
+      elec:{d1:['b1'],d2:['m2'],d3:['a5'],d4:['n5']},
+      txt:{
+        ini:'Paulina Pérez Estrada (Dirección General) abre el SIA-NP para revisar cómo va el inventario.',
+        a1:['Paulina selecciona «Dashboard».',{'Usuario':'Paulina (Dirección General)'}],
+        a2:'Calcula los indicadores del periodo actual.',
+        'd1>b1':'¿Hay información? {[información suficiente]} → sí: ya hay movimientos (la salida de CU1, la recepción de CU6).',
+        q1:'Muestra el valor del inventario y la rotación.',
+        q2:['Muestra los productos bajo el punto de reorden: RAC-0408 y CIL-32100.',{'Bajo reorden':'RAC-0408, CIL-32100'}],
+        q3:['Muestra entradas, salidas y órdenes de compra pendientes: OC-2026-0147.',{'OC pendientes':'OC-2026-0147'}],
+        b2:'Unión: el tablero se muestra completo cuando están los tres bloques.',
+        a3:['Selecciona el periodo mensual.',{'Periodo':'mensual'}],
+        a4:'Actualiza las gráficas e indicadores.',
+        'd2>m2':'¿Exporta? {[no exporta]}. La flecha rodea por la izquierda hasta la fusión.',
+        'd3>a5':'Decide la usuaria: {[consulta el detalle]}.',
+        a5:'Paulina abre el detalle de los productos bajo reorden.',
+        'd4>n5':'¿Su rol tiene permiso? {[con permiso]}.',
+        n5:['Despliega el desglose del indicador.',{'Detalle':'desglose completo'}],
+        a6:'Registra la consulta en la bitácora de auditoría.',
+        fin:'Fin del flujo normal.' } },
+    alternos:[
+      { id:'2a', nombre:'2a. Información insuficiente', desc:'2a. No hay información suficiente: el sistema muestra el tablero con indicadores en cero y un aviso.',
+        elec:{d1:['n1']},
+        txt:{ ini:'Primer día con el sistema: todavía no hay movimientos registrados.',
+          'd1>n1':'¿Hay información? {[0 movimientos]} → {[información insuficiente]}.',
+          n1:'Muestra el tablero con indicadores en cero e informa la situación.', f1:'Fin: tablero en cero.' } },
+      { id:'5a', nombre:'5a. Exporta', desc:'5a. El usuario pide exportar: el sistema genera el reporte en Excel o CSV.',
+        elec:{d2:['n2']},
+        txt:{ 'd2>n2':'¿Exporta? {[exporta el tablero]} → sí.',
+          n2:['Genera el reporte en Excel o CSV, que Paulina quiere para CONTPAQi.',{'Exportado':'Excel / CSV'}] } },
+      { id:'7a', nombre:'7a. Sin permiso para el detalle', desc:'7a. El usuario no tiene permiso para el detalle: solo ve la información resumida.',
+        elec:{d4:['n6']},
+        txt:{ ini:'Esta vez entra al tablero un usuario cuyo rol no tiene permiso para el detalle de cierto indicador.',
+          a1:['El usuario selecciona «Dashboard».',{'Usuario':'(rol sin permiso para ese detalle)'}],
+          a5:'Pide el detalle de un indicador.',
+          'd4>n6':'¿Su rol tiene permiso? {[sin permiso]}.',
+          n6:['Muestra solo la información resumida.',{'Detalle':'solo el resumen'}] } }
+    ] },
+
+  { clave:'CU8', titulo:'CU8. Autenticar Usuario', corto:'CU8 Autenticación',
+    carriles:[['Usuario',230],[SIS,460],['Administrador',180]],
+    nodos:[['ini','ini',115,46,''],['a1','acc',115,86,'Accede a la pantalla de\ninicio de sesión'],['d1','dec',115,134,''],
+      ['a2','acc',115,182,'Solicita el restablecimiento\nal administrador'],['ad1','acc',780,182,'Restablece la\ncontraseña'],['m1','dec',115,232,''],['m2','dec',115,272,''],
+      ['a3','acc',115,314,'Captura su usuario y contraseña'],['a4','acc',115,356,'Selecciona "Iniciar sesión"'],['e1','acc',600,372,'Muestra un mensaje\nde error'],
+      ['a5','acc',450,400,'Valida las credenciales'],['d2','dec',450,444,''],['d3','dec',600,444,''],['d4','dec',450,494,''],
+      ['e2','acc',600,502,'Bloquea la cuenta y\nnotifica al administrador'],['ad2','acc',780,502,'Recibe el aviso\nde bloqueo'],['f2','fin',780,550,''],
+      ['n4','acc',320,540,'Niega el acceso e indica\ncontactar al administrador'],['f1','fin',320,588,''],['a6','acc',450,588,'Identifica el rol del usuario'],
+      ['b1','bar',450,628,400],['q1','acc',350,670,'Habilita los módulos y\noperaciones del rol'],['q2','acc',560,670,'Registra el acceso en la\nbitácora de auditoría'],
+      ['b2','bar',450,712,400],['a7','acc',450,752,'Muestra la pantalla principal'],['fin','fin',450,796,'']],
+    aristas:[['ini','a1'],['a1','d1'],['d1','a2','[olvidó su contraseña]'],['d1','m1','[recuerda su\ncontraseña]',{s:'l',t:'l',xm:20}],
+      ['a2','ad1',null,{s:'r',t:'l'}],['ad1','m1',null,{t:'r'}],['m1','m2'],['m2','a3'],['a3','a4'],['a4','a5'],['a5','d2'],
+      ['d2','d3','[credenciales\nincorrectas]',{s:'r',t:'l'}],['d3','e1','[menos de tres\nintentos]',{s:'t',t:'b',gp:[604,394]}],['e1','m2',null,{s:'t',t:'r'}],
+      ['d3','e2','[tercer intento\nfallido]'],['e2','ad2',null,{s:'r',t:'l'}],['ad2','f2'],['d2','d4','[credenciales correctas]',{gizq:true}],
+      ['d4','n4','[cuenta inactiva]',{s:'l'}],['n4','f1'],['d4','a6','[cuenta activa]'],['a6','b1'],['b1','q1'],['b1','q2'],['q1','b2'],['q2','b2'],['b2','a7'],['a7','fin']],
+    ej:'<b>Ejemplo: Ricardo inicia su turno</b>Antes de surtir el pedido de CU1, Ricardo inicia sesión. El sistema reconoce el rol <b>Auxiliar de Almacén</b> y le habilita solo los módulos de ese rol. El acceso queda en la bitácora.',
+    datos:{'Usuario':'—','Intentos fallidos':'0','Cuenta':'—','Rol':'—'},
+    normal:{ desc:'Flujo normal (pasos 1–7): inicio de sesión correcto.',
+      elec:{d1:['m1'],d2:['d4'],d4:['a6']},
+      txt:{
+        ini:'Ricardo llega a su turno y abre el SIA-NP.',
+        a1:'Accede a la pantalla de inicio de sesión.',
+        'd1>m1':'¿Recuerda su contraseña? {[recuerda su contraseña]} → la flecha baja por la izquierda, por dos fusiones.',
+        a3:['Captura su usuario y contraseña.',{'Usuario':'Ricardo'}],
+        a4:'Selecciona «Iniciar sesión».',
+        a5:'Valida las credenciales.',
+        'd2>d4':'¿Son correctas? {[credenciales correctas]}.',
+        'd4>a6':'¿La cuenta está activa? {[cuenta activa]} → sí.',
+        a6:['Identifica el rol del usuario: Auxiliar de Almacén.',{'Rol':'Auxiliar de Almacén','Cuenta':'activa'}],
+        q1:'Habilita solo los módulos y operaciones de ese rol (por ejemplo, Registrar movimientos de CU1).',
+        q2:'Registra el acceso en la bitácora de auditoría.',
+        a7:'Muestra la pantalla principal.',
+        fin:'Fin: Ricardo ya puede hacer el surtido de CU1.' } },
+    alternos:[
+      { id:'2a', nombre:'2a. Olvidó la contraseña', desc:'2a. El usuario olvidó la contraseña: solicita el restablecimiento al administrador.',
+        elec:{d1:['a2']},
+        txt:{ 'd1>a2':'¿Recuerda su contraseña? {[olvidó su contraseña]}.',
+          a2:'Solicita el restablecimiento al administrador.',
+          ad1:'La ficha cruza al tercer carril: el <b>Administrador</b> restablece la contraseña. La flecha vuelve a la fusión del usuario.' } },
+      { id:'4a', nombre:'4a. Credenciales incorrectas', desc:'4a. Credenciales incorrectas: mensaje de error y reintento.',
+        elec:{d2:['d3','d4'],d3:['e1']},
+        txt:{ a3:['Captura su usuario y se equivoca en la contraseña.',{'Usuario':'Ricardo'}],
+          'd2>d3':'¿Son correctas? {[credenciales incorrectas]}.',
+          'd3>e1':'¿Cuántos intentos van? {[1 &lt; 3]} → {[menos de tres intentos]}.',
+          e1:['Muestra un mensaje de error; la flecha sube a la fusión de antes de la captura (ciclo).',{'Intentos fallidos':'1'}],
+          'a3#2':'Captura de nuevo, esta vez bien.', 'a5#2':'Valida otra vez las credenciales.' } },
+      { id:'4b', nombre:'4b. Tres intentos fallidos', desc:'4b. Tres intentos fallidos consecutivos: bloqueo temporal y aviso al administrador.',
+        elec:{d2:['d3'],d3:['e1','e1','e2']},
+        txt:{ a3:['Captura su usuario y se equivoca en la contraseña.',{'Usuario':'Ricardo'}],
+          'd2>d3':'¿Son correctas? {[credenciales incorrectas]}.',
+          'd3>e1':'¿Cuántos intentos van? {[1 &lt; 3]} → {[menos de tres intentos]}.',
+          'd3>e1#2':'¿Cuántos intentos van? {[2 &lt; 3]} → {[menos de tres intentos]}.',
+          'd3>e2':'¿Cuántos intentos van? {[3]} → {[tercer intento fallido]}.',
+          e1:['Muestra un mensaje de error y deja reintentar.',{'Intentos fallidos':'1'}],
+          'e1#2':['Otro mensaje de error.',{'Intentos fallidos':'2'}],
+          'a3#2':'Segundo intento, también incorrecto.', 'a3#3':'Tercer intento, también incorrecto.',
+          e2:['Bloquea la cuenta y notifica al administrador.',{'Intentos fallidos':'3','Cuenta':'bloqueada'}],
+          ad2:'En el carril del Administrador: recibe el aviso de bloqueo.',
+          f2:'Fin en el carril del Administrador: la cuenta queda bloqueada.' } },
+      { id:'4c', nombre:'4c. Cuenta inactiva', desc:'4c. La cuenta está inactiva: acceso negado; debe contactar al administrador.',
+        elec:{d4:['n4']},
+        txt:{ ini:'Un usuario cuya cuenta fue desactivada intenta entrar.',
+          a3:['Captura su usuario y contraseña (correctos).',{'Usuario':'(cuenta desactivada)'}],
+          'd4>n4':'¿La cuenta está activa? {[cuenta inactiva]}.',
+          n4:['Niega el acceso e indica contactar al administrador.',{'Cuenta':'inactiva'}],
+          f1:'Fin: acceso negado.' } }
+    ] }
+  ];
+
+  /* ---- Medidas (las de diagramas_actividad.py) ---- */
+  var F_ACC = 11, F_GUARDA = 10, LH_ACC = 13, LH_GUARDA = 11.5, PAD_X = 9, PAD_Y = 6;
+  var R_INI = 9, R_FIN = 10, R_FIN_IN = 6, ROMBO = 12, BARRA = 5, FLECHA_L = 8, FLECHA_A = 3.5, MARGEN = 10;
+  var ctx = null;
+  try { ctx = document.createElement('canvas').getContext('2d'); } catch (e) { ctx = null; }
+  function ancho(s, tam, negrita){
+    if (!ctx) return s.length * tam * 0.52;
+    ctx.font = (negrita ? 'bold ' : '') + tam + 'px Arial, "Liberation Sans", Helvetica, sans-serif';
+    return ctx.measureText(s).width;
+  }
+  function esBT(l){ return l === 't' || l === 'b'; }
+
+  function construir(c){
+    var dg = { c:c, carriles:[], nodos:{}, lista:[], aristas:[], sal:{} };
+    var x = 0;
+    c.carriles.forEach(function(k){ dg.carriles.push({ nombre:k[0], x0:x, x1:x + k[1] }); x += k[1]; });
+    dg.ancho = x; dg.cab = c.cab || 28;
+    var maxY = 0;
+    c.nodos.forEach(function(t){
+      var n = { id:t[0], tipo:t[1], x:t[2], y:t[3], texto:t[4] };
+      if (n.tipo === 'acc') {
+        n.lineas = String(n.texto).split('\n');
+        var w = 0; n.lineas.forEach(function(l){ w = Math.max(w, ancho(l, F_ACC)); });
+        n.w = w + 2 * PAD_X; n.h = LH_ACC * n.lineas.length + 2 * PAD_Y - 1;
+      } else if (n.tipo === 'dec') { n.w = n.h = 2 * ROMBO; }
+      else if (n.tipo === 'ini') { n.w = n.h = 2 * R_INI; }
+      else if (n.tipo === 'fin') { n.w = n.h = 2 * R_FIN; }
+      else { n.w = Number(n.texto); n.h = BARRA; }
+      n.x0 = n.x - n.w / 2; n.x1 = n.x + n.w / 2; n.y0 = n.y - n.h / 2; n.y1 = n.y + n.h / 2;
+      maxY = Math.max(maxY, n.y1);
+      n.carril = carrilDe(dg, n.x);
+      dg.nodos[n.id] = n; dg.lista.push(n);
+    });
+    dg.alto = maxY + 14;
+    c.aristas.forEach(function(t, i){
+      var a = { o:t[0], d:t[1], g:t[2] || null, op:t[3] || {}, i:i };
+      a.pts = ruta(dg, a);
+      if (a.g) a.caja = cajaGuarda(a);
+      dg.aristas.push(a);
+      (dg.sal[a.o] = dg.sal[a.o] || []).push(a);
+    });
+    return dg;
+  }
+  function carrilDe(dg, x){
+    for (var i = 0; i < dg.carriles.length; i++) if (dg.carriles[i].x0 <= x && x < dg.carriles[i].x1) return i;
+    return dg.carriles.length - 1;
+  }
+  function puerto(n, l, xp){
+    if (esBT(l)) {
+      var x = n.x;
+      if (n.tipo === 'bar' && xp != null && xp >= n.x0 + 2 && xp <= n.x1 - 2) x = xp;
+      return [x, l === 't' ? n.y0 : n.y1];
+    }
+    return l === 'l' ? [n.x0, n.y] : [n.x1, n.y];
+  }
+  function ruta(dg, a){
+    var o = dg.nodos[a.o], d = dg.nodos[a.d], op = a.op;
+    var so = op.s || 'b', sd = op.t || 't'; a.so = so; a.sd = sd;
+    var po = puerto(o, so, op.sx != null ? op.sx : d.x);
+    var pd = puerto(d, sd, op.tx != null ? op.tx : po[0]);
+    if (o.tipo === 'bar' && op.sx == null) po = puerto(o, so, pd[0]);
+    var m;
+    if (op.pts) m = op.pts.slice();
+    else if (esBT(so) && esBT(sd)) {
+      if (Math.abs(po[0] - pd[0]) < 0.5) m = [];
+      else {
+        var ymd;
+        if (sd === 't') { var h = pd[1] - po[1]; ymd = h >= 24 ? pd[1] - 12 : (po[1] + pd[1]) / 2; }
+        else ymd = Math.max(po[1], pd[1]) + 14;
+        var ym = op.ym != null ? op.ym : ymd;
+        m = [[po[0], ym], [pd[0], ym]];
+      }
+    }
+    else if (!esBT(so) && esBT(sd)) m = [[pd[0], po[1]]];
+    else if (esBT(so) && !esBT(sd)) m = [[po[0], pd[1]]];
+    else m = Math.abs(po[1] - pd[1]) < 0.5 ? [] : [[op.xm, po[1]], [op.xm, pd[1]]];
+    return [po].concat(m, [pd]);
+  }
+  function cajaGuarda(a){
+    var L = a.g.split('\n'), w = 0;
+    L.forEach(function(l){ w = Math.max(w, ancho(l, F_GUARDA)); });
+    var h = LH_GUARDA * L.length, s = a.pts[0], op = a.op, x, y;
+    if (op.gp) { x = op.gp[0]; y = op.gp[1]; }
+    else if (a.so === 'l') { x = s[0] - 3 - w; y = s[1] - 2 - h; }
+    else if (a.so === 'r') { x = s[0] + 3; y = s[1] - 2 - h; }
+    else if (a.so === 'b') { x = op.gizq ? s[0] - 4 - w : s[0] + 4; y = s[1] + 1; }
+    else { x = s[0] + 4; y = s[1] - 1 - h; }
+    x += op.gdx || 0; y += op.gdy || 0;
+    return { x:x, y:y, lineas:L };
+  }
+
+  /* ---- Recorrido de un escenario (la ficha) ---- */
+  function recorrer(dg, elec){
+    var uso = {}, vis = {}, pasos = [], pend = [], cur = 'ini', vueltas = 0;
+    function elegir(id){
+      var arr = elec[id], k = uso[id] || 0, s = dg.sal[id];
+      uso[id] = k + 1;
+      var dest = arr ? arr[Math.min(k, arr.length - 1)] : s[0].d;
+      for (var i = 0; i < s.length; i++) if (s[i].d === dest) return s[i];
+      return s[0];
+    }
+    function fusion(id){ return dg.nodos[id].tipo === 'dec' && (dg.sal[id] || []).length === 1; }
+    function bifurca(id){ return dg.nodos[id].tipo === 'bar' && (dg.sal[id] || []).length > 1; }
+    function visitar(id){ vis[id] = (vis[id] || 0) + 1; return vis[id]; }
+    function rama(e){
+      var r = { ida:[], vuelta:[], nodos:[], elegidas:[] }, buf = [e], c = e.d, g = 0;
+      while (g++ < 60) {
+        var n = dg.nodos[c], s = dg.sal[c] || [];
+        if (n.tipo === 'bar') { r.union = c; r.vuelta = buf; break; }
+        if (fusion(c)) { buf.push(s[0]); c = s[0].d; continue; }
+        r.ida = r.ida.concat(buf); r.nodos.push(c); visitar(c);
+        var e2 = s.length > 1 ? elegir(c) : s[0];
+        if (s.length > 1) r.elegidas.push(e2);
+        buf = [e2]; c = e2.d;
+      }
+      return r;
+    }
+    pasos.push({ tipo:'ini', nodos:['ini'], aristas:[], visita:visitar('ini') });
+    while (vueltas++ < 400) {
+      var s = dg.sal[cur] || [];
+      if (!s.length) break;
+      if (bifurca(cur)) {
+        var ramas = s.map(rama), todos = [], ar = pend.slice();
+        ramas.forEach(function(r){ todos = todos.concat(r.nodos); ar = ar.concat(r.ida); });
+        pasos.push({ tipo:'fork', bar:cur, nodos:todos, aristas:ar, pend:pend.slice(), ramas:ramas });
+        var vu = []; ramas.forEach(function(r){ vu = vu.concat(r.vuelta); });
+        pasos.push({ tipo:'join', nodos:[ramas[0].union], aristas:vu, ramas:ramas, visita:visitar(ramas[0].union) });
+        pend = []; cur = ramas[0].union; continue;
+      }
+      var e = s.length > 1 ? elegir(cur) : s[0];
+      if (s.length > 1) pasos[pasos.length - 1].elegida = e;
+      pend.push(e); cur = e.d;
+      if (fusion(cur) || bifurca(cur)) continue;
+      var m = dg.nodos[cur];
+      pasos.push({ tipo:m.tipo, nodos:[cur], aristas:pend, visita:visitar(cur) });
+      pend = [];
+      if (m.tipo === 'fin') break;
+    }
+    return pasos;
+  }
+
+  /* ---- Textos ---- */
+  function fmt(s){ return String(s).replace(/\{\[([^\]]*)\]\}/g, '<span class="act-g">[$1]</span>'); }
+  function ent(v){ if (v == null) return null; if (typeof v === 'string') return { t:v, d:null }; return { t:v[0], d:v[1] || null }; }
+  function buscar(txt, clave, visita){ return ent(txt[clave + '#' + visita]) || ent(txt[clave]); }
+  function plano(s){ return String(s).replace(/\n/g, ' '); }
+  function chip(dg, i){ return '<span class="chip">' + plano(dg.carriles[i].nombre) + '</span> '; }
+
+  function resolver(cu, alt){
+    var cadena = [], a = alt;
+    while (a) { cadena.unshift(a); a = a.base ? buscarAlt(cu, a.base) : null; }
+    var elec = {}, txt = {}, k;
+    for (k in cu.normal.elec) elec[k] = cu.normal.elec[k];
+    for (k in cu.normal.txt) txt[k] = cu.normal.txt[k];
+    cadena.forEach(function(x){
+      for (k in x.elec) elec[k] = x.elec[k];
+      for (k in x.txt) txt[k] = x.txt[k];
+    });
+    return { elec:elec, txt:txt };
+  }
+  function buscarAlt(cu, id){ for (var i = 0; i < cu.alternos.length; i++) if (cu.alternos[i].id === id) return cu.alternos[i]; return null; }
+
+  function narrar(dg, p, txt){
+    var datos = {}, e, n, titulo, texto = '';
+    function suma(x){ if (x && x.d) for (var k in x.d) datos[k] = x.d[k]; }
+    if (p.tipo === 'ini') {
+      e = buscar(txt, 'ini', 1); suma(e);
+      titulo = chip(dg, dg.nodos.ini.carril) + 'Nodo inicial';
+      texto = e ? e.t : 'Empieza la actividad.';
+    } else if (p.tipo === 'acc') {
+      n = dg.nodos[p.nodos[0]]; e = buscar(txt, n.id, p.visita); suma(e);
+      titulo = chip(dg, n.carril) + plano(n.texto);
+      texto = e ? e.t : 'Acción en el carril de ' + plano(dg.carriles[n.carril].nombre) + '.';
+    } else if (p.tipo === 'dec') {
+      n = dg.nodos[p.nodos[0]];
+      var el = p.elegida;
+      e = el ? buscar(txt, n.id + '>' + el.d, p.visita) : null; suma(e);
+      titulo = chip(dg, n.carril) + 'Decisión: ' + (el && el.g ? plano(el.g) : '');
+      texto = e ? e.t : 'Se evalúa la guarda {[' + (el && el.g ? plano(el.g).replace(/^\[|\]$/g, '') : '') + ']}.';
+    } else if (p.tipo === 'fin') {
+      n = dg.nodos[p.nodos[0]]; e = buscar(txt, n.id, 1); suma(e);
+      titulo = chip(dg, n.carril) + 'Nodo final';
+      texto = e ? e.t : 'Termina la actividad.';
+    } else if (p.tipo === 'fork') {
+      var carr = {}, items = '', cuantos = 0;
+      p.ramas.forEach(function(r){
+        r.nodos.forEach(function(id){
+          var nn = dg.nodos[id], x;
+          carr[nn.carril] = true;
+          if (nn.tipo === 'dec') {
+            var el2 = null; r.elegidas.forEach(function(q){ if (q.o === id) el2 = q; });
+            x = el2 ? buscar(txt, id + '>' + el2.d, 1) : null; suma(x);
+            items += '<li>' + (x ? x.t : 'Decisión: ' + (el2 ? plano(el2.g) : '')) + '</li>';
+          } else {
+            cuantos++;
+            x = buscar(txt, id, 1); suma(x);
+            items += '<li><b>' + plano(nn.texto) + '.</b> ' + (x ? x.t : '') + '</li>';
+          }
+        });
+      });
+      titulo = '';
+      for (var ci in carr) titulo += chip(dg, Number(ci));
+      titulo += 'Bifurcación: ' + p.ramas.length + ' hilos en paralelo';
+      texto = 'La barra negra abre ' + p.ramas.length + ' hilos que ocurren a la vez:<ul>' + items + '</ul>';
+    } else if (p.tipo === 'join') {
+      n = dg.nodos[p.nodos[0]]; e = buscar(txt, n.id, 1); suma(e);
+      titulo = chip(dg, n.carril) + 'Unión';
+      texto = e ? e.t : 'La barra de unión espera a que terminen todos los hilos paralelos; después sigue un solo flujo.';
+    }
+    return { titulo:titulo, texto:fmt(texto), datos:datos };
+  }
+
+  /* ---- Geometría de la animación ---- */
+  function centro(dg, id){ var n = dg.nodos[id]; return [n.x, n.y]; }
+  function cadenaPts(lista){ var pts = []; lista.forEach(function(a){ pts = pts.concat(a.pts); }); return pts; }
+  function fasesDe(dg, p){
+    if (p.tipo === 'ini') return [];
+    if (p.tipo === 'fork') {
+      var f1 = [centro(dg, p.pend[0].o)].concat(cadenaPts(p.pend));
+      var fin1 = f1[f1.length - 1];
+      var f2 = p.ramas.map(function(r){ return [fin1].concat(cadenaPts(r.ida), [centro(dg, r.nodos[r.nodos.length - 1])]); });
+      return [[f1], f2];
+    }
+    if (p.tipo === 'join') {
+      return [p.ramas.map(function(r){ return [centro(dg, r.nodos[r.nodos.length - 1])].concat(cadenaPts(r.vuelta)); })];
+    }
+    return [[[centro(dg, p.aristas[0].o)].concat(cadenaPts(p.aristas), [centro(dg, p.nodos[0])])]];
+  }
+  function destinos(dg, p, fases){
+    if (!fases.length) return [centro(dg, p.nodos[0])];
+    var ult = fases[fases.length - 1];
+    if (p.tipo === 'join') { var b = dg.nodos[p.nodos[0]]; return ult.map(function(pl){ return [pl[pl.length - 1][0], b.y]; }); }
+    return ult.map(function(pl){ return pl[pl.length - 1]; });
+  }
+  function largo(pl){ var L = 0; for (var i = 1; i < pl.length; i++) L += Math.abs(pl[i][0] - pl[i-1][0]) + Math.abs(pl[i][1] - pl[i-1][1]); return L; }
+  function puntoEn(pl, f){
+    var L = largo(pl) * f, i, seg;
+    for (i = 1; i < pl.length; i++) {
+      seg = Math.abs(pl[i][0] - pl[i-1][0]) + Math.abs(pl[i][1] - pl[i-1][1]);
+      if (L <= seg || i === pl.length - 1) {
+        var t = seg ? Math.min(1, L / seg) : 1;
+        return [pl[i-1][0] + (pl[i][0] - pl[i-1][0]) * t, pl[i-1][1] + (pl[i][1] - pl[i-1][1]) * t];
+      }
+      L -= seg;
+    }
+    return pl[pl.length - 1];
+  }
+
+  SIA.registrar('act', function(raiz){
+    var S = SIA.svg;
+    var tabsCU = raiz.querySelector('.act-tabs-cu'), barraEsc = raiz.querySelector('.act-barra-esc'),
+        resumen = raiz.querySelector('.act-resumen'), lienzo = raiz.querySelector('.act-lienzo'),
+        reproEl = raiz.querySelector('.act-repro'), tablaEl = raiz.querySelector('.act-tabla'),
+        ejEl = raiz.querySelector('.act-ejemplo');
+    var reducido = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    var est = { cu:null, dg:null, el:null, rep:null, ult:-1, anim:0, datos:{}, cambio:{}, pasos:[] };
+
+    CASOS.forEach(function(cu, i){
+      var b = document.createElement('button');
+      b.type = 'button'; b.textContent = cu.corto; b.setAttribute('role', 'tab');
+      b.addEventListener('click', function(){ mostrarCU(i); });
+      tabsCU.appendChild(b);
+    });
+
+    function dibujar(dg){
+      var W = dg.ancho + 2 * MARGEN, H = dg.alto + 2 * MARGEN;
+      var svg = S('svg', { viewBox:'0 0 ' + W + ' ' + H, width:W, height:H, role:'img', 'aria-label':'Diagrama de actividad ' + dg.c.titulo });
+      var g = S('g', { transform:'translate(' + MARGEN + ',' + MARGEN + ')' }, svg);
+      var el = { carriles:[], nodos:{}, aristas:[], guardas:[], fichas:[] };
+      dg.carriles.forEach(function(c){
+        var gc = S('g', { 'class':'carril' }, g);
+        S('rect', { 'class':'cuerpo', x:c.x0, y:0, width:c.x1 - c.x0, height:dg.alto }, gc);
+        S('rect', { 'class':'cab', x:c.x0, y:0, width:c.x1 - c.x0, height:dg.cab }, gc);
+        var L = c.nombre.split('\n'), base = (dg.cab - 14 * L.length) / 2 + 11;
+        L.forEach(function(l, k){ S('text', { x:(c.x0 + c.x1) / 2, y:base + 14 * k, 'text-anchor':'middle', texto:l }, gc); });
+        el.carriles.push(gc);
+      });
+      dg.aristas.forEach(function(a){
+        var ga = S('g', { 'class':'ar' }, g);
+        S('path', { d:'M' + a.pts.map(function(p){ return p[0] + ' ' + p[1]; }).join(' L') }, ga);
+        var p0 = a.pts[a.pts.length - 2], p1 = a.pts[a.pts.length - 1];
+        var dx = p1[0] - p0[0], dy = p1[1] - p0[1], Ln = Math.sqrt(dx * dx + dy * dy) || 1, ux = dx / Ln, uy = dy / Ln;
+        var bx = p1[0] - ux * FLECHA_L, by = p1[1] - uy * FLECHA_L;
+        S('polygon', { points:p1[0] + ',' + p1[1] + ' ' + (bx - uy * FLECHA_A) + ',' + (by + ux * FLECHA_A) + ' ' + (bx + uy * FLECHA_A) + ',' + (by - ux * FLECHA_A) }, ga);
+        el.aristas[a.i] = ga;
+      });
+      dg.aristas.forEach(function(a){
+        if (!a.caja) return;
+        var gg = S('g', { 'class':'gu' }, g);
+        a.caja.lineas.forEach(function(l, k){ S('text', { x:a.caja.x, y:a.caja.y + LH_GUARDA * k + 8.6, texto:l }, gg); });
+        el.guardas[a.i] = gg;
+      });
+      dg.lista.forEach(function(n){
+        var gn = S('g', { 'class':'nd ' + n.tipo }, g);
+        if (n.tipo === 'acc') {
+          S('rect', { 'class':'forma', x:n.x0, y:n.y0, width:n.w, height:n.h, rx:8, ry:8 }, gn);
+          var y = n.y - (LH_ACC * n.lineas.length) / 2 + 9.6;
+          n.lineas.forEach(function(l, k){ S('text', { x:n.x, y:y + LH_ACC * k, 'text-anchor':'middle', texto:l }, gn); });
+        } else if (n.tipo === 'dec') {
+          S('polygon', { points:n.x + ',' + (n.y - ROMBO) + ' ' + (n.x + ROMBO) + ',' + n.y + ' ' + n.x + ',' + (n.y + ROMBO) + ' ' + (n.x - ROMBO) + ',' + n.y }, gn);
+        } else if (n.tipo === 'ini') {
+          S('circle', { 'class':'lleno', cx:n.x, cy:n.y, r:R_INI }, gn);
+        } else if (n.tipo === 'fin') {
+          S('circle', { 'class':'anillo', cx:n.x, cy:n.y, r:R_FIN }, gn);
+          S('circle', { 'class':'lleno', cx:n.x, cy:n.y, r:R_FIN_IN }, gn);
+        } else {
+          S('rect', { 'class':'barra', x:n.x0, y:n.y0, width:n.w, height:n.h }, gn);
+        }
+        el.nodos[n.id] = gn;
+      });
+      var gf = S('g', { 'class':'fichas' }, g);
+      for (var i = 0; i < 4; i++) el.fichas.push(S('circle', { 'class':'ficha', r:6, cx:0, cy:0, style:'display:none' }, gf));
+      lienzo.innerHTML = '';
+      lienzo.appendChild(svg);
+      el.svg = svg; el.W = W; el.H = H;
+      return el;
+    }
+
+    function limpiar(){
+      var el = est.el; if (!el) return;
+      est.anim++;
+      el.carriles.forEach(function(c){ c.classList.remove('activo'); });
+      for (var k in el.nodos) el.nodos[k].classList.remove('rec', 'actual');
+      el.aristas.forEach(function(a){ if (a) a.classList.remove('rec', 'actual', 'sig'); });
+      el.guardas.forEach(function(g){ if (g) g.classList.remove('actual'); });
+      el.fichas.forEach(function(f){ f.style.display = 'none'; });
+      est.datos = {}; for (var d in est.cu.datos) est.datos[d] = est.cu.datos[d];
+      est.cambio = {};
+    }
+    function colocar(pts){
+      est.el.fichas.forEach(function(f, i){
+        if (i < pts.length) { f.setAttribute('cx', pts[i][0]); f.setAttribute('cy', pts[i][1]); f.style.display = ''; }
+        else f.style.display = 'none';
+      });
+    }
+    function animar(fases, fin){
+      var id = ++est.anim, k = 0;
+      function fase(){
+        if (id !== est.anim) return;
+        if (k >= fases.length) { colocar(fin); return; }
+        var pls = fases[k++], L = 0;
+        pls.forEach(function(pl){ L = Math.max(L, largo(pl)); });
+        if (L < 1) { fase(); return; }
+        var dur = Math.min(650, Math.max(220, L * 1.4)), t0 = null;
+        function cuadro(ts){
+          if (id !== est.anim) return;
+          if (t0 === null) t0 = ts;
+          var f = Math.min(1, (ts - t0) / dur), fe = f < .5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2;
+          colocar(pls.map(function(pl){ return puntoEn(pl, fe); }));
+          if (f < 1) window.requestAnimationFrame(cuadro); else fase();
+        }
+        window.requestAnimationFrame(cuadro);
+      }
+      fase();
+    }
+    function desplazar(p){
+      var el = est.el, svg = el.svg;
+      if (lienzo.scrollHeight <= lienzo.clientHeight + 4) return;
+      var ys = p.nodos.map(function(id){ return est.dg.nodos[id].y; });
+      var y = (Math.min.apply(null, ys) + Math.max.apply(null, ys)) / 2 + MARGEN;
+      var rs = svg.getBoundingClientRect(), rl = lienzo.getBoundingClientRect();
+      var esc = rs.height / el.H;
+      var top = rs.top - rl.top + lienzo.scrollTop + y * esc - lienzo.clientHeight / 2;
+      try { lienzo.scrollTo({ top:Math.max(0, top), behavior:reducido ? 'auto' : 'smooth' }); } catch (e) { lienzo.scrollTop = Math.max(0, top); }
+    }
+    function pintarDatos(){
+      var h = '<table class="t">';
+      for (var k in est.datos) h += '<tr><th>' + k + '</th><td' + (est.cambio[k] ? ' class="cambio"' : '') + '>' + est.datos[k] + '</td></tr>';
+      tablaEl.innerHTML = h + '</table>';
+    }
+
+    function elegirEsc(j){
+      var cu = est.cu, dg = est.dg, alt = j > 0 ? cu.alternos[j - 1] : null;
+      var bs = barraEsc.querySelectorAll('button');
+      for (var b = 0; b < bs.length; b++) bs[b].classList.toggle('activo', b === j);
+      var r = resolver(cu, alt);
+      var crudos = recorrer(dg, r.elec);
+      resumen.innerHTML = '<b>' + (alt ? 'Flujo alterno ' + alt.nombre : 'Flujo normal') + '.</b> ' + (alt ? alt.desc : cu.normal.desc) +
+        ' <span class="chip">' + crudos.length + ' pasos</span>' +
+        (alt ? '<div class="nota-fuente">Texto del alterno: entregable 1 (CU corregidos el 9 nov 2026); la rama es la del diagrama de ' + cu.clave + '.</div>' : '');
+      var pasos = crudos.map(function(p, i){
+        var nar = narrar(dg, p, r.txt), fases = fasesDe(dg, p), fin = destinos(dg, p, fases);
+        return {
+          titulo:nar.titulo, texto:nar.texto,
+          aplicar:function(k, ultimo){
+            var el = est.el;
+            p.aristas.forEach(function(a){
+              el.aristas[a.i].classList.add('rec');
+              el.nodos[a.o].classList.add('rec'); el.nodos[a.d].classList.add('rec');
+            });
+            if (p.tipo === 'fork') el.nodos[p.bar].classList.add('rec');
+            p.nodos.forEach(function(id){ el.nodos[id].classList.add('rec'); });
+            for (var d in nar.datos) { est.datos[d] = nar.datos[d]; if (ultimo) est.cambio[d] = true; }
+            if (!ultimo) return;
+            var nodosAct = p.tipo === 'fork' ? [p.bar].concat(p.nodos) : p.nodos;
+            nodosAct.forEach(function(id){ el.nodos[id].classList.add('actual'); el.carriles[est.dg.nodos[id].carril].classList.add('activo'); });
+            p.aristas.forEach(function(a){ el.aristas[a.i].classList.add('actual'); });
+            if (p.elegida) { el.aristas[p.elegida.i].classList.add('sig'); if (el.guardas[p.elegida.i]) el.guardas[p.elegida.i].classList.add('actual'); }
+            if (p.tipo === 'fork') p.ramas.forEach(function(rr){ rr.elegidas.forEach(function(q){ if (el.guardas[q.i]) el.guardas[q.i].classList.add('actual'); }); });
+            if (!reducido && k === est.ult + 1 && fases.length) animar(fases, fin); else { est.anim++; colocar(fin); }
+          }
+        };
+      });
+      est.pasos = crudos;
+      if (est.rep) est.rep.destruir();
+      est.ult = -1;
+      est.rep = SIA.reproductor(reproEl, pasos, {
+        intervalo:2800,
+        tituloInicial:cu.titulo + ': ' + (alt ? 'alterno ' + alt.nombre : 'flujo normal'),
+        textoInicial:'Pulsa ▶ para que la ficha recorra el diagrama, o avanza paso a paso con ▶|. En cada decisión se muestra la guarda evaluada con los datos del ejemplo.',
+        reiniciar:limpiar,
+        alCambiar:function(i){
+          pintarDatos();
+          if (i >= 0) desplazar(crudos[i]); else { try { lienzo.scrollTo({ top:0 }); } catch (e) { lienzo.scrollTop = 0; } }
+          est.ult = i;
+        }
+      });
+    }
+
+    function mostrarCU(i){
+      var cu = CASOS[i];
+      var bs = tabsCU.querySelectorAll('button');
+      for (var b = 0; b < bs.length; b++) { bs[b].classList.toggle('activo', b === i); bs[b].setAttribute('aria-selected', b === i ? 'true' : 'false'); }
+      est.cu = cu; est.dg = construir(cu); est.el = dibujar(est.dg);
+      ejEl.innerHTML = cu.ej + '<div class="nota-fuente">Cifras de ejemplo con datos reales del cliente (personas, giro, familias y formato de ubicación salen de la ERS). Cada ejemplo parte de la existencia que dejó CU1 (28), salvo que se diga otra cosa.</div>';
+      barraEsc.innerHTML = '<span class="etq">' + cu.clave + ':</span>';
+      var opciones = [{ nombre:'Flujo normal' }].concat(cu.alternos);
+      opciones.forEach(function(o, j){
+        var bt = document.createElement('button');
+        bt.type = 'button'; bt.textContent = j === 0 ? 'Flujo normal' : 'Alterno ' + o.nombre;
+        if (j === 0) bt.className = 'normal';
+        bt.addEventListener('click', function(){ elegirEsc(j); });
+        barraEsc.appendChild(bt);
+      });
+      elegirEsc(0);
+    }
+
+    mostrarCU(0);
+  });
+})();
+</script>

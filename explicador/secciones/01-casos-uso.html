@@ -1,0 +1,794 @@
+<style>
+#sec-cu .cu-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+#sec-cu .cu-cols > div{background:var(--papel);border:1px solid var(--tinta);border-radius:6px;padding:12px 14px}
+#sec-cu .cu-cita{border-left:3px solid var(--tinta);padding:2px 0 2px 10px;margin:8px 0;font-style:italic}
+#sec-cu svg .cu-oculto{opacity:0}
+#sec-cu svg .cu-clic{cursor:pointer}
+#sec-cu svg .cu-clic:hover{fill:var(--suave)}
+#sec-cu .cu-ficha{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin:10px 0}
+#sec-cu .cu-ficha > div{background:var(--papel);border:1px solid var(--tinta);border-radius:6px;padding:10px 12px;font-size:14.5px}
+#sec-cu .cu-ficha h4{margin:0 0 4px;font-size:14px;text-transform:uppercase;letter-spacing:.03em}
+#sec-cu .cu-ficha ul{margin:4px 0;padding-left:18px}
+#sec-cu .cu-flujos{display:flex;flex-wrap:wrap;gap:4px;margin:10px 0 4px}
+#sec-cu .cu-flujos span{font-size:13px;color:var(--texto2);align-self:center;margin-right:4px}
+#sec-cu .cu-flujos button{font:inherit;font-size:13.5px;padding:4px 10px;border:1px solid var(--tinta);background:var(--papel);border-radius:4px;cursor:pointer}
+#sec-cu .cu-flujos button.cu-btn-alt{border-style:dashed}
+#sec-cu .cu-flujos button.activo{background:var(--tinta);color:var(--papel);border-style:solid}
+#sec-cu .cu-rejilla{display:grid;grid-template-columns:minmax(0,2fr) minmax(250px,1fr);gap:12px;align-items:start}
+#sec-cu .cu-conv{background:var(--papel);border:1px solid var(--tinta);border-radius:6px;padding:10px 12px}
+#sec-cu .cu-conv-cab{display:flex;justify-content:space-between;font-weight:bold;font-size:14px;border-bottom:1px solid var(--tinta);padding-bottom:5px}
+#sec-cu .cu-burbujas{display:flex;flex-direction:column;gap:8px;min-height:220px;max-height:460px;overflow:auto;padding:10px 2px}
+#sec-cu .cu-vacio{color:var(--texto2);font-size:14px;text-align:center;margin:auto}
+#sec-cu .cu-b{max-width:66%;border:1px solid var(--tinta);border-radius:12px;padding:7px 11px;background:var(--papel);font-size:14.5px;animation:cu-burbuja .3s ease}
+#sec-cu .cu-u{align-self:flex-start;border-bottom-left-radius:2px}
+#sec-cu .cu-s{align-self:flex-end;background:var(--suave);border-bottom-right-radius:2px}
+#sec-cu .cu-b.cu-alt{border-style:dashed}
+#sec-cu .cu-b.cu-actual{border:2px solid var(--acento)}
+#sec-cu .cu-b.cu-fin-ok{border:2px solid var(--ok)}
+#sec-cu .cu-b.cu-fin-error{border:2px solid var(--error)}
+#sec-cu .cu-b.cu-fin-alto{border:2px solid var(--texto2)}
+#sec-cu .cu-n{display:inline-block;min-width:26px;padding:0 6px;border-radius:999px;background:var(--tinta);color:var(--papel);font-size:12px;font-weight:bold;text-align:center;margin-right:6px}
+#sec-cu .cu-alt .cu-n{background:var(--papel);color:var(--tinta);border:1px dashed var(--tinta)}
+#sec-cu .cu-ej{font-size:13px;color:#333;margin-top:5px;padding-top:4px;border-top:1px dotted #999}
+#sec-cu .cu-res{font-size:12.5px;font-weight:bold;margin-top:4px}
+#sec-cu .cu-res.ok{color:var(--ok)}
+#sec-cu .cu-res.error{color:var(--error)}
+#sec-cu .cu-res.alto{color:var(--texto2)}
+#sec-cu .cu-datos{background:var(--papel);border:1px solid var(--tinta);border-radius:6px;padding:10px 12px}
+#sec-cu .cu-datos h4{margin:0 0 6px;font-size:14px}
+#sec-cu .cu-datos table.t{font-size:13px;margin:0}
+#sec-cu .cu-datos table.t th{width:44%;font-weight:normal}
+#sec-cu .cu-datos tr.cu-cambio td{background:#ffe8d9;color:var(--acento);font-weight:bold}
+#sec-cu .cu-leyenda{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+#sec-cu .cu-leyenda > div{display:flex;gap:10px;align-items:center;background:var(--papel);border:1px solid var(--tinta);border-radius:6px;padding:8px 10px;font-size:14px}
+#sec-cu .cu-leyenda svg{flex:0 0 auto}
+#sec-cu .cu-mini{display:inline-block;border:1px solid var(--tinta);border-radius:10px;padding:1px 8px;font-size:12.5px}
+#sec-cu .cu-mini.d{border-style:dashed}
+#sec-cu details.cu-completo{margin:8px 0;background:var(--papel);border:1px solid var(--tinta);border-radius:6px;padding:8px 14px}
+#sec-cu details.cu-completo summary{cursor:pointer;font-weight:bold}
+#sec-cu details.cu-completo ol,#sec-cu details.cu-completo ul{margin:4px 0;padding-left:22px;font-size:14px}
+@keyframes cu-burbuja{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (max-width:760px){
+  #sec-cu .cu-cols,#sec-cu .cu-rejilla{grid-template-columns:1fr}
+  #sec-cu .cu-b{max-width:88%}
+}
+</style>
+
+<section id="sec-cu" class="sec">
+  <h1><span class="num">1</span>Casos de uso y escenarios</h1>
+  <p class="lead">Ocho casos de uso (CU1–CU8) describen <b>qué</b> hace SIA-NP para cada persona del almacén, de compras y de dirección. Cada uno tiene su escenario: una tabla con actores, precondiciones, flujo normal, flujos alternos y poscondiciones.</p>
+
+  <h2>Qué es este entregable</h2>
+  <div class="cu-cols">
+    <div>
+      <h3 style="margin-top:0">Caso de uso</h3>
+      <p class="cu-cita">«Un caso de uso siempre describe tres cosas: un actor que inicia un evento, el evento que desencadena un caso de uso y el caso de uso que realiza las acciones desencadenadas por el evento.»</p>
+      <p>Muestra el sistema «desde la perspectiva del usuario»: describe <b>qué hace el sistema sin describir cómo lo hace</b>; se puede ver «como una secuencia de transacciones en un sistema». En SIA-NP: Ricardo (actor) tiene que surtir un pedido (evento) y <b>CU1 Registrar Movimientos</b> realiza las acciones.</p>
+      <p class="nota-fuente">Kendall &amp; Kendall, cap. 10, «Modelado de casos de uso», pág. 287.</p>
+    </div>
+    <div>
+      <h3 style="margin-top:0">Escenario de caso de uso</h3>
+      <p class="cu-cita">«Un escenario de caso de uso (aunque técnicamente no es un diagrama). Este escenario es una articulación verbal de excepciones para el comportamiento principal descrito por el caso de uso principal.»</p>
+      <p>Tiene tres áreas (pág. 289): un <b>encabezado</b> con identificadores e iniciadores, los <b>pasos realizados</b> y un <b>pie</b> con precondiciones, poscondiciones y suposiciones. Además, «cada ruta a través de las diversas decisiones incluidas en el caso de uso es un escenario distinto» (pág. 292): el flujo normal es una ruta y cada alterno (4a, 8a…) es otra.</p>
+      <p class="nota-fuente">Kendall &amp; Kendall, cap. 10, págs. 287, 289 (figura 10.7, pág. 290) y 292.</p>
+    </div>
+  </div>
+  <table class="t">
+    <tr><th>Área del escenario (Kendall, pág. 289)</th><th>Filas de la tabla del entregable</th></tr>
+    <tr><td>Encabezado: identificadores e iniciadores</td><td>Nombre, Autor (Equipo Grupo S5A), Fecha (14 de septiembre de 2026), Descripción, Actores</td></tr>
+    <tr><td>Pasos realizados</td><td>Flujo Normal (numerado 1, 2, 3…) y Flujo Alternativo (4a, 7a…: la letra indica de qué paso sale)</td></tr>
+    <tr><td>Pie: condiciones</td><td>Precondiciones y Poscondiciones</td></tr>
+  </table>
+  <p>Según el libro, los escenarios sirven después para dibujar los diagramas de secuencia (pág. 290); de ellos salen también los diagramas de actividad del entregable 2.</p>
+
+  <h2>Diagrama de casos de uso</h2>
+  <p>El entregable 1 <b>no trae un diagrama general</b>: son 8 tablas de escenario. Este diagrama se armó con los actores que declara cada escenario (fila «Actores»). La Figura 2 de la ERS sí dibuja relaciones <i>include</i>, <i>extend</i> y generalización, pero es una imagen sin texto y el entregable no las menciona, así que aquí solo aparecen asociaciones actor–caso de uso. Haz clic en un caso de uso para ver su escenario.</p>
+  <div class="lienzo" id="cu-lienzo"></div>
+  <div id="cu-repro-diagrama"></div>
+
+  <h2 id="cu-escenarios">El escenario de cada caso de uso, paso a paso</h2>
+  <p>Elige un caso de uso. A la izquierda de la conversación habla el <b>usuario</b>; a la derecha responde el <b>sistema</b>. El panel de datos muestra lo que cambia en cada paso (en naranja, lo que cambió en el paso actual). Los botones con borde punteado lanzan los flujos alternos.</p>
+  <div class="tabs" id="cu-tabs" role="tablist"></div>
+  <div id="cu-ficha"></div>
+  <div class="cu-flujos" id="cu-flujos"></div>
+  <div class="cu-rejilla">
+    <div class="cu-conv">
+      <div class="cu-conv-cab"><span id="cu-quien">Usuario</span><span>Sistema SIA-NP</span></div>
+      <div class="cu-burbujas" id="cu-burbujas"></div>
+    </div>
+    <div class="cu-datos">
+      <h4>Panel de datos</h4>
+      <table class="t" id="cu-tabla-datos"></table>
+      <p class="nota-fuente">Cifras de ejemplo con datos reales del cliente.</p>
+    </div>
+  </div>
+  <div id="cu-repro-flujo"></div>
+  <div class="ejemplo" id="cu-ejemplo"></div>
+
+  <h2>Cómo leer la notación</h2>
+  <div class="cu-leyenda">
+    <div><svg width="34" height="54" viewBox="0 0 34 54" aria-hidden="true"><circle cx="17" cy="9" r="7" fill="#fff" stroke="#111" stroke-width="1.5"/><line x1="17" y1="16" x2="17" y2="34" stroke="#111" stroke-width="1.5"/><line x1="5" y1="23" x2="29" y2="23" stroke="#111" stroke-width="1.5"/><line x1="17" y1="34" x2="7" y2="50" stroke="#111" stroke-width="1.5"/><line x1="17" y1="34" x2="27" y2="50" stroke="#111" stroke-width="1.5"/></svg><span><b>Actor</b>: un rol, no una persona. Lodevar es el rol «Encargado de Almacén».</span></div>
+    <div><svg width="70" height="34" viewBox="0 0 70 34" aria-hidden="true"><ellipse cx="35" cy="17" rx="32" ry="14" fill="#fff" stroke="#111" stroke-width="1.5"/></svg><span><b>Caso de uso</b>: algo que el sistema hace para el actor (CU1–CU8).</span></div>
+    <div><svg width="60" height="20" viewBox="0 0 60 20" aria-hidden="true"><line x1="2" y1="10" x2="58" y2="10" stroke="#111" stroke-width="1.5"/></svg><span><b>Asociación</b> (la relación «comunica» del libro, pág. 287): el actor participa en ese caso de uso.</span></div>
+    <div><svg width="60" height="40" viewBox="0 0 60 40" aria-hidden="true"><rect x="2" y="2" width="56" height="36" fill="none" stroke="#111" stroke-width="1.5"/></svg><span><b>Frontera del sistema</b>: dentro, lo que hace SIA-NP; fuera, quien lo usa.</span></div>
+    <div><span class="cu-mini">7</span><span><b>Paso del flujo normal</b>: la ruta en la que no hay errores.</span></div>
+    <div><span class="cu-mini d">8a</span><span><b>Flujo alterno</b>: «8a» sale del paso 8; «8b» es otra salida del mismo paso.</span></div>
+  </div>
+  <p class="nota-fuente">Incluye y extiende (las otras relaciones de comportamiento de la pág. 287) no se usan en el entregable 1.</p>
+
+  <h2>Para la exposición</h2>
+  <details class="pregunta"><summary>¿Por qué CU1 y CU6 son los casos críticos?</summary>
+    <p>Es <b>criterio del equipo</b>; la ERS no los marca así. Los dos cambian la existencia del inventario, que es el objetivo central (que lo que diga el sistema sea lo que hay en el almacén). CU1 es la operación diaria y evita vender lo que no hay, el problema más grave que señaló Lodevar; CU6 liga la mercancía que llega con su orden de compra y su factura, y controla lo pendiente por recibir. Por eso son los dos que tienen diagrama de secuencia (SD2 = CU1, SD1 = CU6). CU3 y CU4 también cambian la existencia, pero por ajustes y devoluciones, no por la operación diaria.</p>
+    <p class="nota-fuente">Entregable 4, sección 1 «Selección de las secuencias».</p>
+  </details>
+  <details class="pregunta"><summary>¿Por qué dicen «RF3» si en la ERS el registro de movimientos es «RF01»?</summary>
+    <p>La ERS tiene <b>dos numeraciones incompatibles</b>. Los entregables citan la del <b>Apéndice C</b> (relación numerada). La de §3.2 (tablas por usuario) y la Figura 2 es otra:</p>
+    <table class="t">
+      <tr><th>Requerimiento</th><th>Apéndice C (la que usamos)</th><th>§3.2 de la ERS</th></tr>
+      <tr><td>Registro de movimientos</td><td>RF3</td><td>RF01</td></tr>
+      <tr><td>Orden de surtido y nota de salida</td><td>RF8</td><td>RF07</td></tr>
+      <tr><td>Lectura por código de barras</td><td>RF9</td><td>RF08</td></tr>
+      <tr><td>Recepción de mercancía contra OC</td><td>RF13</td><td>RF12</td></tr>
+      <tr><td>Sugerencias de reorden</td><td>RF14</td><td>RF13</td></tr>
+      <tr><td>Autenticación y permisos por rol</td><td>RF1</td><td>RF19</td></tr>
+    </table>
+  </details>
+  <details class="pregunta"><summary>¿Por qué en CU1 el usuario confirma (7) antes de que el sistema valide (8)?</summary>
+    <p>Corrección del 9 nov 2026: antes la validación era el paso 7 y la confirmación el 8. Se invirtió para que el escenario diga lo mismo que los diagramas de secuencia (SD2 para CU1, SD1 para CU6), donde el sistema valida después de que el usuario confirma. Eso <b>renumeró los alternos</b>: en CU1, 7a es cancelar, 8a salida mayor a la existencia y 8b falta un campo; en CU6, 6a mercancía con defectos y 7a cantidad que excede lo solicitado.</p>
+    <p>Ojo: CU4 (devolución) conserva el orden «valida (6) y después confirma (7)»; la corrección solo tocó CU1 y CU6.</p>
+  </details>
+  <details class="pregunta"><summary>¿Cuál es la diferencia entre caso de uso y escenario?</summary>
+    <p>El caso de uso es la función vista por el actor (el óvalo del diagrama). El escenario es su descripción verbal paso a paso, con las excepciones (Kendall, pág. 287); cada ruta por sus decisiones es un escenario distinto (pág. 292). CU1 tiene una ruta normal y cuatro alternas.</p>
+  </details>
+  <details class="pregunta"><summary>¿Quién es el actor principal de CU1 y de CU6?</summary>
+    <p>En CU1, el Encargado de Almacén (actor principal) y el Auxiliar de Almacén; por eso el ejemplo con Ricardo es válido. En CU6, la <b>Encargada de Compras</b> es la principal y el Encargado de Almacén participa; SD1 empieza con la Encargada de Compras. La ERS (§2.2) da un solo actor por CU (salvo CU2, «Encargado / Auxiliar», y CU8, «Todos»); los escenarios agregan los secundarios.</p>
+  </details>
+  <details class="pregunta"><summary>¿Hay algo que el equipo sabe que aún no cuadra?</summary>
+    <p>Sí, menores y sin corregir: en CU1, CU4 y CU5 la precondición dice que el producto, cliente o proveedor existe, pero un alterno trata el caso de que no exista; CU2 y CU7 registran la consulta en la bitácora, cosa que la ERS no pide.</p>
+  </details>
+</section>
+
+<script>
+(function(){
+  SIA.registrar('cu', function(raiz){
+    var S = SIA.svg;
+
+    /* ---------- Datos: textos del entregable (scripts/docx/01_casos_uso.js) ---------- */
+    var ACT = {
+      EA: { n: 'Encargado de Almacén', p: 'Lodevar', x: 110, y: 170, lado: -1 },
+      AA: { n: 'Auxiliar de Almacén', p: 'Ricardo', x: 110, y: 400, lado: -1 },
+      EC: { n: 'Encargada de Compras', p: 'Karla', x: 850, y: 140, lado: 1 },
+      DG: { n: 'Dirección General', p: 'Paulina', x: 850, y: 310, lado: 1 },
+      AD: { n: 'Administrador', p: '', x: 850, y: 470, lado: 1 }
+    };
+
+    function P(n, q, ej, d, fin, t){ return { n: n, q: q, ej: ej, d: d || {}, fin: fin || '', t: t || '' }; }
+
+    var CUS = [
+      {
+        id: 'CU1', nombre: 'Registrar Movimientos', actK: ['EA', 'AA'],
+        quien: 'Ricardo · Auxiliar de Almacén',
+        desc: 'Permite registrar las entradas y salidas de mercancía del almacén, indicando el producto, la cantidad, la ubicación física y el documento de referencia que respalda la operación.',
+        actores: 'Encargado de Almacén (actor principal), Auxiliar de Almacén.',
+        rf: [['RF3', 'Registro de movimientos de entrada y salida'], ['RF8', 'Orden de surtido y nota de salida'], ['RF9', 'Lectura por código de barras']],
+        rfOtros: 'También toca RF5 (ubicaciones) y RF19 (bitácora).',
+        rfNota: 'Asignación de RF del entregable 4 (secuencias) y del equipo.',
+        pre: ['El usuario ha iniciado sesión en el sistema con un rol que tiene permiso para registrar movimientos.', 'El producto involucrado se encuentra dado de alta en el catálogo.', 'Se cuenta con el documento de referencia físico o digital (factura, remisión o nota de salida).'],
+        normal: ['El usuario selecciona la opción "Registrar movimiento".', 'El sistema muestra el formulario de captura.', 'El usuario elige el tipo de movimiento: entrada o salida.', 'El usuario busca el producto por código o por descripción.', 'El sistema muestra la existencia actual y la ubicación física del producto.', 'El usuario captura la cantidad, la ubicación y el número del documento de referencia.', 'El usuario confirma la operación.', 'El sistema valida los datos y, en el caso de las salidas, verifica que exista suficiente inventario.', 'El sistema actualiza la existencia, registra el movimiento en el kardex y lo asienta en la bitácora de auditoría.', 'El sistema muestra un mensaje de confirmación con el folio del movimiento.'],
+        alt: [['4a', 'El producto no existe en el catálogo: el sistema lo notifica y ofrece dar de alta el producto o cancelar la operación.'], ['7a', 'El usuario cancela la operación: el sistema descarta la captura y no modifica el inventario.'], ['8a', 'La cantidad solicitada en una salida es mayor a la existencia: el sistema muestra una alerta y no permite guardar el movimiento.'], ['8b', 'Falta capturar un campo obligatorio: el sistema lo señala y solicita completarlo.']],
+        post: ['La existencia del producto queda actualizada en el sistema.', 'El movimiento queda registrado en el kardex con fecha, usuario y documento de referencia.', 'La operación queda asentada en la bitácora de auditoría.'],
+        campos: [['tipo', 'Tipo de movimiento'], ['prod', 'Producto'], ['exist', 'Existencia RAC-0408'], ['ubic', 'Ubicación'], ['cap', 'Captura'], ['estado', 'Operación'], ['kardex', 'Kardex'], ['bita', 'Bitácora'], ['folio', 'Folio']],
+        ini: { tipo: '—', prod: '—', exist: '40 pza (mínimo 30)', ubic: 'B-04-2', cap: '—', estado: 'Sin iniciar', kardex: 'Sin cambios', bita: 'Sin cambios', folio: '—' },
+        ejemplo: 'Ricardo surte el pedido de un cliente taller: escanea <code>RAC-0408</code> (Racor recto 1/4" NPT × 8 mm), ve existencia 40 en <code>B-04-2</code>, captura 12 pza con la nota de salida <code>NS-2026-0318</code>, confirma y el sistema valida. La existencia baja de 40 a <b>28</b>, por debajo del mínimo de 30; el movimiento queda con folio <code>MOV-2026-01542</code>.',
+        flujos: [
+          { id: 'N', nombre: 'Flujo normal (salida de 12 pza)', pasos: [
+            P('1', 'U', 'Ricardo recibe la orden de surtido del pedido de un cliente taller y abre «Registrar movimiento» en la tablet.', { estado: 'Iniciada' }),
+            P('2', 'S', 'Aparece el formulario: tipo, producto, cantidad, ubicación y documento de referencia.', { estado: 'Formulario abierto' }),
+            P('3', 'U', 'Elige <b>Salida</b>.', { tipo: 'Salida' }),
+            P('4', 'U', 'Escanea con la pistola el código <code>RAC-0408</code> (RF9, lectura por código de barras).', { prod: 'RAC-0408 (escaneado)' }),
+            P('5', 'S', 'Muestra «Racor recto 1/4" NPT × 8 mm»: existencia <b>40 pza</b>, ubicación <b>B-04-2</b> (pasillo B, anaquel 4, nivel 2).', { prod: 'RAC-0408 · Racor recto 1/4" NPT × 8 mm' }),
+            P('6', 'U', 'Captura <b>12 pza</b>, ubicación B-04-2 y el documento <code>NS-2026-0318</code> (nota de salida, RF8).', { cap: '12 pza · B-04-2 · NS-2026-0318' }),
+            P('7', 'U', 'Pulsa «Confirmar».', { estado: 'Confirmada, por validar' }),
+            P('8', 'S', 'Valida: no falta ningún campo y, como es salida, 12 ≤ 40: hay existencia suficiente.', { estado: 'Validada' }),
+            P('9', 'S', 'Existencia 40 → <b>28</b>. El kardex asienta la salida de 12 pza con fecha, usuario (Ricardo) y NS-2026-0318; la bitácora de auditoría registra la operación.', { exist: '40 → 28 pza (bajo el mínimo 30)', kardex: 'Salida 12 pza · NS-2026-0318 · Ricardo', bita: 'Salida registrada por Ricardo' }),
+            P('10', 'S', 'Mensaje «Movimiento registrado» con el folio <code>MOV-2026-01542</code>. Fuera de este CU: como 28 &lt; 30, el racor aparecerá entre los productos por reordenar (CU5, alterno 4a).', { folio: 'MOV-2026-01542', estado: 'Terminada' }, 'ok')
+          ] },
+          { id: '4a', nombre: '4a Producto no existe', base: 3, pasos: [
+            P('4', 'U', 'Escanea un código que no está en el catálogo (por ejemplo, una etiqueta vieja con <code>RAC-0410</code>).', { prod: 'RAC-0410 (no está en el catálogo)' }),
+            P('4a', 'S', 'Avisa que el producto no existe y ofrece darlo de alta o cancelar. No se ha registrado ningún movimiento.', { estado: 'Detenida en 4a', exist: '40 pza (sin cambio)' }, 'error')
+          ] },
+          { id: '7a', nombre: '7a Usuario cancela', base: 6, pasos: [
+            P('7a', 'U', 'En lugar de «Confirmar», Ricardo pulsa «Cancelar».', {}, '', 'El usuario cancela la operación.'),
+            P('7a', 'S', 'Se descarta la captura de 12 pza; la existencia sigue en 40.', { cap: '— (descartada)', estado: 'Cancelada', exist: '40 pza (sin cambio)' }, 'alto', 'El sistema descarta la captura y no modifica el inventario.')
+          ] },
+          { id: '8a', nombre: '8a Salida mayor a la existencia', base: 5, pasos: [
+            P('6', 'U', 'Captura <b>50 pza</b>, ubicación B-04-2 y el documento NS-2026-0318.', { cap: '50 pza · B-04-2 · NS-2026-0318' }),
+            P('7', 'U', 'Pulsa «Confirmar».', { estado: 'Confirmada, por validar' }),
+            P('8a', 'S', 'Alerta: la salida de 50 pza es mayor que la existencia (40 pza). No deja guardar el movimiento. Justo lo que pedía Lodevar: no vender lo que no hay.', { estado: 'Rechazada (8a)', exist: '40 pza (sin cambio)' }, 'error')
+          ] },
+          { id: '8b', nombre: '8b Falta un campo obligatorio', base: 5, pasos: [
+            P('6', 'U', 'Captura 12 pza y la ubicación B-04-2, pero deja <b>vacío</b> el número de documento.', { cap: '12 pza · B-04-2 · (sin documento)' }),
+            P('7', 'U', 'Pulsa «Confirmar».', { estado: 'Confirmada, por validar' }),
+            P('8b', 'S', 'Señala el campo «documento de referencia» y pide completarlo. Mientras falte, no se guarda nada.', { estado: 'Falta un campo (8b)', exist: '40 pza (sin cambio)' }, 'error')
+          ] }
+        ]
+      },
+      {
+        id: 'CU2', nombre: 'Consultar Kardex', actK: ['EA', 'AA', 'EC', 'DG'],
+        quien: 'Lodevar · Encargado de Almacén',
+        desc: 'Permite consultar la existencia actual de un producto y su historial cronológico de movimientos de entrada y salida.',
+        actores: 'Encargado de Almacén, Auxiliar de Almacén (actores principales), Encargada de Compras, Dirección General.',
+        rf: [['RF4', 'Consulta de existencias y kardex']],
+        rfOtros: 'También toca RF5 (ubicación) y RF18 (exportación, alterno 8a).',
+        rfNota: 'Relación hecha para este explicador a partir del texto del escenario; el entregable 1 no lista RF.',
+        pre: ['El usuario ha iniciado sesión en el sistema.', 'El producto a consultar existe en el catálogo.'],
+        normal: ['El usuario selecciona la opción "Consultar kardex".', 'El sistema muestra la pantalla de búsqueda de productos.', 'El usuario ingresa el código, la descripción o la familia del producto.', 'El sistema despliega los resultados coincidentes.', 'El usuario selecciona el producto deseado.', 'El sistema muestra la existencia actual, la ubicación física y el historial de movimientos ordenado por fecha.', 'El usuario puede aplicar filtros por rango de fechas o por tipo de movimiento.', 'El sistema actualiza la vista conforme a los filtros aplicados.'],
+        alt: [['4a', 'No se encuentran productos que coincidan con la búsqueda: el sistema muestra el mensaje correspondiente y permite realizar una nueva búsqueda.'], ['6a', 'El producto no tiene movimientos registrados: el sistema muestra la existencia inicial e indica que no hay historial disponible.'], ['8a', 'El usuario solicita exportar la consulta: el sistema genera el archivo en formato Excel o CSV.']],
+        post: ['El usuario obtiene la información actualizada de existencias e historial del producto.', 'La consulta queda registrada en la bitácora de auditoría.', 'No se modifica ningún dato del inventario.'],
+        campos: [['busq', 'Búsqueda'], ['res', 'Resultados'], ['exist', 'Existencia'], ['ubic', 'Ubicación'], ['hist', 'Historial'], ['filtro', 'Filtro'], ['inv', 'Inventario']],
+        ini: { busq: '—', res: '—', exist: '—', ubic: '—', hist: '—', filtro: 'Ninguno', inv: 'Sin cambios (solo consulta)' },
+        ejemplo: 'Después de la salida de Ricardo, Lodevar consulta el kardex del <code>RAC-0408</code>: existencia 28, ubicación <code>B-04-2</code>, y en el historial aparece la salida <code>MOV-2026-01542</code> de 12 pza con la nota <code>NS-2026-0318</code>. Es el «kardex confiable» que pidió en la entrevista.',
+        flujos: [
+          { id: 'N', nombre: 'Flujo normal', pasos: [
+            P('1', 'U', 'Lodevar abre «Consultar kardex» para revisar el racor después de la salida de Ricardo.'),
+            P('2', 'S', 'Muestra la búsqueda por código, descripción o familia.'),
+            P('3', 'U', 'Escribe <code>RAC-0408</code> (también podría buscar la familia «Racores»).', { busq: 'RAC-0408' }),
+            P('4', 'S', 'Despliega 1 resultado: Racor recto 1/4" NPT × 8 mm.', { res: '1 coincidencia' }),
+            P('5', 'U', 'Selecciona el racor.'),
+            P('6', 'S', 'Existencia <b>28 pza</b>, ubicación B-04-2 e historial por fecha; el último renglón es la salida MOV-2026-01542: 12 pza, NS-2026-0318, Ricardo.', { exist: '28 pza', ubic: 'B-04-2', hist: 'Todos los movimientos, por fecha' }),
+            P('7', 'U', 'Filtra por tipo «Salida» y por el mes actual.', { filtro: 'Salidas del mes' }),
+            P('8', 'S', 'La vista muestra solo las salidas del mes, entre ellas MOV-2026-01542.', { hist: 'Solo salidas del mes' }, 'ok')
+          ] },
+          { id: '4a', nombre: '4a Sin coincidencias', base: 2, pasos: [
+            P('3', 'U', 'Teclea <code>RAC-0804</code> (invirtió los números).', { busq: 'RAC-0804' }),
+            P('4a', 'S', 'Mensaje «no se encontraron productos» y deja la búsqueda lista para intentar de nuevo.', { res: '0 coincidencias' }, 'alto')
+          ] },
+          { id: '6a', nombre: '6a Producto sin movimientos', base: 2, pasos: [
+            P('3', 'U', 'Busca un producto recién dado de alta en el catálogo.', { busq: 'Producto nuevo' }),
+            P('4', 'S', 'Despliega el producto.', { res: '1 coincidencia' }),
+            P('5', 'U', 'Lo selecciona.'),
+            P('6a', 'S', 'Muestra su existencia inicial y avisa que no hay historial disponible.', { exist: 'Existencia inicial', hist: 'Sin historial' }, 'alto')
+          ] },
+          { id: '8a', nombre: '8a Exportar', base: 8, pasos: [
+            P('8a', 'U', 'Lodevar pide exportar la consulta.', {}, '', 'El usuario solicita exportar la consulta.'),
+            P('8a', 'S', 'Genera el archivo en Excel o CSV (RF18) con las salidas filtradas, el formato que pidió Paulina para CONTPAQi.', { res: 'Archivo Excel/CSV generado' }, 'ok', 'El sistema genera el archivo en formato Excel o CSV.')
+          ] }
+        ]
+      },
+      {
+        id: 'CU3', nombre: 'Realizar Inventario Físico', actK: ['EA', 'AA'],
+        quien: 'Lodevar · Encargado de Almacén',
+        desc: 'Permite ejecutar conteos parciales por familia de productos (conteos cíclicos) o conteos completos del almacén, comparando la existencia física contra la registrada en el sistema.',
+        actores: 'Encargado de Almacén (actor principal), Auxiliar de Almacén.',
+        rf: [['RF6', 'Inventario físico cíclico y completo']],
+        rfOtros: 'También toca RF19 (bitácora) y RF20 (reporte de diferencias).',
+        rfNota: 'Relación hecha para este explicador a partir del texto del escenario; el entregable 1 no lista RF.',
+        pre: ['El usuario ha iniciado sesión con el rol de Encargado de Almacén o de Auxiliar de Almacén.', 'Existen productos registrados en el catálogo con existencia en el sistema.', 'No hay otro conteo abierto para las mismas familias de productos.'],
+        normal: ['El usuario selecciona la opción "Inventario físico".', 'El usuario elige el tipo de conteo: parcial por familia o completo.', 'El sistema genera la hoja de conteo con los productos correspondientes y sus ubicaciones.', 'El usuario captura la cantidad física contada de cada producto.', 'El sistema compara la cantidad capturada contra la existencia registrada y calcula las diferencias.', 'El sistema muestra el reporte de diferencias encontradas.', 'El usuario revisa las diferencias y confirma el cierre del conteo.', 'El sistema genera los ajustes de inventario correspondientes y actualiza las existencias.', 'El sistema registra el conteo y los ajustes en la bitácora de auditoría.'],
+        alt: [['4a', 'El usuario deja pendiente el conteo: el sistema guarda el avance y permite retomarlo después.'], ['6a', 'No se detectan diferencias: el sistema cierra el conteo sin generar ajustes.'], ['7a', 'El usuario decide recontar un producto: el sistema permite corregir la cantidad capturada antes del cierre.'], ['7b', 'El usuario cancela el conteo: el sistema descarta la captura y no modifica las existencias.']],
+        post: ['Las existencias del sistema quedan conciliadas con el conteo físico.', 'Se genera un reporte de diferencias y, si las hay, los ajustes correspondientes.', 'El conteo queda cerrado y registrado con fecha y usuario responsable.'],
+        campos: [['tipo', 'Tipo de conteo'], ['hoja', 'Hoja de conteo'], ['sis', 'Sistema (RAC-0408)'], ['fis', 'Contado (RAC-0408)'], ['dif', 'Diferencia'], ['ajuste', 'Ajuste'], ['estado', 'Conteo'], ['bita', 'Bitácora']],
+        ini: { tipo: '—', hoja: '—', sis: '28 pza', fis: '—', dif: '—', ajuste: '—', estado: 'Sin abrir', bita: 'Sin cambios' },
+        ejemplo: 'Conteo cíclico de la familia Racores: el sistema dice 28 pza de <code>RAC-0408</code> (después de la salida de Ricardo), en <code>B-04-2</code> se cuentan 26. Diferencia −2: al cerrar se genera un movimiento de tipo <b>Ajuste</b> por −2 y la existencia queda en 26. Así se ataca la meta de Paulina de bajar la diferencia físico vs sistema de 5 % a menos de 1 %.',
+        flujos: [
+          { id: 'N', nombre: 'Flujo normal (ajuste −2)', pasos: [
+            P('1', 'U', 'Lodevar abre «Inventario físico».', { estado: 'Abierto' }),
+            P('2', 'U', 'Elige conteo <b>parcial por familia</b>: Racores (conteo cíclico).', { tipo: 'Parcial · familia Racores' }),
+            P('3', 'S', 'Genera la hoja de conteo con los racores y su ubicación; incluye RAC-0408 en B-04-2.', { hoja: 'Racores con ubicaciones' }),
+            P('4', 'U', 'En el anaquel B-04-2 se cuentan <b>26 pza</b> de RAC-0408 y se capturan.', { fis: '26 pza' }),
+            P('5', 'S', 'Compara: sistema 28, físico 26 → diferencia <b>−2</b>.', { dif: '−2 pza' }),
+            P('6', 'S', 'Muestra el reporte de diferencias: RAC-0408, −2 pza.'),
+            P('7', 'U', 'Lodevar revisa la diferencia y confirma el cierre del conteo.', { estado: 'Cierre confirmado' }),
+            P('8', 'S', 'Genera un movimiento de tipo <b>Ajuste</b> por −2 pza: existencia 28 → 26.', { ajuste: 'Ajuste −2 pza', sis: '28 → 26 pza' }),
+            P('9', 'S', 'Registra el conteo y el ajuste en la bitácora de auditoría.', { bita: 'Conteo + ajuste', estado: 'Cerrado' }, 'ok')
+          ] },
+          { id: '4a', nombre: '4a Dejar pendiente', base: 3, pasos: [
+            P('4a', 'U', 'Faltan anaqueles por contar: Lodevar deja el conteo a medias.', {}, '', 'El usuario deja pendiente el conteo.'),
+            P('4a', 'S', 'Guarda el avance para retomarlo después.', { estado: 'Pendiente (avance guardado)' }, 'alto', 'El sistema guarda el avance y permite retomarlo después.')
+          ] },
+          { id: '6a', nombre: '6a Sin diferencias', base: 3, pasos: [
+            P('4', 'U', 'Se cuentan <b>28 pza</b>: coincide con el sistema.', { fis: '28 pza' }),
+            P('5', 'S', 'Compara: sistema 28, físico 28 → sin diferencia.', { dif: '0' }),
+            P('6a', 'S', 'Cierra el conteo sin generar ajustes.', { ajuste: 'Ninguno', estado: 'Cerrado sin ajustes' }, 'ok')
+          ] },
+          { id: '7a', nombre: '7a Recontar', base: 6, pasos: [
+            P('7a', 'U', 'Al ver el −2, Lodevar decide recontar el RAC-0408.', {}, '', 'El usuario decide recontar un producto.'),
+            P('7a', 'S', 'Permite corregir la cantidad de RAC-0408 antes del cierre.', { fis: '26 pza (en recuento)', estado: 'Abierto (recuento)' }, 'alto', 'El sistema permite corregir la cantidad capturada antes del cierre.')
+          ] },
+          { id: '7b', nombre: '7b Cancelar conteo', base: 6, pasos: [
+            P('7b', 'U', 'Lodevar cancela el conteo.', {}, '', 'El usuario cancela el conteo.'),
+            P('7b', 'S', 'Se descarta lo capturado; la existencia sigue en 28.', { estado: 'Cancelado', ajuste: 'Ninguno', sis: '28 pza (sin cambio)' }, 'alto', 'El sistema descarta la captura y no modifica las existencias.')
+          ] }
+        ]
+      },
+      {
+        id: 'CU4', nombre: 'Registrar Devolución de Cliente', actK: ['EA', 'AA'],
+        quien: 'Lodevar · Encargado de Almacén',
+        desc: 'Permite capturar la devolución de mercancía por parte de un cliente y generar automáticamente la entrada correspondiente al inventario.',
+        actores: 'Encargado de Almacén (actor principal), Auxiliar de Almacén.',
+        rf: [['RF7', 'Devoluciones de cliente']],
+        rfOtros: 'También toca RF3 (entrada al inventario) y RF19 (bitácora).',
+        rfNota: 'Relación hecha para este explicador a partir del texto del escenario; el entregable 1 no lista RF.',
+        pre: ['El usuario ha iniciado sesión con permisos para registrar devoluciones.', 'El cliente se encuentra dado de alta en el catálogo de clientes.', 'Existe la nota de salida o factura original que respalda la venta.'],
+        normal: ['El usuario selecciona la opción "Registrar devolución de cliente".', 'El usuario busca y selecciona al cliente.', 'El sistema muestra los documentos de salida asociados al cliente.', 'El usuario selecciona el documento original y los productos a devolver.', 'El usuario captura la cantidad devuelta, el motivo de la devolución y el estado de la mercancía.', 'El sistema valida que la cantidad devuelta no exceda la cantidad vendida.', 'El usuario confirma la devolución.', 'El sistema genera la entrada al inventario, actualiza la existencia y registra el movimiento en el kardex.', 'El sistema muestra el folio de la devolución registrada.'],
+        alt: [['2a', 'El cliente no existe en el catálogo: el sistema permite darlo de alta o cancelar la operación.'], ['3a', 'No se localiza el documento original: el sistema permite registrar la devolución de manera manual con la autorización correspondiente.'], ['6a', 'La cantidad devuelta excede la vendida: el sistema muestra una alerta y no permite continuar.'], ['7a', 'La mercancía se recibe dañada: el usuario la marca como no disponible para venta y el sistema la ingresa a una ubicación de resguardo.']],
+        post: ['La devolución queda registrada con su motivo y documento de referencia.', 'La existencia del producto se incrementa conforme a la mercancía recibida.', 'El movimiento queda reflejado en el kardex y en la bitácora de auditoría.'],
+        campos: [['cliente', 'Cliente'], ['doc', 'Documento original'], ['prod', 'Producto'], ['cap', 'Captura'], ['valid', 'Validación'], ['exist', 'Existencia RAC-0408'], ['kardex', 'Kardex'], ['folio', 'Folio de devolución']],
+        ini: { cliente: '—', doc: '—', prod: '—', cap: '—', valid: '—', exist: '28 pza', kardex: 'Sin cambios', folio: '—' },
+        ejemplo: 'El cliente taller devuelve 2 de los 12 racores <code>RAC-0408</code> que se llevó con la nota <code>NS-2026-0318</code>. Partiendo de la existencia que dejó CU1 (28), la entrada por devolución la sube a <b>30</b>.',
+        flujos: [
+          { id: 'N', nombre: 'Flujo normal (devuelve 2 pza)', pasos: [
+            P('1', 'U', 'El cliente taller regresa con 2 racores; Lodevar abre «Registrar devolución de cliente».'),
+            P('2', 'U', 'Busca y selecciona al cliente taller.', { cliente: 'Cliente taller' }),
+            P('3', 'S', 'Muestra los documentos de salida del cliente, entre ellos <code>NS-2026-0318</code> (12 × RAC-0408).'),
+            P('4', 'U', 'Selecciona NS-2026-0318 y el producto RAC-0408.', { doc: 'NS-2026-0318', prod: 'RAC-0408' }),
+            P('5', 'U', 'Captura <b>2 pza</b>, el motivo que da el cliente y el estado de la mercancía: en buen estado.', { cap: '2 pza · motivo · buen estado' }),
+            P('6', 'S', 'Valida: 2 pza no exceden las 12 vendidas en NS-2026-0318.', { valid: '2 ≤ 12: correcta' }),
+            P('7', 'U', 'Confirma la devolución.'),
+            P('8', 'S', 'Genera la entrada por devolución: existencia 28 → <b>30</b>; el kardex la registra.', { exist: '28 → 30 pza', kardex: 'Devolución +2 · NS-2026-0318' }),
+            P('9', 'S', 'Muestra el folio de la devolución registrada.', { folio: 'Asignado por el sistema' }, 'ok')
+          ] },
+          { id: '6a', nombre: '6a Devuelve más de lo vendido', base: 4, pasos: [
+            P('5', 'U', 'Por error captura <b>15 pza</b>.', { cap: '15 pza · motivo · buen estado' }),
+            P('6a', 'S', 'Alerta: 15 pza es más de las 12 vendidas en NS-2026-0318; no deja continuar.', { valid: '15 > 12: rechazada', exist: '28 pza (sin cambio)' }, 'error')
+          ] },
+          { id: '7a', nombre: '7a Mercancía dañada', base: 6, pasos: [
+            P('7a', 'U', 'Los 2 racores vienen dañados: Lodevar los marca como no disponibles para venta.', {}, '', 'La mercancía se recibe dañada: el usuario la marca como no disponible para venta.'),
+            P('7a', 'S', 'Los ingresa a una ubicación de resguardo, no a B-04-2.', { exist: '28 disponibles (+2 en resguardo)' }, 'alto', 'El sistema la ingresa a una ubicación de resguardo.')
+          ] }
+        ]
+      },
+      {
+        id: 'CU5', nombre: 'Generar Orden de Compra', actK: ['EC'],
+        quien: 'Karla · Encargada de Compras',
+        desc: 'Permite emitir una orden de compra dirigida al proveedor, con formato corporativo y folio consecutivo asignado por el sistema.',
+        actores: 'Encargada de Compras (actor principal).',
+        rf: [['RF12', 'Generación de órdenes de compra']],
+        rfOtros: 'También toca RF11 (proveedores, 3a), RF14 (sugerencias de reorden, 4a) y RF15 (landed cost, 5a).',
+        rfNota: 'Relación hecha para este explicador a partir del texto del escenario; el entregable 6 también liga CU5 con RF12.',
+        pre: ['El usuario ha iniciado sesión con el rol de Encargada de Compras.', 'El proveedor está dado de alta en el catálogo de proveedores.', 'Los productos a solicitar existen en el catálogo.'],
+        normal: ['El usuario selecciona la opción "Generar orden de compra".', 'El sistema muestra el formulario de la orden con la fecha actual.', 'El usuario selecciona el proveedor.', 'El usuario agrega los productos requeridos, indicando cantidad y precio unitario.', 'El sistema calcula los subtotales, impuestos y el total de la orden.', 'El usuario captura las condiciones de entrega y de pago.', 'El usuario confirma la emisión de la orden de compra.', 'El sistema asigna el folio consecutivo, guarda la orden con estado "Emitida" y genera el documento en formato corporativo para su impresión o envío.'],
+        alt: [['3a', 'El proveedor no existe: el sistema permite darlo de alta o cancelar la operación.'], ['4a', 'El usuario parte de una sugerencia de reorden: el sistema precarga los productos que se encuentran por debajo del punto de reorden.'], ['5a', 'El producto es de importación: el sistema permite capturar los costos adicionales de importación.'], ['7a', 'El usuario guarda la orden como borrador: el sistema la conserva con estado "Pendiente" sin asignar folio definitivo.']],
+        post: ['La orden de compra queda registrada con folio consecutivo y estado "Emitida".', 'La orden queda disponible para su seguimiento y para la recepción de mercancía.', 'La emisión queda asentada en la bitácora de auditoría.'],
+        campos: [['fecha', 'Fecha'], ['prov', 'Proveedor'], ['partidas', 'Partidas'], ['total', 'Importes'], ['cond', 'Condiciones'], ['estado', 'Estado de la OC'], ['folio', 'Folio']],
+        ini: { fecha: '—', prov: '—', partidas: '—', total: '—', cond: '—', estado: '— (no existe)', folio: '—' },
+        ejemplo: 'Karla, que hoy hace las órdenes en Word, genera la <code>OC-2026-0147</code> al «Proveedor nacional de neumática» (Nacional, lead time 7 días): 100 × <code>RAC-0408</code> y 10 × <code>CIL-32100</code> (cilindro Ø32 × 100 mm, existencia 3, mínimo 5). La orden queda <b>Emitida</b>.',
+        flujos: [
+          { id: 'N', nombre: 'Flujo normal (OC-2026-0147)', pasos: [
+            P('1', 'U', 'Karla abre «Generar orden de compra».'),
+            P('2', 'S', 'Muestra el formulario con la fecha actual; todavía sin folio.', { fecha: 'Fecha actual', folio: '— (aún no)' }),
+            P('3', 'U', 'Selecciona al «Proveedor nacional de neumática» (Nacional, lead time 7 días).', { prov: 'Proveedor nacional · 7 días' }),
+            P('4', 'U', 'Agrega 100 × RAC-0408 y 10 × CIL-32100, cada uno con su precio unitario.', { partidas: '100 × RAC-0408 · 10 × CIL-32100' }),
+            P('5', 'S', 'Calcula los subtotales, los impuestos y el total.', { total: 'Subtotales + impuestos = total' }),
+            P('6', 'U', 'Captura las condiciones de entrega y de pago.', { cond: 'Entrega y pago capturados' }),
+            P('7', 'U', 'Confirma la emisión.'),
+            P('8', 'S', 'Asigna el folio consecutivo <code>OC-2026-0147</code>, guarda la orden como <b>Emitida</b> y genera el documento corporativo para imprimir o enviar.', { folio: 'OC-2026-0147', estado: 'Emitida' }, 'ok')
+          ] },
+          { id: '4a', nombre: '4a Desde la sugerencia de reorden', base: 3, pasos: [
+            P('4a', 'U', 'En lugar de capturar a mano, Karla parte de la sugerencia de reorden.', {}, '', 'El usuario parte de una sugerencia de reorden.'),
+            P('4a', 'S', 'Precarga los productos bajo su punto de reorden: RAC-0408 (28, mínimo 30) y CIL-32100 (3, mínimo 5).', { partidas: 'Precargados: RAC-0408 y CIL-32100' }, 'ok', 'El sistema precarga los productos que se encuentran por debajo del punto de reorden.')
+          ] },
+          { id: '7a', nombre: '7a Guardar como borrador', base: 6, pasos: [
+            P('7a', 'U', 'Karla aún no confirma: la guarda como borrador.', {}, '', 'El usuario guarda la orden como borrador.'),
+            P('7a', 'S', 'La conserva en estado <b>Pendiente</b>, sin folio definitivo.', { estado: 'Pendiente', folio: '— (sin folio definitivo)' }, 'alto', 'El sistema la conserva con estado "Pendiente" sin asignar folio definitivo.')
+          ] }
+        ]
+      },
+      {
+        id: 'CU6', nombre: 'Recibir Mercancía contra Orden de Compra', actK: ['EC', 'EA'],
+        quien: 'Lodevar · Encargado de Almacén',
+        desc: 'Permite registrar la recepción total o parcial de mercancía vinculada a una orden de compra previamente emitida.',
+        actores: 'Encargada de Compras (actor principal), Encargado de Almacén.',
+        rf: [['RF13', 'Recepción de mercancía contra OC']],
+        rfOtros: 'También toca RF3 (entrada al inventario), RF5 (ubicación) y RF19 (bitácora).',
+        rfNota: 'Asignación de RF del entregable 4 (secuencias) y del equipo.',
+        pre: ['El usuario ha iniciado sesión con permisos para registrar recepciones.', 'Existe una orden de compra emitida y pendiente de recibir.', 'La mercancía se encuentra físicamente en el almacén.'],
+        normal: ['El usuario selecciona la opción "Recibir mercancía".', 'El usuario busca la orden de compra por folio o por proveedor.', 'El sistema muestra los productos solicitados y las cantidades pendientes de recibir.', 'El usuario captura las cantidades recibidas y la ubicación física asignada.', 'El usuario registra el número de factura o remisión del proveedor.', 'El usuario confirma la recepción.', 'El sistema valida que las cantidades recibidas no excedan las solicitadas.', 'El sistema genera la entrada al inventario, actualiza las existencias y el kardex.', 'El sistema actualiza el estado de la orden de compra a "Recibida" o "Parcialmente recibida".'],
+        alt: [['2a', 'No se localiza la orden de compra: el sistema permite realizar una nueva búsqueda o cancelar la operación.'], ['4a', 'La recepción es parcial: el sistema conserva el saldo pendiente y mantiene la orden abierta.'], ['6a', 'La mercancía llega con defectos: el usuario la registra como no conforme y el sistema no la suma al inventario disponible.'], ['7a', 'La cantidad recibida excede la solicitada: el sistema muestra una alerta y solicita autorización para continuar.']],
+        post: ['Las existencias de los productos recibidos quedan actualizadas.', 'La orden de compra refleja el estado y el saldo pendiente correctos.', 'La recepción queda vinculada a la factura o remisión del proveedor y registrada en la bitácora.'],
+        campos: [['oc', 'Orden de compra'], ['estadoOC', 'Estado de la OC'], ['pendR', 'Pendiente RAC-0408'], ['pendC', 'Pendiente CIL-32100'], ['capt', 'Captura'], ['fact', 'Factura / remisión'], ['exR', 'Existencia RAC-0408'], ['exC', 'Existencia CIL-32100'], ['nc', 'No conforme'], ['kardex', 'Kardex']],
+        ini: { oc: '—', estadoOC: 'Emitida', pendR: '100 pza', pendC: '10 pza', capt: '—', fact: '—', exR: '28 pza', exC: '3 pza', nc: '—', kardex: 'Sin cambios' },
+        ejemplo: 'Llega la mercancía de la <code>OC-2026-0147</code> con la factura <code>F-A-88213</code>. Primera entrega: 60 racores y 10 cilindros → la OC queda <b>Parcialmente recibida</b> (faltan 40 racores). Segunda entrega: los 40 racores → <b>Recibida</b>. Alternos: 2 cilindros con defecto (6a) y 110 racores en vez de 100 (7a). En el escenario la actora principal es la Encargada de Compras (Karla); aquí la captura la hace Lodevar, que también es actor del CU6.',
+        flujos: [
+          { id: 'N', nombre: 'Flujo normal: 1.ª entrega (60 + 10)', pasos: [
+            P('1', 'U', 'Llega la mercancía del proveedor nacional con la factura F-A-88213; Karla abre «Recibir mercancía».'),
+            P('2', 'U', 'Busca la orden por folio: <code>OC-2026-0147</code>.', { oc: 'OC-2026-0147' }),
+            P('3', 'S', 'Muestra lo solicitado y lo pendiente: 100 × RAC-0408 y 10 × CIL-32100.'),
+            P('4', 'U', 'Captura lo que llegó: 60 racores en B-04-2 y 10 cilindros en C-02-1.', { capt: '60 RAC → B-04-2 · 10 CIL → C-02-1' }),
+            P('5', 'U', 'Registra la factura <code>F-A-88213</code>.', { fact: 'F-A-88213' }),
+            P('6', 'U', 'Confirma la recepción.'),
+            P('7', 'S', 'Valida: 60 ≤ 100 y 10 ≤ 10; nada excede lo solicitado.'),
+            P('8', 'S', 'Genera la entrada: racores 28 → <b>88</b>, cilindros 3 → <b>13</b>; actualiza el kardex.', { exR: '28 → 88 pza', exC: '3 → 13 pza', kardex: 'Entradas · F-A-88213' }),
+            P('9', 'S', 'Faltan 40 racores: la OC pasa a <b>Parcialmente recibida</b>.', { estadoOC: 'Emitida → Parcialmente recibida', pendR: '40 pza', pendC: '0 pza' }, 'ok')
+          ] },
+          { id: 'N2', nombre: 'Flujo normal: 2.ª entrega (40)', solo: true,
+            ini: { oc: '—', estadoOC: 'Parcialmente recibida', pendR: '40 pza', pendC: '0 pza', capt: '—', fact: '—', exR: '88 pza', exC: '13 pza', nc: '—', kardex: 'Sin cambios' },
+            pasos: [
+            P('1', 'U', 'Llegan los 40 racores que faltaban; Karla abre «Recibir mercancía».'),
+            P('2', 'U', 'Busca otra vez la <code>OC-2026-0147</code>.', { oc: 'OC-2026-0147' }),
+            P('3', 'S', 'Muestra lo pendiente: 40 × RAC-0408 (los cilindros ya están completos).'),
+            P('4', 'U', 'Captura 40 racores en B-04-2.', { capt: '40 RAC → B-04-2' }),
+            P('5', 'U', 'Registra la factura o remisión de esta entrega.', { fact: 'Documento de la 2.ª entrega' }),
+            P('6', 'U', 'Confirma la recepción.'),
+            P('7', 'S', 'Valida: 40 ≤ 40 pendientes.'),
+            P('8', 'S', 'Genera la entrada: racores 88 → <b>128</b>; actualiza el kardex.', { exR: '88 → 128 pza', kardex: 'Entrada 40 RAC-0408' }),
+            P('9', 'S', 'Ya no queda saldo: la OC pasa a <b>Recibida</b>.', { estadoOC: 'Parcialmente recibida → Recibida', pendR: '0 pza' }, 'ok')
+          ] },
+          { id: '2a', nombre: '2a No se localiza la OC', base: 1, pasos: [
+            P('2', 'U', 'Teclea <code>OC-2026-0174</code> (cambió dos dígitos).', { oc: 'OC-2026-0174 (no existe)' }),
+            P('2a', 'S', 'No localiza la orden: permite una nueva búsqueda o cancelar.', {}, 'alto')
+          ] },
+          { id: '4a', nombre: '4a Recepción parcial', base: 4, resto: 4, pasos: [
+            P('4a', 'S', 'Como llegaron 60 de 100 racores, conserva el saldo de 40 y mantiene la orden abierta.', { pendR: '40 pza (saldo)' })
+          ] },
+          { id: '6a', nombre: '6a Mercancía con defectos', base: 6, pasos: [
+            P('6a', 'U', 'Al revisar, 2 de los 10 cilindros vienen con defecto: Karla los registra como no conformes.', { nc: '2 × CIL-32100' }, '', 'La mercancía llega con defectos: el usuario la registra como no conforme.'),
+            P('6a', 'S', 'Esos 2 cilindros no se suman al inventario disponible.', {}, '', 'El sistema no la suma al inventario disponible.'),
+            P('7', 'S', 'Valida: 60 ≤ 100 y 10 ≤ 10. (El escenario no dice en qué paso se retoma; aquí se supone que sigue en 7.)'),
+            P('8', 'S', 'Entrada: racores 28 → 88; cilindros 3 → <b>11</b> (solo los 8 conformes); kardex actualizado.', { exR: '28 → 88 pza', exC: '3 → 11 pza (8 conformes)', kardex: 'Entradas · F-A-88213' }),
+            P('9', 'S', 'La OC queda <b>Parcialmente recibida</b>. El escenario no dice si los 2 cilindros defectuosos vuelven al saldo pendiente.', { estadoOC: 'Emitida → Parcialmente recibida', pendR: '40 pza', pendC: '¿0 o 2? (no lo define)' }, 'ok')
+          ] },
+          { id: '7a', nombre: '7a Excedente (110 racores)', base: 3, pasos: [
+            P('4', 'U', 'Captura <b>110 racores</b> (llegaron 10 de más) y 10 cilindros.', { capt: '110 RAC · 10 CIL' }),
+            P('5', 'U', 'Registra la factura <code>F-A-88213</code>.', { fact: 'F-A-88213' }),
+            P('6', 'U', 'Confirma la recepción.'),
+            P('7a', 'S', 'Alerta: 110 &gt; 100 solicitados; pide autorización para continuar. El escenario no dice quién autoriza ni qué pasa si no se autoriza.', { exR: '28 pza (sin cambio aún)' }, 'error')
+          ] }
+        ]
+      },
+      {
+        id: 'CU7', nombre: 'Visualizar Dashboard de KPIs', actK: ['DG', 'EA', 'EC'],
+        quien: 'Paulina · Dirección General',
+        desc: 'Permite consultar el tablero ejecutivo con los indicadores semanales y mensuales de la operación del almacén.',
+        actores: 'Dirección General (actor principal), Encargado de Almacén, Encargada de Compras.',
+        rf: [['RF17', 'Dashboard ejecutivo con KPIs']],
+        rfOtros: 'También toca RF18 (exportación, alterno 5a).',
+        rfNota: 'Relación hecha para este explicador a partir del texto del escenario; el entregable 1 no lista RF.',
+        pre: ['El usuario ha iniciado sesión con un rol autorizado para consultar el tablero.', 'Existen movimientos registrados en el sistema durante el periodo a consultar.'],
+        normal: ['El usuario selecciona la opción "Dashboard".', 'El sistema calcula los indicadores del periodo actual.', 'El sistema muestra los KPIs: valor del inventario, rotación, productos por debajo del punto de reorden, entradas y salidas del periodo y órdenes de compra pendientes.', 'El usuario selecciona el periodo de análisis (semanal o mensual).', 'El sistema actualiza las gráficas e indicadores conforme al periodo elegido.', 'El usuario consulta el detalle de un indicador específico.', 'El sistema despliega el desglose de la información que integra ese indicador.'],
+        alt: [['2a', 'No existe información suficiente en el periodo: el sistema muestra el tablero con los indicadores en cero e informa la situación.'], ['5a', 'El usuario solicita exportar el tablero: el sistema genera el reporte en formato Excel o CSV.'], ['7a', 'El usuario no tiene permisos para ver el detalle: el sistema muestra únicamente la información resumida.']],
+        post: ['El usuario obtiene una visión consolidada del estado del inventario y de la operación.', 'La consulta queda registrada en la bitácora de auditoría.', 'No se modifica ningún dato del sistema.'],
+        campos: [['periodo', 'Periodo'], ['kpis', 'KPIs'], ['reorden', 'Bajo punto de reorden'], ['oc', 'OC pendientes'], ['detalle', 'Detalle abierto'], ['datos', 'Datos del sistema']],
+        ini: { periodo: '—', kpis: '—', reorden: '—', oc: '—', detalle: '—', datos: 'Sin cambios (solo consulta)' },
+        ejemplo: 'Paulina abre el tablero: ve el racor <code>RAC-0408</code> (28, mínimo 30) y el cilindro <code>CIL-32100</code> (3, mínimo 5) bajo el punto de reorden, la salida <code>MOV-2026-01542</code> entre los movimientos del periodo y la <code>OC-2026-0147</code> pendiente. Su meta es bajar la diferencia físico vs sistema de 5 % a menos de 1 %; ojo: ese indicador no está en la lista de KPIs del paso 3 del escenario (la ERS sí lo pide entre los mensuales).',
+        flujos: [
+          { id: 'N', nombre: 'Flujo normal', pasos: [
+            P('1', 'U', 'Paulina abre «Dashboard».'),
+            P('2', 'S', 'Calcula los indicadores del periodo actual.', { periodo: 'Actual' }),
+            P('3', 'S', 'Muestra valor del inventario, rotación, productos bajo el punto de reorden (RAC-0408 y CIL-32100), entradas y salidas del periodo (entre ellas MOV-2026-01542) y OC pendientes (OC-2026-0147).', { kpis: 'Valor · rotación · entradas/salidas', reorden: '2 productos', oc: 'OC-2026-0147' }),
+            P('4', 'U', 'Elige el periodo <b>mensual</b>.', { periodo: 'Mensual' }),
+            P('5', 'S', 'Actualiza gráficas e indicadores al mes.', { kpis: 'Recalculados al mes' }),
+            P('6', 'U', 'Abre el detalle de «productos por debajo del punto de reorden».'),
+            P('7', 'S', 'Desglose: RAC-0408 con 28 (mínimo 30) y CIL-32100 con 3 (mínimo 5).', { detalle: 'RAC-0408 28/30 · CIL-32100 3/5' }, 'ok')
+          ] },
+          { id: '2a', nombre: '2a Información insuficiente', base: 1, pasos: [
+            P('2a', 'S', 'Si en el periodo aún no hay movimientos (por ejemplo, la primera semana de uso), muestra el tablero con indicadores en cero y lo avisa.', { kpis: 'En cero + aviso' }, 'alto')
+          ] },
+          { id: '5a', nombre: '5a Exportar', base: 5, pasos: [
+            P('5a', 'U', 'Paulina pide exportar el tablero.', {}, '', 'El usuario solicita exportar el tablero.'),
+            P('5a', 'S', 'Genera el reporte en Excel o CSV (RF18), el formato que necesita para CONTPAQi.', { detalle: 'Reporte Excel/CSV' }, 'ok', 'El sistema genera el reporte en formato Excel o CSV.')
+          ] },
+          { id: '7a', nombre: '7a Sin permiso para el detalle', base: 6, pasos: [
+            P('7a', 'S', 'Si el rol de quien consulta no tiene permiso para el detalle (el escenario no dice cuál), solo ve la información resumida.', { detalle: 'Solo resumen' }, 'alto')
+          ] }
+        ]
+      },
+      {
+        id: 'CU8', nombre: 'Autenticar Usuario', actK: ['EA', 'AA', 'EC', 'DG', 'AD'],
+        quien: 'Ricardo · Auxiliar de Almacén',
+        desc: 'Permite al usuario iniciar sesión en el sistema con una cuenta individual y aplicar los permisos correspondientes al rol asignado.',
+        actores: 'Todos los usuarios del sistema (Encargado de Almacén, Auxiliar de Almacén, Encargada de Compras, Dirección General, Administrador).',
+        rf: [['RF1', 'Autenticación y permisos por rol']],
+        rfOtros: 'También toca RF19 (bitácora).',
+        rfNota: 'Relación hecha para este explicador a partir del texto del escenario; el entregable 1 no lista RF.',
+        pre: ['El usuario cuenta con una cuenta registrada en el sistema.', 'El sistema se encuentra disponible y accesible desde el equipo del usuario.'],
+        normal: ['El usuario accede a la pantalla de inicio de sesión.', 'El usuario captura su nombre de usuario y su contraseña.', 'El usuario selecciona la opción "Iniciar sesión".', 'El sistema valida las credenciales contra la base de datos.', 'El sistema identifica el rol asignado al usuario.', 'El sistema habilita únicamente los módulos y las operaciones permitidas para ese rol.', 'El sistema muestra la pantalla principal y registra el inicio de sesión en la bitácora.'],
+        alt: [['2a', 'El usuario olvidó su contraseña: solicita el restablecimiento al administrador del sistema.'], ['4a', 'Las credenciales son incorrectas: el sistema muestra un mensaje de error y permite reintentar.'], ['4b', 'Se acumulan tres intentos fallidos consecutivos: el sistema bloquea temporalmente la cuenta y notifica al administrador.'], ['4c', 'La cuenta se encuentra inactiva: el sistema niega el acceso e indica que debe contactar al administrador.']],
+        post: ['El usuario queda autenticado y con una sesión activa en el sistema.', 'Los permisos del rol asignado quedan aplicados durante toda la sesión.', 'El acceso queda registrado en la bitácora de auditoría con fecha y hora.'],
+        campos: [['pantalla', 'Pantalla'], ['cred', 'Credenciales'], ['intentos', 'Intentos fallidos'], ['cuenta', 'Cuenta'], ['rol', 'Rol'], ['modulos', 'Módulos habilitados'], ['bita', 'Bitácora']],
+        ini: { pantalla: '—', cred: '—', intentos: '0', cuenta: 'Activa', rol: '—', modulos: '—', bita: 'Sin cambios' },
+        ejemplo: 'Ricardo entra a SIA-NP desde la tablet del almacén. El sistema lo reconoce como <b>Auxiliar de Almacén</b> y le habilita solo lo de su rol: según los escenarios, el Auxiliar es actor de CU1–CU4 (y de CU8), no de CU5–CU7.',
+        flujos: [
+          { id: 'N', nombre: 'Flujo normal', pasos: [
+            P('1', 'U', 'Ricardo abre SIA-NP en la tablet: aparece la pantalla de inicio de sesión.', { pantalla: 'Inicio de sesión' }),
+            P('2', 'U', 'Captura su nombre de usuario y su contraseña.', { cred: 'Usuario + contraseña' }),
+            P('3', 'U', 'Pulsa «Iniciar sesión».'),
+            P('4', 'S', 'Valida las credenciales contra la base de datos: son correctas.', { cred: 'Válidas' }),
+            P('5', 'S', 'Identifica su rol: <b>Auxiliar de Almacén</b>.', { rol: 'Auxiliar de Almacén' }),
+            P('6', 'S', 'Habilita solo los módulos de su rol (los de CU1–CU4, donde el Auxiliar es actor); compras y dashboard no aparecen.', { modulos: 'CU1–CU4' }),
+            P('7', 'S', 'Muestra la pantalla principal y registra el inicio de sesión en la bitácora.', { pantalla: 'Principal', bita: 'Inicio de sesión de Ricardo' }, 'ok')
+          ] },
+          { id: '2a', nombre: '2a Olvidó la contraseña', base: 1, pasos: [
+            P('2a', 'U', 'Ricardo no recuerda su contraseña: pide el restablecimiento al administrador.', { cred: '— (pide restablecer)' }, 'alto')
+          ] },
+          { id: '4a', nombre: '4a Credenciales incorrectas', base: 3, pasos: [
+            P('4a', 'S', 'La contraseña está mal escrita: mensaje de error; puede reintentar.', { cred: 'Incorrectas', intentos: '1' }, 'error')
+          ] },
+          { id: '4b', nombre: '4b Tres intentos fallidos', base: 3, pasos: [
+            P('4a', 'S', 'Contraseña incorrecta (1.º y 2.º intento): error y reintento.', { cred: 'Incorrectas', intentos: '2' }),
+            P('2', 'U', 'Vuelve a capturar la contraseña, otra vez mal.'),
+            P('3', 'U', 'Pulsa «Iniciar sesión».'),
+            P('4b', 'S', 'Tercer intento fallido consecutivo: bloquea temporalmente la cuenta y notifica al administrador.', { intentos: '3', cuenta: 'Bloqueada temporalmente' }, 'error')
+          ] },
+          { id: '4c', nombre: '4c Cuenta inactiva', base: 3, pasos: [
+            P('4c', 'S', 'Si la cuenta estuviera desactivada: niega el acceso e indica contactar al administrador.', { cuenta: 'Inactiva', cred: 'Acceso negado' }, 'error')
+          ] }
+        ]
+      }
+    ];
+
+    /* ---------- Utilidades ---------- */
+    function $(sel){ return raiz.querySelector(sel); }
+    function buscarCU(id){ for (var i = 0; i < CUS.length; i++) { if (CUS[i].id === id) return CUS[i]; } return null; }
+    function esAlt(n){ return /[a-z]/.test(n); }
+    function textoAlt(cu, id){
+      for (var i = 0; i < cu.alt.length; i++) { if (cu.alt[i][0] === id) return cu.alt[i][1]; }
+      return '';
+    }
+    function textoPaso(cu, p){
+      if (p.t) return p.t;
+      if (esAlt(p.n)) return textoAlt(cu, p.n);
+      return cu.normal[parseInt(p.n, 10) - 1] || '';
+    }
+    function lista(arr){
+      var h = '<ul>';
+      for (var i = 0; i < arr.length; i++) h += '<li>' + arr[i] + '</li>';
+      return h + '</ul>';
+    }
+
+    /* ---------- Diagrama de casos de uso ---------- */
+    var lienzo = $('#cu-lienzo');
+    var raizSvg = S('svg', { viewBox: '0 0 960 572', width: '960', role: 'img', 'aria-label': 'Diagrama de casos de uso de SIA-NP: 5 actores y 8 casos de uso' }, lienzo);
+    var gF = S('g', {}, raizSvg), gL = S('g', {}, raizSvg), gC = S('g', {}, raizSvg), gA = S('g', {}, raizSvg);
+    var todos = [];
+    function mk(tag, attrs, grupo, padre){
+      var el = S(tag, attrs, padre);
+      el.setAttribute('data-g', grupo);
+      todos.push(el);
+      return el;
+    }
+    var TINTA = { stroke: '#111', 'stroke-width': '1.5' };
+    function conTinta(a){ for (var k in TINTA) { if (TINTA.hasOwnProperty(k)) a[k] = TINTA[k]; } return a; }
+
+    mk('rect', conTinta({ x: 290, y: 14, width: 380, height: 542, fill: 'none' }), 'frontera', gF);
+    mk('text', { x: 480, y: 38, 'text-anchor': 'middle', 'font-size': '15', 'font-weight': 'bold', texto: 'SIA-NP — Neumática del Pacífico' }, 'frontera', gF);
+
+    var RX = 165, RY = 24;
+    var posCU = {};
+    for (var i = 0; i < CUS.length; i++) {
+      (function(cu, idx){
+        var cy = 80 + idx * 63;
+        posCU[cu.id] = { x: 480, y: cy };
+        var e = mk('ellipse', conTinta({ cx: 480, cy: cy, rx: RX, ry: RY, fill: '#fff' }), 'cu-' + cu.id, gC);
+        e.setAttribute('class', 'cu-clic');
+        S('title', { texto: cu.id + ' ' + cu.nombre + ' (clic para ver su escenario)' }, e);
+        var t = mk('text', { x: 480, y: cy + 4.5, 'text-anchor': 'middle', 'font-size': '13', texto: cu.id + ' ' + cu.nombre }, 'cu-' + cu.id, gC);
+        t.style.pointerEvents = 'none';
+        e.addEventListener('click', function(){
+          elegirCU(cu.id);
+          var dest = document.getElementById('cu-escenarios');
+          if (dest && dest.scrollIntoView) dest.scrollIntoView({ behavior: 'smooth' });
+        });
+      })(CUS[i], i);
+    }
+
+    for (var k in ACT) {
+      if (!ACT.hasOwnProperty(k)) continue;
+      var a = ACT[k], g = 'act-' + k;
+      mk('circle', conTinta({ cx: a.x, cy: a.y - 30, r: 11, fill: '#fff' }), g, gA);
+      mk('line', conTinta({ x1: a.x, y1: a.y - 19, x2: a.x, y2: a.y + 12 }), g, gA);
+      mk('line', conTinta({ x1: a.x - 18, y1: a.y - 8, x2: a.x + 18, y2: a.y - 8 }), g, gA);
+      mk('line', conTinta({ x1: a.x, y1: a.y + 12, x2: a.x - 14, y2: a.y + 34 }), g, gA);
+      mk('line', conTinta({ x1: a.x, y1: a.y + 12, x2: a.x + 14, y2: a.y + 34 }), g, gA);
+      mk('text', { x: a.x, y: a.y + 52, 'text-anchor': 'middle', 'font-size': '13', texto: a.n }, g, gA);
+      if (a.p) mk('text', { x: a.x, y: a.y + 67, 'text-anchor': 'middle', 'font-size': '11', fill: '#555', texto: '(' + a.p + ')' }, g, gA);
+    }
+
+    for (var j = 0; j < CUS.length; j++) {
+      var cu = CUS[j], c = posCU[cu.id];
+      for (var m = 0; m < cu.actK.length; m++) {
+        var ac = ACT[cu.actK[m]];
+        var ax = ac.x - ac.lado * 26, ay = ac.y - 4;
+        var dx = ax - c.x, dy = ay - c.y;
+        var tt = 1 / Math.sqrt((dx * dx) / (RX * RX) + (dy * dy) / (RY * RY));
+        mk('line', conTinta({ x1: ax, y1: ay, x2: (c.x + dx * tt).toFixed(1), y2: (c.y + dy * tt).toFixed(1) }), 'ln-' + cu.id, gL);
+      }
+    }
+
+    function revelar(grupos, resaltar){
+      for (var i = 0; i < todos.length; i++) {
+        var el = todos[i];
+        if (grupos.indexOf(el.getAttribute('data-g')) >= 0) {
+          el.classList.remove('cu-oculto');
+          if (resaltar) el.classList.add('resaltado');
+        }
+      }
+    }
+    function pasoD(titulo, texto, grupos){
+      return { titulo: titulo, texto: texto, aplicar: function(i, ultimo){ revelar(grupos, ultimo); } };
+    }
+    var pasosDiagrama = [
+      pasoD('La frontera del sistema', 'El rectángulo es SIA-NP. Dentro va lo que el sistema hace; fuera, quienes lo usan.', ['frontera']),
+      pasoD('Actores del almacén', 'Dos roles: <b>Encargado de Almacén</b> (Lodevar) y <b>Auxiliar de Almacén</b> (Ricardo). Un actor es un rol, no una persona.', ['act-EA', 'act-AA']),
+      pasoD('Actores de oficina y sistema', '<b>Encargada de Compras</b> (Karla), <b>Dirección General</b> (Paulina) y el <b>Administrador</b>, que solo aparece en CU8.', ['act-EC', 'act-DG', 'act-AD']),
+      pasoD('Casos de uso del almacén', 'CU1 Registrar Movimientos, CU2 Consultar Kardex, CU3 Realizar Inventario Físico y CU4 Registrar Devolución de Cliente.', ['cu-CU1', 'cu-CU2', 'cu-CU3', 'cu-CU4']),
+      pasoD('Casos de uso de compras', 'CU5 Generar Orden de Compra y CU6 Recibir Mercancía contra Orden de Compra.', ['cu-CU5', 'cu-CU6']),
+      pasoD('Dirección y acceso', 'CU7 Visualizar Dashboard de KPIs y CU8 Autenticar Usuario.', ['cu-CU7', 'cu-CU8']),
+      pasoD('CU1: quién registra movimientos', 'Encargado de Almacén (principal) y Auxiliar de Almacén. Ricardo surte la NS-2026-0318.', ['ln-CU1']),
+      pasoD('CU2: quién consulta el kardex', 'Los dos del almacén (principales), la Encargada de Compras y Dirección General.', ['ln-CU2']),
+      pasoD('CU3 y CU4', 'Inventario físico y devoluciones: Encargado de Almacén (principal) y Auxiliar de Almacén.', ['ln-CU3', 'ln-CU4']),
+      pasoD('CU5 y CU6', 'CU5 solo la Encargada de Compras. CU6: la Encargada de Compras (principal) y el Encargado de Almacén.', ['ln-CU5', 'ln-CU6']),
+      pasoD('CU7', 'Dirección General (principal), Encargado de Almacén y Encargada de Compras.', ['ln-CU7']),
+      pasoD('CU8: todos inician sesión', 'Los cinco roles se autentican; es el único CU del Administrador.', ['ln-CU8']),
+      pasoD('Los dos casos críticos', '<b>CU1</b> y <b>CU6</b>: los dos cambian la existencia en la operación diaria (salidas y recepciones). «Críticos» es criterio del equipo; la ERS no los marca. Son los que tienen diagrama de secuencia.', ['cu-CU1', 'cu-CU6', 'ln-CU1', 'ln-CU6'])
+    ];
+    SIA.reproductor($('#cu-repro-diagrama'), pasosDiagrama, {
+      intervalo: 2400,
+      tituloInicial: 'Animación: el diagrama se arma',
+      textoInicial: 'Pulsa ▶ para ver aparecer la frontera, los actores, los casos de uso y las líneas, en ese orden.',
+      reiniciar: function(){
+        for (var i = 0; i < todos.length; i++) { todos[i].classList.add('cu-oculto'); todos[i].classList.remove('resaltado'); }
+      },
+      alCambiar: function(i){
+        if (i < 0) { for (var k = 0; k < todos.length; k++) todos[k].classList.remove('cu-oculto'); }
+      }
+    });
+
+    /* ---------- Escenarios: pestañas, ficha, conversación ---------- */
+    var tabs = $('#cu-tabs'), ficha = $('#cu-ficha'), botones = $('#cu-flujos'),
+        conv = $('#cu-burbujas'), tablaDatos = $('#cu-tabla-datos'), quien = $('#cu-quien'),
+        contRepro = $('#cu-repro-flujo'), cajaEj = $('#cu-ejemplo');
+    var actual = null, rep = null, filas = {};
+
+    for (var t = 0; t < CUS.length; t++) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('role', 'tab');
+      b.setAttribute('data-cu', CUS[t].id);
+      b.textContent = CUS[t].id + ' ' + CUS[t].nombre;
+      tabs.appendChild(b);
+    }
+    tabs.addEventListener('click', function(ev){
+      var b = ev.target.closest('button');
+      if (b) elegirCU(b.getAttribute('data-cu'));
+    });
+
+    function pintarFicha(cu){
+      var rf = '';
+      for (var i = 0; i < cu.rf.length; i++) rf += '<span class="chip"><b>' + cu.rf[i][0] + '</b> ' + cu.rf[i][1] + '</span> ';
+      var h = '<div class="cu-ficha">' +
+        '<div><h4>Descripción</h4>' + cu.desc + '</div>' +
+        '<div><h4>Actores</h4>' + cu.actores + '</div>' +
+        '<div><h4>RF del Apéndice C</h4>' + rf + '<p style="margin:6px 0 0">' + cu.rfOtros + '</p><p class="nota-fuente">' + cu.rfNota + '</p></div>' +
+        '<div><h4>Precondiciones</h4>' + lista(cu.pre) + '</div>' +
+        '<div><h4>Poscondiciones</h4>' + lista(cu.post) + '</div>' +
+        '</div>';
+      var ol = '<ol>';
+      for (var j = 0; j < cu.normal.length; j++) ol += '<li>' + cu.normal[j] + '</li>';
+      ol += '</ol>';
+      var ul = '<ul>';
+      for (var k = 0; k < cu.alt.length; k++) ul += '<li><b>' + cu.alt[k][0] + '.</b> ' + cu.alt[k][1] + '</li>';
+      ul += '</ul>';
+      h += '<details class="cu-completo"><summary>Texto completo del escenario ' + cu.id + ' (como en el entregable)</summary>' +
+        '<p><b>Flujo Normal:</b></p>' + ol + '<p><b>Flujo Alternativo:</b></p>' + ul +
+        '<p class="nota-fuente">Fuente: Escenarios_Casos_de_Uso_SIA-NP_v2 (generador scripts/docx/01_casos_uso.js), Tabla ' + cu.id.replace('CU', '') + '.</p></details>';
+      ficha.innerHTML = h;
+      cajaEj.innerHTML = '<b>Ejemplo real: ' + cu.id + '</b>' + cu.ejemplo + '<div class="nota-fuente">Cifras de ejemplo con datos reales del cliente (personas, giro, familias y formato de ubicación salen de la ERS).</div>';
+    }
+
+    function pintarBotones(cu){
+      var h = '<span>Flujo:</span>';
+      for (var i = 0; i < cu.flujos.length; i++) {
+        var f = cu.flujos[i];
+        var alt = (f.id !== 'N' && f.id !== 'N2');
+        h += '<button type="button" data-f="' + i + '" class="' + (alt ? 'cu-btn-alt' : '') + '">' + f.nombre + '</button>';
+      }
+      botones.innerHTML = h;
+    }
+    botones.addEventListener('click', function(ev){
+      var b = ev.target.closest('button');
+      if (b && actual) elegirFlujo(actual, parseInt(b.getAttribute('data-f'), 10));
+    });
+
+    function armarTabla(cu, ini){
+      filas = {};
+      tablaDatos.innerHTML = '';
+      for (var i = 0; i < cu.campos.length; i++) {
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<th>' + cu.campos[i][1] + '</th><td></td>';
+        tablaDatos.appendChild(tr);
+        filas[cu.campos[i][0]] = tr;
+      }
+      ponerIni(ini);
+    }
+    function ponerIni(ini){
+      for (var k in filas) {
+        if (!filas.hasOwnProperty(k)) continue;
+        filas[k].classList.remove('cu-cambio');
+        filas[k].querySelector('td').innerHTML = (ini && ini[k] !== undefined) ? ini[k] : '—';
+      }
+    }
+
+    function pasosDeFlujo(cu, f){
+      var base = cu.flujos[0].pasos, lst;
+      if (f.id === 'N' || f.solo) lst = f.pasos.slice();
+      else {
+        lst = base.slice(0, f.base).concat(f.pasos);
+        if (typeof f.resto === 'number') lst = lst.concat(base.slice(f.resto));
+      }
+      return lst;
+    }
+
+    function burbuja(cu, p, esUltimoDelFlujo){
+      var d = document.createElement('div');
+      var cls = 'cu-b ' + (p.q === 'U' ? 'cu-u' : 'cu-s');
+      if (esAlt(p.n)) cls += ' cu-alt';
+      d.className = cls;
+      var res = '';
+      if (esUltimoDelFlujo && p.fin) {
+        d.classList.add('cu-fin-' + p.fin);
+        var etq = { ok: 'Termina: operación completa', error: 'Termina: no se guarda', alto: 'Termina aquí' };
+        res = '<div class="cu-res ' + p.fin + '">' + etq[p.fin] + '</div>';
+      }
+      d.innerHTML = '<span class="cu-n">' + p.n + '</span>' + textoPaso(cu, p) +
+        '<div class="cu-ej"><b>Ejemplo:</b> ' + p.ej + '</div>' + res;
+      return d;
+    }
+
+    function elegirFlujo(cu, idx){
+      var f = cu.flujos[idx];
+      var bs = botones.querySelectorAll('button');
+      for (var i = 0; i < bs.length; i++) bs[i].classList.toggle('activo', parseInt(bs[i].getAttribute('data-f'), 10) === idx);
+      var ini = f.ini || cu.ini;
+      var lst = pasosDeFlujo(cu, f);
+      var pasos = [];
+      for (var j = 0; j < lst.length; j++) {
+        (function(p, ultimoFlujo){
+          pasos.push({
+            titulo: (esAlt(p.n) ? 'Alterno ' : 'Paso ') + p.n + ' · ' + (p.q === 'U' ? 'Usuario (' + cu.quien + ')' : 'Sistema SIA-NP'),
+            texto: textoPaso(cu, p) + '<br><i>Ejemplo:</i> ' + p.ej,
+            aplicar: function(i, esUltimo){
+              var v = conv.querySelector('.cu-vacio');
+              if (v) conv.removeChild(v);
+              var b = burbuja(cu, p, ultimoFlujo);
+              if (esUltimo) b.classList.add('cu-actual');
+              conv.appendChild(b);
+              conv.scrollTop = conv.scrollHeight;
+              for (var k in p.d) {
+                if (!p.d.hasOwnProperty(k) || !filas[k]) continue;
+                filas[k].querySelector('td').innerHTML = p.d[k];
+                if (esUltimo) filas[k].classList.add('cu-cambio');
+              }
+            }
+          });
+        })(lst[j], j === lst.length - 1);
+      }
+      if (rep) rep.destruir();
+      rep = SIA.reproductor(contRepro, pasos, {
+        intervalo: 2600,
+        tituloInicial: cu.id + ' · ' + f.nombre,
+        textoInicial: 'Pulsa ▶ para reproducir la conversación o avanza con ▶|. ' + lst.length + ' pasos.',
+        reiniciar: function(){
+          conv.innerHTML = '<div class="cu-vacio">La conversación aparece aquí paso a paso.</div>';
+          ponerIni(ini);
+        }
+      });
+    }
+
+    function elegirCU(id){
+      var cu = buscarCU(id);
+      if (!cu) return;
+      actual = cu;
+      var bs = tabs.querySelectorAll('button');
+      for (var i = 0; i < bs.length; i++) bs[i].setAttribute('aria-selected', bs[i].getAttribute('data-cu') === id ? 'true' : 'false');
+      quien.textContent = 'Usuario: ' + cu.quien;
+      pintarFicha(cu);
+      pintarBotones(cu);
+      armarTabla(cu, cu.ini);
+      elegirFlujo(cu, 0);
+    }
+
+    elegirCU('CU1');
+  });
+})();
+</script>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIA-NP explicado con animaciones</title>
+<style>
+:root{--tinta:#111;--papel:#fff;--gris:#E6E6E6;--acento:#d9480f;--ok:#2b8a3e;--error:#c92a2a;--borde:#111;--suave:#f6f6f4;--texto2:#555}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--suave);color:var(--tinta);font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.5}
+header.top{position:sticky;top:0;z-index:20;background:var(--papel);border-bottom:2px solid var(--tinta)}
+.top-in{max-width:1180px;margin:0 auto;padding:10px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
+.marca{font-weight:bold;font-size:18px;white-space:nowrap}
+.marca small{font-weight:normal;color:var(--texto2);font-size:13px;margin-left:6px}
+nav.menu{display:flex;flex-wrap:wrap;gap:4px}
+nav.menu a{color:var(--tinta);text-decoration:none;padding:6px 10px;border:1px solid transparent;border-radius:4px;font-size:14px}
+nav.menu a:hover{border-color:var(--tinta)}
+nav.menu a.activo{background:var(--tinta);color:var(--papel)}
+main{max-width:1180px;margin:0 auto;padding:20px 16px 60px}
+.sec{display:none}
+.sec.visible{display:block;animation:entrar .35s ease}
+@keyframes entrar{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h1{font-size:28px;margin:6px 0 4px}
+h2{font-size:21px;margin:28px 0 10px;padding-bottom:4px;border-bottom:1px solid var(--tinta)}
+h3{font-size:17px;margin:18px 0 8px}
+p{margin:8px 0}
+.lead{font-size:17px;color:#333;max-width:820px}
+.panel{background:var(--papel);border:1px solid var(--tinta);border-radius:6px;padding:16px;margin:14px 0}
+.ejemplo{background:#fff8f3;border:1px solid var(--acento);border-left:6px solid var(--acento);border-radius:6px;padding:12px 16px;margin:14px 0}
+.ejemplo > b:first-child,.ejemplo .titulo-ej{display:block;color:var(--acento);margin-bottom:4px}
+.nota-fuente{font-size:12.5px;color:var(--texto2);font-style:italic;margin-top:6px}
+.chip{display:inline-block;padding:1px 8px;border:1px solid var(--tinta);border-radius:999px;font-size:12.5px;margin:1px 2px;background:var(--papel)}
+.chip.acento{border-color:var(--acento);color:var(--acento)}
+.chip.ok{border-color:var(--ok);color:var(--ok)}
+.chip.error{border-color:var(--error);color:var(--error)}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;margin:10px 0}
+.tabs button{font:inherit;font-size:14px;padding:5px 11px;border:1px solid var(--tinta);background:var(--papel);border-radius:4px;cursor:pointer}
+.tabs button.activo,.tabs button[aria-selected="true"]{background:var(--tinta);color:var(--papel)}
+.lienzo{background:var(--papel);border:1px solid var(--tinta);border-radius:6px;overflow:auto;padding:8px}
+.lienzo svg{display:block;max-width:100%;height:auto;margin:0 auto}
+svg text{font-family:Arial,Helvetica,sans-serif}
+svg .resaltado,svg .resaltado *{stroke:var(--acento)!important}
+svg rect.resaltado,svg ellipse.resaltado,svg circle.resaltado,svg polygon.resaltado,svg path.resaltado.relleno{fill:#ffe8d9!important}
+svg text.resaltado{fill:var(--acento)!important;stroke:none!important;font-weight:bold}
+svg .atenuado{opacity:.25}
+svg *{transition:opacity .3s,stroke .3s,fill .3s}
+.atenuado{opacity:.3;transition:opacity .3s}
+.narracion{background:var(--papel);border:1px solid var(--tinta);border-top:4px solid var(--acento);border-radius:6px;padding:12px 16px;margin:10px 0;min-height:86px}
+.narracion .n-paso{font-size:12.5px;color:var(--texto2)}
+.narracion .n-titulo{font-weight:bold;font-size:16.5px;margin:2px 0}
+.narracion .n-texto{margin:2px 0}
+.repro{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0}
+.repro button{font:inherit;font-size:15px;min-width:40px;padding:5px 10px;border:1px solid var(--tinta);background:var(--papel);border-radius:4px;cursor:pointer}
+.repro button:hover{background:var(--gris)}
+.repro button.play{background:var(--tinta);color:var(--papel);min-width:84px}
+.repro .barra{flex:1 1 160px;height:8px;background:var(--gris);border-radius:4px;overflow:hidden;cursor:pointer;min-width:120px}
+.repro .barra i{display:block;height:100%;width:0;background:var(--acento);transition:width .3s}
+.repro .cont{font-size:13px;color:var(--texto2);min-width:64px;text-align:right}
+.repro select{font:inherit;font-size:13px;padding:3px}
+table.t{border-collapse:collapse;width:100%;background:var(--papel);font-size:14px;margin:10px 0}
+table.t th,table.t td{border:1px solid var(--tinta);padding:6px 8px;text-align:left;vertical-align:top}
+table.t th{background:var(--gris)}
+details.pregunta{background:var(--papel);border:1px solid var(--tinta);border-radius:6px;padding:8px 14px;margin:8px 0}
+details.pregunta summary{cursor:pointer;font-weight:bold}
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.inicio-tarjeta{display:block;background:var(--papel);border:1px solid var(--tinta);border-radius:6px;padding:14px;color:var(--tinta);text-decoration:none;transition:transform .2s,box-shadow .2s}
+.inicio-tarjeta:hover{transform:translateY(-3px);box-shadow:4px 4px 0 var(--tinta)}
+.inicio-tarjeta b{display:block;font-size:17px;margin-bottom:4px}
+.num{display:inline-block;width:28px;height:28px;line-height:28px;text-align:center;border-radius:50%;background:var(--tinta);color:var(--papel);font-weight:bold;margin-right:6px;font-size:14px}
+.cadena{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0}
+.cadena span{padding:6px 10px;border:1px solid var(--tinta);border-radius:4px;background:var(--papel);font-size:14px}
+.cadena em{font-style:normal;color:var(--acento);font-weight:bold}
+footer{max-width:1180px;margin:0 auto;padding:0 16px 30px;font-size:12.5px;color:var(--texto2)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div class="marca">SIA-NP <small>explicado paso a paso</small></div>
+  <nav class="menu" id="menu">
+    <a href="#inicio" data-id="inicio">Inicio</a>
+    <a href="#cu" data-id="cu">1 Casos de uso</a>
+    <a href="#act" data-id="act">2 Actividad</a>
+    <a href="#crc" data-id="crc">3 CRC</a>
+    <a href="#seq" data-id="seq">4 Secuencia</a>
+    <a href="#cls" data-id="cls">5 Clases</a>
+    <a href="#est" data-id="est">6 Estados</a>
+  </nav>
+</div></header>
+
+<script>
+/* Marco común: registro de secciones, enrutado por hash y reproductor de pasos. */
+window.SIA = (function(){
+  var inits = {}, hechos = {};
+  function registrar(id, init){ inits[id] = init; if (actual() === id) mostrar(id); }
+  function actual(){ var h = (location.hash || '').replace('#',''); return h || 'inicio'; }
+  function mostrar(id){
+    var secs = document.querySelectorAll('.sec');
+    var hay = document.getElementById('sec-' + id);
+    if (!hay) id = 'inicio';
+    for (var i = 0; i < secs.length; i++) secs[i].classList.toggle('visible', secs[i].id === 'sec-' + id);
+    var as = document.querySelectorAll('#menu a');
+    for (var j = 0; j < as.length; j++) as[j].classList.toggle('activo', as[j].getAttribute('data-id') === id);
+    if (inits[id] && !hechos[id]) {
+      hechos[id] = true;
+      try { inits[id](document.getElementById('sec-' + id)); }
+      catch (e) { console.error('Sección ' + id + ':', e); }
+    }
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', function(){ mostrar(actual()); });
+  document.addEventListener('DOMContentLoaded', function(){ mostrar(actual()); });
+
+  /*
+   * reproductor(contenedor, pasos, opciones) -> {ir(i), reiniciar(), destruir(), indice()}
+   *  contenedor: elemento donde se dibujan la narración y los controles.
+   *  pasos: [{titulo, texto (HTML permitido), aplicar(i)}]
+   *  opciones.reiniciar(): deja el diagrama en el estado inicial (sin resaltados).
+   *  El reproductor llama reiniciar() y luego aplicar() de los pasos 0..i EN ORDEN,
+   *  así que ir hacia atrás funciona: cada aplicar solo debe añadir/cambiar cosas.
+   *  Si un paso solo quiere afectar el estado "actual" (p. ej. quitar el resaltado
+   *  del paso anterior), puede leer el segundo argumento: aplicar(i, esUltimo).
+   *  opciones.intervalo: ms entre pasos al reproducir (por defecto 2600).
+   *  opciones.alCambiar(i): se llama tras cada cambio.
+   */
+  function reproductor(contenedor, pasos, opciones){
+    opciones = opciones || {};
+    var idx = -1, timer = null, vel = 1;
+    var base = opciones.intervalo || 2600;
+    contenedor.innerHTML = '';
+    var narr = document.createElement('div'); narr.className = 'narracion';
+    narr.innerHTML = '<div class="n-paso"></div><div class="n-titulo"></div><div class="n-texto"></div>';
+    var ctr = document.createElement('div'); ctr.className = 'repro';
+    ctr.innerHTML =
+      '<button type="button" data-a="ini" title="Inicio">⏮</button>' +
+      '<button type="button" data-a="ant" title="Paso anterior">◀</button>' +
+      '<button type="button" data-a="play" class="play">▶ Reproducir</button>' +
+      '<button type="button" data-a="sig" title="Paso siguiente">▶|</button>' +
+      '<button type="button" data-a="fin" title="Último paso">⏭</button>' +
+      '<div class="barra" title="Ir a un punto"><i></i></div>' +
+      '<span class="cont"></span>' +
+      '<select title="Velocidad"><option value="0.6">Lento</option><option value="1" selected>Normal</option><option value="1.8">Rápido</option></select>';
+    contenedor.appendChild(narr); contenedor.appendChild(ctr);
+    var bPlay = ctr.querySelector('[data-a=play]'), barra = ctr.querySelector('.barra'),
+        relleno = barra.querySelector('i'), cont = ctr.querySelector('.cont'), sel = ctr.querySelector('select');
+
+    function pintar(){
+      var p = pasos[idx];
+      narr.querySelector('.n-paso').textContent = idx < 0 ? 'Listo para empezar' : ('Paso ' + (idx + 1) + ' de ' + pasos.length);
+      narr.querySelector('.n-titulo').innerHTML = p ? p.titulo : (opciones.tituloInicial || 'Pulsa ▶ para ver la animación');
+      narr.querySelector('.n-texto').innerHTML = p ? (p.texto || '') : (opciones.textoInicial || 'También puedes avanzar paso a paso con ▶|.');
+      relleno.style.width = (pasos.length ? ((idx + 1) / pasos.length) * 100 : 0) + '%';
+      cont.textContent = (idx + 1) + ' / ' + pasos.length;
+    }
+    function ir(i){
+      if (i < -1) i = -1; if (i > pasos.length - 1) i = pasos.length - 1;
+      idx = i;
+      if (opciones.reiniciar) { try { opciones.reiniciar(); } catch (e) { console.error(e); } }
+      for (var k = 0; k <= idx; k++) {
+        if (pasos[k].aplicar) { try { pasos[k].aplicar(k, k === idx); } catch (e) { console.error('Paso ' + (k + 1), e); } }
+      }
+      pintar();
+      if (opciones.alCambiar) opciones.alCambiar(idx);
+    }
+    function parar(){ if (timer) { clearTimeout(timer); timer = null; } bPlay.textContent = '▶ Reproducir'; }
+    function tic(){
+      if (idx >= pasos.length - 1) { parar(); return; }
+      ir(idx + 1);
+      timer = setTimeout(tic, base / vel);
+    }
+    function play(){
+      if (timer) { parar(); return; }
+      if (idx >= pasos.length - 1) ir(-1);
+      bPlay.textContent = '⏸ Pausa';
+      tic();
+    }
+    ctr.addEventListener('click', function(ev){
+      var b = ev.target.closest('button'); if (!b) return;
+      var a = b.getAttribute('data-a');
+      if (a === 'play') return play();
+      parar();
+      if (a === 'ini') ir(-1);
+      if (a === 'ant') ir(idx - 1);
+      if (a === 'sig') ir(idx + 1);
+      if (a === 'fin') ir(pasos.length - 1);
+    });
+    barra.addEventListener('click', function(ev){
+      parar();
+      var r = barra.getBoundingClientRect();
+      ir(Math.round(((ev.clientX - r.left) / r.width) * pasos.length) - 1);
+    });
+    sel.addEventListener('change', function(){ vel = parseFloat(sel.value) || 1; });
+    ir(-1);
+    return { ir: ir, reiniciar: function(){ parar(); ir(-1); }, destruir: function(){ parar(); contenedor.innerHTML = ''; }, indice: function(){ return idx; } };
+  }
+
+  /* Ayudas pequeñas para SVG */
+  var NS = 'http://www.w3.org/2000/svg';
+  function svg(tag, attrs, padre){
+    var el = document.createElementNS(NS, tag);
+    for (var k in attrs) if (attrs.hasOwnProperty(k)) {
+      if (k === 'texto') el.textContent = attrs[k]; else el.setAttribute(k, attrs[k]);
+    }
+    if (padre) padre.appendChild(el);
+    return el;
+  }
+  return { registrar: registrar, reproductor: reproductor, svg: svg, mostrar: mostrar };
+})();
+</script>
+
+<main>
+<section id="sec-inicio" class="sec">
+  <h1>SIA-NP explicado con animaciones</h1>
+  <p class="lead">Sistema de Inventario y Almacén para <b>Neumática del Pacífico</b> (Hermosillo, Sonora). Cada entregable de Fundamentos de Ingeniería de Software, explicado paso a paso con el mismo ejemplo real: un racor que sale del almacén y una orden de compra que lo repone.</p>
+
+  <div class="panel">
+    <h3 style="margin-top:0">El problema real del cliente</h3>
+    <div class="rejilla">
+      <div><b>Lodevar Pablovich</b>, Encargado de Almacén: «vender mercancía que el sistema dice tener y no está físicamente». Su palabra: <i>confiabilidad</i>.</div>
+      <div><b>Ricardo Mendoza Quintero</b>, Auxiliar de Almacén: órdenes de surtido ilegibles; confunde racores de distintos diámetros. Pide pistola escáner.</div>
+      <div><b>Karla Patricia Domínguez Rivera</b>, Encargada de Compras: ~35 proveedores; hoy hace las órdenes de compra en Word.</div>
+      <div><b>Paulina Pérez Estrada</b>, CEO: pierde 8–10 % del margen anual; quiere bajar la diferencia físico vs sistema de 5 % a menos de 1 %.</div>
+    </div>
+    <p class="nota-fuente">Fuente: ERS SIA-NP, Apéndice A (entrevistas) y Apéndice B (Excel actual: 454 registros, ubicaciones vacías, sin bitácora).</p>
+  </div>
+
+  <h2>Cómo se conectan los 6 entregables</h2>
+  <div class="cadena">
+    <span>ERS (RF1–RF20)</span><em>→</em><span>1 Casos de uso</span><em>→</em><span>2 Actividad</span><em>→</em><span>3 CRC</span><em>→</em><span>4 Secuencia</span><em>→</em><span>5 Clases</span><em>→</em><span>6 Estados</span>
+  </div>
+  <p>Cada paso del proceso UML (Kendall &amp; Kendall, cap. 10) refina al anterior: los <b>casos de uso</b> dicen <i>qué</i> hace el sistema; las <b>actividades</b>, <i>en qué orden y quién</i>; las <b>CRC</b>, <i>qué clases y quién colabora con quién</i>; las <b>secuencias</b>, <i>qué mensajes se envían en el tiempo</i>; el <b>diagrama de clases</b> junta atributos, métodos y relaciones; y el de <b>estados</b> sigue la vida de un objeto (la orden de compra).</p>
+
+  <div class="rejilla">
+    <a class="inicio-tarjeta" href="#cu"><b><span class="num">1</span>Casos de uso y escenarios</b>CU1–CU8, actores, flujos normales y alternos.</a>
+    <a class="inicio-tarjeta" href="#act"><b><span class="num">2</span>Diagramas de actividad</b>Los 8 casos de uso con carriles y decisiones.</a>
+    <a class="inicio-tarjeta" href="#crc"><b><span class="num">3</span>Tarjetas CRC</b>14 clases, responsabilidades y colaboradores.</a>
+    <a class="inicio-tarjeta" href="#seq"><b><span class="num">4</span>Diagramas de secuencia</b>SD1 (CU6 recepción) y SD2 (CU1 movimientos).</a>
+    <a class="inicio-tarjeta" href="#cls"><b><span class="num">5</span>Diagrama de clases</b>22 clases en capas: interfaz, control y entidad.</a>
+    <a class="inicio-tarjeta" href="#est"><b><span class="num">6</span>Diagrama de estados</b>La vida de una orden de compra.</a>
+  </div>
+
+  <div class="ejemplo"><b>El ejemplo que seguiremos en todas las secciones</b>
+    Ricardo surte 12 <b>racores rectos 1/4" NPT × 8 mm</b> (<code>RAC-0408</code>, ubicación <code>B-04-2</code>): la existencia baja de 40 a 28, por debajo del mínimo de 30. Karla genera la <b>OC-2026-0147</b> por 100 racores y 10 cilindros Ø32 × 100. Llega en dos entregas y Lodevar la recibe; la orden pasa de <i>Emitida</i> a <i>Parcialmente recibida</i> y luego a <i>Recibida</i>.
+    <div class="nota-fuente">Personas, giro, familias de producto y formato de ubicación (pasillo-anaquel-nivel) son reales, de la ERS. Las cifras y los códigos son de ejemplo.</div>
+  </div>
+</section>
+
+<!--SECCIONES-->
+</main>
+<footer>TecNM · Instituto Tecnológico de Hermosillo · Ingeniería en Sistemas Computacionales · Fundamentos de Ingeniería de Software · Grupo S5A · Hernández Castro José Martín, Moreno Ramos Adolfo, Olivas Villareal Andrea, Rivera Torres Edgardo.</footer>
+</body>
+</html>

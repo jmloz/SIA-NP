@@ -1,0 +1,1043 @@
+<style>
+#sec-cls .cls-barra{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:6px 0}
+#sec-cls .cls-barra button{font:inherit;font-size:13px;padding:4px 10px;border:1px solid var(--tinta);background:var(--papel);border-radius:4px;cursor:pointer}
+#sec-cls .cls-barra button:hover{background:var(--gris)}
+#sec-cls .cls-pie{font-size:13px;color:var(--texto2);text-align:center;margin:4px 0 0}
+#sec-cls .lienzo.cls-zoom svg{max-width:none}
+#sec-cls .lienzo.cls-alto{max-height:78vh}
+#sec-cls svg .nodo{cursor:pointer}
+#sec-cls svg .oculto{opacity:0;pointer-events:none}
+#sec-cls svg .resaltado text,#sec-cls svg .resaltado tspan{stroke:none!important}
+#sec-cls svg .arista.resaltado text,#sec-cls svg .lnk.resaltado text{fill:var(--acento)}
+#sec-cls svg .resaltado .fondo{stroke:none!important;fill:#fff!important}
+#sec-cls svg g.resaltado rect.cab{fill:#ffe8d9!important}
+#sec-cls svg .resaltado .lleno{fill:var(--acento)!important}
+#sec-cls svg text.cambio{fill:var(--acento);font-weight:bold}
+#sec-cls svg .error-l{stroke:var(--error)!important}
+#sec-cls svg text.error-t{fill:var(--error)}
+#sec-cls svg text.ok-t{fill:var(--ok)}
+#sec-cls svg .ficha{transition:transform .7s ease}
+#sec-cls .cls-dos{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:12px;align-items:start}
+#sec-cls .cls-ficha{background:var(--papel);border:1px solid var(--tinta);border-radius:6px;padding:12px 14px;font-size:14px;max-height:80vh;overflow:auto}
+#sec-cls .cls-ficha h3{margin:0 0 6px;font-size:17px}
+#sec-cls .cls-ficha h4{margin:10px 0 4px;font-size:14px;border-bottom:1px solid var(--gris)}
+#sec-cls .cls-ficha ul{margin:2px 0;padding-left:18px}
+#sec-cls .cls-ficha li{margin:2px 0}
+#sec-cls .cls-ficha code{font-size:12.5px}
+#sec-cls .cls-ficha .orig{display:block;font-size:12px;color:var(--texto2)}
+#sec-cls .cls-ficha .orig.sin{color:var(--acento)}
+#sec-cls .cls-lista{display:flex;flex-wrap:wrap;gap:3px;margin:6px 0}
+#sec-cls .cls-lista button{font:inherit;font-size:12px;padding:2px 7px;border:1px solid var(--tinta);background:var(--papel);border-radius:999px;cursor:pointer}
+#sec-cls .cls-lista button.activo{background:var(--tinta);color:var(--papel)}
+#sec-cls .cls-capas{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+#sec-cls .cls-capas > div{background:var(--papel);border:1px solid var(--tinta);border-radius:6px;padding:10px 12px}
+#sec-cls .cls-capas b{display:block;margin-bottom:4px}
+#sec-cls .cls-cuenta{font-weight:bold}
+@media (max-width:900px){#sec-cls .cls-dos{grid-template-columns:1fr}}
+</style>
+
+<section id="sec-cls" class="sec">
+  <h1>5 · Diagrama de clases</h1>
+  <p class="lead">22 clases en tres capas (interfaz, control y entidad), con sus atributos, sus métodos y 44 relaciones. Es el plano estático del SIA-NP: lo que cada clase <i>sabe</i> y lo que <i>sabe hacer</i>.</p>
+
+  <h2>Qué es este entregable</h2>
+  <div class="panel">
+    <p>Según Kendall &amp; Kendall, «los diagramas de clases muestran las características estáticas del sistema y no representan ningún procesamiento en especial»; también muestran la naturaleza de las relaciones entre las clases (pág. 297). Cada clase es un rectángulo con su nombre, sus <b>atributos</b> (lo que la clase conoce) y sus <b>métodos</b> (lo que sabe hacer). Los atributos suelen ser privados (<code>-</code>) y los métodos públicos (<code>+</code>) (págs. 297–298).</p>
+    <p>En el SIA-NP el diagrama se armó a partir de las <b>tarjetas CRC</b> y de las <b>secuencias SD1 (CU6) y SD2 (CU1)</b>: la columna de propiedades de cada tarjeta dio los atributos, cada responsabilidad dio un método y cada colaborador dio una relación.</p>
+    <p class="nota-fuente">Fuente: Kendall &amp; Kendall, cap. 10, págs. 297–299; entregable 5, «Introducción».</p>
+  </div>
+
+  <h3>Tipos de clases (Kendall, pág. 299)</h3>
+  <p>El libro divide las clases en cuatro categorías: de entidad, de interfaz (o de límite), abstracta y de control. Y fija la regla: «todas las clases de interfaz deben estar conectadas a una clase de control […] Las clases de interfaz, a diferencia de las otras dos, nunca se conectan de manera directa a las clases de entidad» (pág. 299). En la pág. 302 las agrupa en tres capas: presentación (interfaz), negocios (control) y persistencia (entidad).</p>
+  <div class="cls-capas">
+    <div><b>«interfaz» · 3 clases</b>Los medios para que el usuario trabaje con el sistema; sus atributos son los campos de la pantalla. <br><span class="chip">Interfaz</span><span class="chip">InterfazRegistroMovimientos</span><span class="chip">InterfazRecepcion</span></div>
+    <div><b>«control» · 2 clases</b>Controlan el flujo de actividades y coordinan a las demás. Una por caso de uso crítico. <br><span class="chip">ControladorMovimientos (CU1)</span><span class="chip">ControladorRecepcion (CU6)</span></div>
+    <div><b>Entidad · 17 clases</b>Cosas del mundo real que el sistema recuerda. <br><span class="chip">Usuario</span><span class="chip">Producto</span><span class="chip">Ubicacion</span><span class="chip"><i>Movimiento</i></span><span class="chip">Entrada</span><span class="chip">Salida</span><span class="chip">Ajuste</span><span class="chip">Devolucion</span><span class="chip">Kardex</span><span class="chip">InventarioFisico</span><span class="chip">Proveedor</span><span class="chip">OrdenDeCompra</span><span class="chip">DetalleOrden</span><span class="chip">Recepcion</span><span class="chip">Reporte</span><span class="chip">DashboardEjecutivo</span><span class="chip">BitacoraDeAuditoria</span></div>
+    <div><b>Abstracta · 1 clase</b>No se instancia directamente; su nombre va en cursiva (pág. 299). <br><span class="chip"><i>Movimiento</i></span> se instancia como Entrada, Salida, Ajuste o Devolucion.</div>
+  </div>
+
+  <h2>El diagrama: las 5 figuras del entregable</h2>
+  <p>Elige una figura. <b>Haz clic en cualquier clase</b> para abrir su ficha: atributos, métodos (con la responsabilidad CRC de la que sale cada uno), relaciones, tarjeta CRC de origen y casos de uso. Sus relaciones se resaltan en el diagrama.</p>
+  <div class="tabs" data-r="tabs-vistas"></div>
+  <div class="cls-dos">
+    <div>
+      <div class="cls-barra"><button type="button" data-r="zoom">Ver a tamaño real</button><button type="button" data-r="limpiar">Quitar selección</button><span class="nota-fuente" data-r="cuenta-vista"></span></div>
+      <div class="lienzo cls-alto" data-r="lienzo-vista"></div>
+      <p class="cls-pie" data-r="pie-vista"></p>
+      <div class="cls-lista" data-r="lista-clases"></div>
+    </div>
+    <div class="cls-ficha" data-r="ficha"><h3>Explorador de clases</h3><p>Haz clic en una clase del diagrama (o en su nombre bajo el diagrama).</p><p class="nota-fuente">En las figuras 2 a 5, las clases que solo llevan su nombre (rectángulo gris sin compartimentos) son de otra vista; también se pueden explorar.</p></div>
+  </div>
+  <p class="nota-fuente">Redibujado en SVG con la geometría de cada página de <code>Diagrama_de_Clases_SIA-NP.drawio</code>; clases, atributos, métodos y relaciones de <code>scripts/modelo_clases.py</code>.</p>
+
+  <h2>Animación 1 · Cómo se construye el diagrama</h2>
+  <p>Primero las tres capas, luego el contenido de las clases y al final las relaciones, un tipo de notación a la vez.</p>
+  <div class="lienzo cls-alto" data-r="lienzo-cons"></div>
+  <div data-r="repro-cons"></div>
+
+  <h2>Animación 2 · Un objeto vivo</h2>
+  <p>Una clase es el molde; un <b>objeto</b> es una instancia con valores concretos. Aquí se ven las instancias del ejemplo (notación <code>objeto:Clase</code>, subrayada) y cómo sus atributos se llenan mensaje a mensaje, según las secuencias SD2 (CU1) y SD1 (CU6). Cada paso dice qué relación del diagrama de clases se recorre.</p>
+  <div class="ejemplo"><b>Ejemplo real</b>
+    Ricardo Mendoza (Auxiliar de Almacén) escanea el racor <code>RAC-0408</code> (ubicación <code>B-04-2</code>: pasillo B, anaquel 4, nivel 2) y saca 12 piezas con la nota de salida <code>NS-2026-0318</code>: la existencia baja de 40 a 28 y el folio es <code>MOV-2026-01542</code>. Después, Karla Patricia Domínguez (Encargada de Compras, actor principal de CU6; Lodevar participa como actor secundario) recibe la <code>OC-2026-0147</code> (100 racores y 10 cilindros <code>CIL-32100</code>) con la factura <code>F-A-88213</code>, en dos entregas.
+    <div class="nota-fuente">Cifras de ejemplo con datos reales del cliente (personas, giro, familias y formato de ubicación de la ERS; cifras y códigos de ejemplo).</div>
+  </div>
+  <div class="tabs" data-r="tabs-obj"><button type="button" data-o="0" class="activo">CU1 · una Salida</button><button type="button" data-o="1">CU6 · recibir la OC-2026-0147</button></div>
+  <div class="lienzo" data-r="lienzo-obj"></div>
+  <div data-r="repro-obj"></div>
+
+  <h2>La regla de capas</h2>
+  <p>La interfaz solo habla con su controlador; el controlador habla con las entidades. Nunca interfaz → entidad (Kendall, pág. 299).</p>
+  <div class="lienzo" data-r="lienzo-capas"></div>
+  <div data-r="repro-capas"></div>
+
+  <h2>Herencia y clase de asociación</h2>
+  <div class="tabs" data-r="tabs-esp"></div>
+  <div class="lienzo" data-r="lienzo-esp"></div>
+  <div class="panel" data-r="texto-esp"></div>
+
+  <h2>Cómo leer la notación</h2>
+  <div class="lienzo" data-r="lienzo-leyenda"></div>
+  <p class="nota-fuente">Notación del entregable («Notación utilizada») y de Kendall &amp; Kendall: asociaciones y multiplicidad (pág. 304), clase de asociación (pág. 305), agregación y composición (págs. 305–306), generalización (pág. 306), clase abstracta en cursiva (pág. 299).</p>
+
+  <h2>Para la exposición</h2>
+  <details class="pregunta"><summary>¿Qué métodos no salen de una responsabilidad de las tarjetas CRC?</summary>
+    <p>El entregable lista cinco:</p>
+    <table class="t"><tr><th>Clase</th><th>Método</th><th>De dónde sale</th></tr>
+      <tr><td>ControladorRecepcion</td><td><code>notificarDiferencias()</code></td><td>De la propiedad «Conozco las diferencias encontradas» (Diferencias) de la tarjeta Controlador de recepción.</td></tr>
+      <tr><td>DetalleOrden</td><td><code>agregarDetalle()</code>, <code>cambiarCantidad()</code></td><td>De la responsabilidad «Agregar productos y cantidades» de la tarjeta Orden de compra (DetalleOrden no tiene tarjeta).</td></tr>
+      <tr><td>DetalleOrden</td><td><code>calcularSaldoPendiente()</code></td><td>De la propiedad «Sé si quedó saldo pendiente» de la tarjeta Recepción: cantidadSolicitada − cantidadRecibida por producto.</td></tr>
+      <tr><td>DashboardEjecutivo</td><td><code>actualizarGraficas()</code></td><td>La tarjeta Reporte solo lo menciona como subclase; sale de CU7 Visualizar Dashboard de KPIs.</td></tr>
+    </table>
+    <p>Aparte, <code>cancelarOrden()</code> y <code>cerrarOrden()</code> son decisión de modelado (estados Cancelada y Cerrada), y otros ocho métodos salen de los mensajes de SD1/SD2 (p. ej. <code>actualizarExistencia()</code>, <code>validarUbicacion()</code>, <code>escanearCodigo()</code>).</p></details>
+  <details class="pregunta"><summary>¿Por qué DetalleOrden no tiene tarjeta CRC?</summary>
+    <p>Porque es la propiedad «Detalle de productos» de la tarjeta Orden de compra. OrdenDeCompra–Producto es de muchos a muchos (0..* — 1..*): una orden pide varios productos y un producto está en varias órdenes. Como en el ejemplo Estudiante–Curso–Seccion del libro (pág. 305), se resuelve con una <b>clase de asociación</b> unida con línea punteada, que guarda cantidadSolicitada, cantidadRecibida y costoUnitario. Lo dice la nota del diagrama.</p></details>
+  <details class="pregunta"><summary>¿Por qué la interfaz no se conecta con Producto si la pantalla muestra la existencia?</summary>
+    <p>Por la regla de Kendall (pág. 299): la interfaz solo habla con su clase de control. InterfazRegistroMovimientos envía la solicitud a ControladorMovimientos (asociación 1–1), y él consulta a Producto (dependencia «coordina»). En el diagrama no hay ninguna línea de una clase «interfaz» a una de entidad.</p></details>
+  <details class="pregunta"><summary>¿Por qué Movimiento está en cursiva y sus subclases están vacías?</summary>
+    <p>Movimiento es <b>abstracta</b>: nunca se crea un «movimiento» a secas, sino una Entrada, Salida, Ajuste o Devolucion. Las subclases heredan todos sus atributos y métodos, así que no repiten nada; el tipo queda también en <code>tipoMovimiento: char{E,S,A,D}</code>. Lo mismo pasa con Reporte → DashboardEjecutivo (que sí agrega <code>periodoAnalisis</code> y <code>actualizarGraficas()</code>).</p></details>
+  <details class="pregunta"><summary>¿Cuál es la diferencia entre el diamante vacío y el relleno?</summary>
+    <p>Diamante vacío = <b>agregación</b> («tiene un»): Ubicacion contiene Producto (el producto existe aunque se cambie su ubicación). Diamante relleno = <b>composición</b>, todo y sus partes con responsabilidad sobre ellas: Kardex consiste de Movimiento. Las subclases de las tarjetas Usuario (roles) e Inventario físico (cíclico/completo) no se dibujan como herencia, sino con los atributos <code>rol</code> y <code>tipoConteo</code> (notas del diagrama). Los estados de la orden usan los nombres de CU5/CU6 (Pendiente, Emitida, Parcialmente recibida, Recibida) en lugar de Abierta/Parcial del diccionario de datos de la ERS.</p></details>
+</section>
+
+<script>
+(function(){
+SIA.registrar('cls', function(raiz){
+  'use strict';
+  /* ---------------- modelo (transcrito de scripts/modelo_clases.py) ---------------- */
+var CLASES=[
+['Interfaz','interfaz',['-nombrePantalla: String','-usuarioEnSesion: String','-datosCapturados: String','-mensaje: String','-opcionesHabilitadas: String'],
+ ['+mostrarPantalla()','+capturarDatos()','+validarCampos(): Boolean','+enviarSolicitud()','+mostrarMensaje(mensaje: String)','+habilitarOpciones(rol: char)']],
+['InterfazRegistroMovimientos','interfaz',['-campoCodigo: String','-campoCantidad: Integer','-campoUbicacion: String','-campoTipo: char{E,S,A,D}','-campoDocumento: String'],
+ ['+escanearCodigo(codigo: String)','+mostrarNotaDeSalida()']],
+['InterfazRecepcion','interfaz',['-campoFolioOC: String','-campoFactura: String','-campoCantidades: String','-campoUbicacion: String'],
+ ['+seleccionarOrden(folioOC: String)','+mostrarComprobante()']],
+['ControladorMovimientos','control',['-movimientoActual: Movimiento','-productoActual: Producto','-usuarioSolicitante: String','-resultadoValidacion: Boolean'],
+ ['+buscarProducto(codigo: String)','+registrarMovimiento(tipo, cantidad, ubicacion, documento)','+validarDatos(): Boolean','+notificarReorden()','+recibirSolicitud()','+registrarEnBitacora(accion: String)']],
+['ControladorRecepcion','control',['-ordenActual: OrdenDeCompra','-recepcionActual: Recepcion','-diferencias: String','-usuarioSolicitante: String'],
+ ['+buscarOrden(folioOC: String)','+registrarRecepcion(folioOC, cantidades, ubicacion, factura)','+generarEntradas()','+notificarDiferencias()','+recibirSolicitud()','+compararCantidades(): Boolean','+actualizarEstadoOrden()']],
+['Usuario',null,['-nombreUsuario: String','-contrasena: String','-nombreCompleto: String','-rol: char{E,A,C,D,X}','-activo: Boolean=Y','-intentosFallidos: Integer=0'],
+ ['+agregarUsuario()','+cambiarUsuario()','+iniciarSesion(usuario, contrasena): Boolean','+bloquearCuenta()','+cerrarSesion()','+validarCredenciales(): Boolean']],
+['Producto',null,['-codigo: String','-descripcion: String','-familia: String','-unidadMedida: String','-existencia: Decimal=0.0','-puntoReorden: Decimal','-costoUnitario: Decimal'],
+ ['+agregarProducto()','+cambiarProducto()','+obtenerProducto(codigo: String)','+verificarExistencia(cantidad): Boolean','+actualizarExistencia(tipo, cantidad)','+verificarPuntoDeReorden(): Boolean','+darDeBaja()']],
+['Ubicacion',null,['-claveUbicacion: String','-pasillo: String','-anaquel: String','-nivel: Integer','-disponible: Boolean=Y'],
+ ['+agregarUbicacion()','+cambiarUbicacion()','+validarUbicacion(clave): Boolean','+verProductos()']],
+['Movimiento',null,['-folio: String','-tipoMovimiento: char{E,S,A,D}','-fecha: Fecha','-cantidad: Decimal','-documentoReferencia: String','-usuarioResponsable: Usuario'],
+ ['+crearMovimiento(tipo, cantidad, ubicacion, documento): String','+validarCantidad(): Boolean','+generarFolio(): String','+verMovimiento()','+actualizarExistenciaProducto()']],
+['Entrada',null,[],
+ []],
+['Salida',null,[],
+ []],
+['Ajuste',null,[],
+ []],
+['Devolucion',null,[],
+ []],
+['Kardex',null,['-producto: Producto','-fecha: Fecha','-tipoMovimiento: char','-cantidad: Decimal','-saldo: Decimal'],
+ ['+agregarRegistro(movimiento)','+verHistorial(producto)','+filtrar(fechaInicio, fechaFin, tipo)','+exportar(formato: String)']],
+['InventarioFisico',null,['-folioConteo: String','-tipoConteo: char{C,T}','-fecha: Fecha','-cantidadContada: Decimal','-diferencia: Decimal','-estado: String'],
+ ['+generarHojaDeConteo()','+registrarConteo(producto, cantidad)','+compararExistencia()','+generarReporteDiferencias()','+aplicarAjustes()']],
+['Proveedor',null,['-rfc: String','-razonSocial: String','-nombreContacto: String','-telefono: String','-correo: String','-activo: Boolean=Y'],
+ ['+agregarProveedor()','+cambiarProveedor()','+buscarProveedor()','+desactivarProveedor()','+verProductosSurtidos()']],
+['OrdenDeCompra',null,['-folio: String','-fechaEmision: Fecha','-proveedor: Proveedor','-total: Decimal=0.0','-estado: String{Pendiente, Emitida,','Parcialmente recibida, Recibida, Cerrada, Cancelada}'],
+ ['+crearOrden()','+agregarProducto(producto, cantidad)','+emitirOrden()','+buscarOrdenPendiente(folio)','+compararCantidades(cantidades)','+actualizarEstado(diferencias)','+guardarBorrador()','+generarDocumento()','+cancelarOrden()','+cerrarOrden()']],
+['DetalleOrden',null,['-folioOC: String','-codigoProducto: String','-cantidadSolicitada: Decimal','-cantidadRecibida: Decimal=0.0','-costoUnitario: Decimal'],
+ ['+agregarDetalle()','+cambiarCantidad()','+calcularSaldoPendiente(): Decimal']],
+['Recepcion',null,['-folioRecepcion: String','-fechaRecepcion: Fecha','-ordenDeCompra: OrdenDeCompra','-numeroFactura: String','-cantidadRecibida: Decimal','-saldoPendiente: Decimal'],
+ ['+crearRecepcion(folioOC, factura): String','+validarCantidades()','+solicitarAutorizacion()','+generarEntrada(cantidades, ubicacion)','+actualizarEstadoOrden()']],
+['Reporte',null,['-tipoReporte: String','-periodo: String','-fechaGeneracion: Fecha','-valorInventario: Decimal','-rotacion: Decimal','-formato: char{X,C}'],
+ ['+calcularIndicadores()','+verDesglose()','+exportar(formato)','+verValorYRotacion()','+verProductosBajoReorden()']],
+['DashboardEjecutivo',null,['-periodoAnalisis: char{S,M}'],
+ ['+actualizarGraficas()']],
+['BitacoraDeAuditoria',null,['-idRegistro: Integer','-fechaHora: Fecha','-usuario: Usuario','-accion: String','-modulo: String'],
+ ['+registrarEvento(usuario, accion)','+verRegistros(usuario, fecha)','+registrarAcceso(usuario)']]];
+var REL=[
+['c91','gen','InterfazRegistroMovimientos','Interfaz','','',''],
+['c92','gen','InterfazRecepcion','Interfaz','','',''],
+['c93','assoc','InterfazRegistroMovimientos','ControladorMovimientos','envía solicitudes a','1','1'],
+['c96','assoc','InterfazRecepcion','ControladorRecepcion','envía solicitudes a','1','1'],
+['c99','dep','ControladorMovimientos','Producto','coordina','',''],
+['c100','dep','ControladorMovimientos','Ubicacion','valida','',''],
+['c101','dep','ControladorMovimientos','Movimiento','crea','',''],
+['c102','dep','ControladorMovimientos','BitacoraDeAuditoria','registra en','',''],
+['c103','dep','ControladorRecepcion','OrdenDeCompra','coordina','',''],
+['c104','dep','ControladorRecepcion','Recepcion','crea','',''],
+['c105','dep','ControladorRecepcion','Entrada','genera','',''],
+['c106','dep','ControladorRecepcion','BitacoraDeAuditoria','registra en','',''],
+['c107','gen','Entrada','Movimiento','','',''],
+['c108','gen','Salida','Movimiento','','',''],
+['c109','gen','Ajuste','Movimiento','','',''],
+['c110','gen','Devolucion','Movimiento','','',''],
+['c111','gen','DashboardEjecutivo','Reporte','','',''],
+['c112','assoc','Usuario','Movimiento','registra','1','0..*'],
+['c115','assoc','Usuario','OrdenDeCompra','elabora','1','0..*'],
+['c118','assoc','Usuario','BitacoraDeAuditoria','genera','1','0..*'],
+['c121','assoc','Producto','Movimiento','afecta','1','0..*'],
+['c124','agg','Ubicacion','Producto','contiene','1','0..*'],
+['c127','assoc','Producto','Kardex','tiene','1','1'],
+['c130','comp','Kardex','Movimiento','consiste de','1','0..*'],
+['c133','assoc','Proveedor','OrdenDeCompra','recibe','1','0..*'],
+['c136','assoc','OrdenDeCompra','Producto','solicita','0..*','1..*'],
+['c139','assoc','OrdenDeCompra','Recepcion','se surte con','1','0..*'],
+['c142','assoc','Recepcion','Entrada','genera','0..1','1..*'],
+['c145','assoc','InventarioFisico','Producto','cuenta','0..*','1..*'],
+['c148','assoc','InventarioFisico','Ajuste','genera','1','0..*'],
+['c151','assoc','Reporte','Kardex','consulta','0..*','1..*'],
+['n1','assoc','Proveedor','Producto','surte','1..*','1..*'],
+['n2','assoc','InventarioFisico','Ubicacion','se realiza en','0..*','1..*'],
+['n3','assoc','Usuario','InventarioFisico','realiza','1','0..*'],
+['n4','dep','Recepcion','Producto','actualiza','',''],
+['n5','dep','Recepcion','Ubicacion','asigna','',''],
+['n6','dep','Recepcion','BitacoraDeAuditoria','registra en','',''],
+['n7','dep','Reporte','Producto','consulta','',''],
+['n8','dep','Reporte','Movimiento','consulta','',''],
+['n9','dep','Reporte','OrdenDeCompra','consulta','',''],
+['n10','dep','BitacoraDeAuditoria','Movimiento','registra','',''],
+['n11','dep','BitacoraDeAuditoria','OrdenDeCompra','registra','',''],
+['n20','assoc','Ubicacion','Movimiento','ubica','1','0..*']];
+
+  var ABSTRACTAS = {Movimiento: 1};
+  /* geometría de las 5 páginas del .drawio: nodos [nombre,x,y,w,h,tipo(c clase, s solo nombre, n nota),lineas]
+     aristas [id,origen,destino,exitX,exitY,entryX,entryY,puntos,targetPoint,xEtiqueta,offX,offY,xMult1,xMult2] */
+var VISTAS=[
+{id:'clases',nombre:'Figura 1. Diagrama de clases completo',
+nodos:[['Interfaz',1030,40,188,222,'c'],
+['InterfazRegistroMovimientos',1030,410,186,166,'c'],
+['InterfazRecepcion',600,80,190,152,'c'],
+['ControladorMovimientos',880,960,308,208,'c'],
+['ControladorRecepcion',540,370,314,222,'c'],
+['Usuario',1300,660,238,222,'c'],
+['Producto',200,1150,210,250,'c'],
+['Ubicacion',740,1250,186,180,'c'],
+['Movimiento',820,1520,328,208,'c'],
+['Entrada',820,790,66,54,'c'],
+['Salida',1190,1610,66,54,'c'],
+['Ajuste',1340,1570,66,54,'c'],
+['Devolucion',940,1770,86,54,'c'],
+['Kardex',190,1570,182,180,'c'],
+['InventarioFisico',1300,1100,200,208,'c'],
+['Proveedor',170,370,138,208,'c'],
+['OrdenDeCompra',270,650,282,278,'c'],
+['DetalleOrden',70,950,194,166,'c'],
+['Recepcion',650,900,222,208,'c'],
+['Reporte',460,1440,162,208,'c'],
+['DashboardEjecutivo',550,1320,152,82,'c'],
+['BitacoraDeAuditoria',920,610,182,166,'c'],
+['nota1',40,1780,236,53,'n',['DetalleOrden es la propiedad «Detalle de','productos» de la tarjeta CRC Orden de compra,','separada como clase de asociación.']],
+['nota2',1300,560,248,66,'n',['Las subclases de la tarjeta CRC Usuario (roles) se','modelan con el atributo rol: solo cambian los','permisos. El rol Vendedor de la ERS no se incluye','porque no participa en CU1–CU8.']],
+['nota3',1290,1650,238,53,'n',['Las subclases de la tarjeta CRC Inventario físico','(conteo cíclico y completo) se modelan con el','atributo tipoConteo.']],
+['nota4',1060,1780,226,40,'n',['El catálogo de clientes de CU4 no se modela:','ninguna tarjeta CRC lo incluye.']]],
+aristas:[['c91','InterfazRegistroMovimientos','Interfaz',0.11,0,0.11,1,[],null,0,0,0],
+['c92','InterfazRecepcion','Interfaz',1,0.13,0,0.27,[],null,0,0,0],
+['c93','InterfazRegistroMovimientos','ControladorMovimientos',0.43,1,0.75,0,[],null,0.2,0,0.4,-0.94,0.94],
+['c96','InterfazRecepcion','ControladorRecepcion',0.11,1,0.25,0,[],null,0,0,0,-0.84,0.83],
+['c99','ControladorMovimientos','Producto',0,0.91,1,0.08,[420,1150,420,1170],null,-0.06,0,0],
+['c100','ControladorMovimientos','Ubicacion',0.06,1,0.86,0,[],null,0,0,0],
+['c101','ControladorMovimientos','Movimiento',0.19,1,0.37,0,[],null,0,0,0],
+['c102','ControladorMovimientos','BitacoraDeAuditoria',0.19,0,0.11,1,[],null,0,0,0],
+['c103','ControladorRecepcion','OrdenDeCompra',0.06,1,1,0.07,[560,670],null,-0.09,0,0],
+['c104','ControladorRecepcion','Recepcion',0.41,1,0.09,0,[],null,0,0,0],
+['c105','ControladorRecepcion','Entrada',0.96,1,0.3,0,[],null,-0.2,0,0.2],
+['c106','ControladorRecepcion','BitacoraDeAuditoria',1,0.9,0.11,0,[940,570],null,-0.32,0,0],
+['c107','Entrada','Movimiento',1,0.74,1,0.1,[1200,830,1200,1540],null,0,0,0],
+['c108','Salida','Movimiento',0,0.37,1,0.53,[],null,0,0,0],
+['c109','Ajuste','Movimiento',0,0.37,1,0.34,[],null,0,0,0],
+['c110','Devolucion','Movimiento',0.23,0,0.43,1,[],null,0,0,0],
+['c111','DashboardEjecutivo','Reporte',0.13,1,0.68,0,[],null,0,0,0],
+['c112','Usuario','Movimiento',0,0.9,1,0.24,[1220,860,1220,1570],null,0.01,26.34,0,-0.98,0.97],
+['c115','Usuario','OrdenDeCompra',0,0.59,1,0.47,[900,790,900,780],null,0.54,0,0,-0.97,0.96],
+['c118','Usuario','BitacoraDeAuditoria',0,0.09,1,0.42,[],null,0,0,0,-0.9,0.77],
+['c121','Producto','Movimiento',1,0.64,0,0.19,[730,1310,730,1560],null,-0.52,0,0,-0.97,0.95],
+['c124','Ubicacion','Producto',0,0.11,1,0.48,[],null,0,0,0,-0.94,0.91],
+['c127','Producto','Kardex',0.1,1,0.16,0,[],null,0,0,0,-0.87,0.86],
+['c130','Kardex','Movimiento',1,0.5,0,0.67,[],null,0,0,0,-0.96,0.93],
+['c133','Proveedor','OrdenDeCompra',0.87,1,0.07,0,[],null,0,0,0,-0.69,0.67],
+['c136','OrdenDeCompra','Producto',0.07,1,0.43,0,[],null,-0.2,0,-0.2,-0.9,0.89],
+['c139','OrdenDeCompra','Recepcion',1,0.94,0,0.1,[640,910,640,920],null,-0.02,-0.2,0,-0.81,0.81],
+['c142','Recepcion','Entrada',0.86,0,0.3,1,[],null,0,0,0,-0.61,0.57],
+['c145','InventarioFisico','Producto',0,0.43,1,0.16,[],null,0,0,0,-0.97,0.97],
+['c148','InventarioFisico','Ajuste',0.3,1,0.3,0,[],null,0,0,0,-0.92,0.91],
+['c151','Reporte','Kardex',0,0.72,1,0.11,[],null,0,0,10,-0.66,0.66],
+['n1','Proveedor','Producto',0.65,1,0.33,0,[260,940,270,940],null,-0.38,-20.23,0,-0.96,0.96],
+['n2','InventarioFisico','Ubicacion',0,0.82,1,0.11,[],null,0,0,0,-0.92,0.83],
+['n3','Usuario','InventarioFisico',0.08,1,0.1,0,[],null,0,0,0,-0.9,0.89],
+['n4','Recepcion','Producto',0,0.91,0.9,0,[390,1090],null,-0.19,0,0],
+['n5','Recepcion','Ubicacion',0.5,1,0.11,0,[],null,0,0,0],
+['n6','Recepcion','BitacoraDeAuditoria',1,0.1,0,0.9,[910,920,910,760],null,-0.33,0,0],
+['n7','Reporte','Producto',0,0.1,0.9,1,[390,1460],null,0.54,0,0],
+['n8','Reporte','Movimiento',1,0.48,0,0.1,[],null,-0.2,0.2,0],
+['n9','Reporte','OrdenDeCompra',0.12,0,0.74,1,[],null,-0.2,0,0.2],
+['n10','BitacoraDeAuditoria','Movimiento',1,0.9,1,0.19,[1210,760,1210,1560],null,-0.89,0,0],
+['n11','BitacoraDeAuditoria','OrdenDeCompra',0,0.48,1,0.14,[],null,0,0,0],
+['n20','Ubicacion','Movimiento',0.54,1,0.06,0,[],null,0,0,0,-0.76,0.73],
+['c154','DetalleOrden',null,1,0.54,null,null,[],[290,1040],0,0,0],
+['nota1e','nota1','DetalleOrden',0.21,0,0.1,1,[],null,0,0,0],
+['nota2e','nota2','Usuario',0.08,1,0.08,0,[],null,0,0,0],
+['nota3e','nota3','InventarioFisico',0.55,0,0.6,1,[],null,0,0,0],
+['nota4e','nota4','Devolucion',0,0.5,1,0.56,[],null,0,0,0]]},
+{id:'vista2',nombre:'Figura 2. Interfaz y control',
+nodos:[['Interfaz',341,40,188,222,'c'],
+['InterfazRecepcion',152,310,190,152,'c'],
+['InterfazRegistroMovimientos',531,310,186,166,'c'],
+['ControladorRecepcion',90,560,314,222,'c'],
+['ControladorMovimientos',470,560,308,208,'c'],
+['Entrada',40,890,70,30,'s'],
+['Recepcion',124,890,86,30,'s'],
+['OrdenDeCompra',224,890,122,30,'s'],
+['BitacoraDeAuditoria',360,890,142,30,'s'],
+['Movimiento',516,890,92,30,'s'],
+['Ubicacion',622,890,82,30,'s'],
+['Producto',718,890,78,30,'s']],
+aristas:[['c92','InterfazRecepcion','Interfaz',0.5,0,0.25,1,[247,286,388,286],null,0,0,0],
+['c91','InterfazRegistroMovimientos','Interfaz',0.5,0,0.75,1,[624,286,482,286],null,0,0,0],
+['c96','InterfazRecepcion','ControladorRecepcion',0.5,1,0.5,0,[],null,0,0,0,-0.78,0.76],
+['c93','InterfazRegistroMovimientos','ControladorMovimientos',0.5,1,0.5,0,[],null,0,0,0,-0.74,0.71],
+['c105','ControladorRecepcion','Entrada',0.12,1,0.5,0,[],null,0,0,0],
+['c104','ControladorRecepcion','Recepcion',0.34,1,0.5,0,[],null,0,0,0],
+['c103','ControladorRecepcion','OrdenDeCompra',0.56,1,0.5,0,[],null,-0.01,0.09,0.5],
+['c106','ControladorRecepcion','BitacoraDeAuditoria',0.88,1,0.5,0,[],null,-0.01,0.26,0.43],
+['c102','ControladorMovimientos','BitacoraDeAuditoria',0.12,1,0.5,0,[],null,-0.01,-0.27,0.43],
+['c101','ControladorMovimientos','Movimiento',0.38,1,0.5,0,[],null,0,0,0],
+['c100','ControladorMovimientos','Ubicacion',0.62,1,0.5,0,[],null,0,0,0],
+['c99','ControladorMovimientos','Producto',0.88,1,0.5,0,[],null,-0.01,0.06,0.5]]},
+{id:'vista3',nombre:'Figura 3. Inventario',
+nodos:[['Usuario',820,490,238,222,'c'],
+['Producto',40,40,210,250,'c'],
+['Ubicacion',90,370,186,180,'c'],
+['Movimiento',420,290,328,208,'c'],
+['Entrada',520,190,66,54,'c'],
+['Salida',800,370,66,54,'c'],
+['Ajuste',320,580,66,54,'c'],
+['Devolucion',710,530,86,54,'c'],
+['Kardex',940,80,182,180,'c'],
+['InventarioFisico',40,620,200,208,'c'],
+['BitacoraDeAuditoria',610,650,142,30,'s'],
+['OrdenDeCompra',790,140,122,30,'s'],
+['Proveedor',330,160,84,30,'s'],
+['Reporte',1000,350,70,30,'s'],
+['Recepcion',670,200,86,30,'s'],
+['nota2',810,740,248,66,'n',['Las subclases de la tarjeta CRC Usuario (roles) se','modelan con el atributo rol: solo cambian los','permisos. El rol Vendedor de la ERS no se incluye','porque no participa en CU1–CU8.']],
+['nota3',280,700,238,53,'n',['Las subclases de la tarjeta CRC Inventario físico','(conteo cíclico y completo) se modelan con el','atributo tipoConteo.']],
+['nota4',430,540,226,40,'n',['El catálogo de clientes de CU4 no se modela:','ninguna tarjeta CRC lo incluye.']]],
+aristas:[['c107','Entrada','Movimiento',0.3,1,0.37,0,[],null,0,0,0],
+['c108','Salida','Movimiento',0,0.37,1,0.48,[],null,0,0,0],
+['c109','Ajuste','Movimiento',0.76,0,0,0.91,[370,480],null,0,0,0],
+['c110','Devolucion','Movimiento',0.23,0,0.95,1,[],null,0,0,0],
+['c112','Usuario','Movimiento',0.08,0,1,0.91,[840,480],null,-0.08,0.2,0,-0.8,0.71],
+['c115','Usuario','OrdenDeCompra',0.25,0,0.74,1,[],null,0,0,0,-0.93,0.93],
+['c118','Usuario','BitacoraDeAuditoria',0,0.68,0.85,0,[730,640],null,-0.1,0,0,-0.8,0.8],
+['c121','Producto','Movimiento',0.9,1,0,0.1,[230,310],null,0.1,0,0,-0.72,0.86],
+['c124','Ubicacion','Producto',0.11,0,0.33,1,[],null,0,0,0,-0.72,0.7],
+['c127','Producto','Kardex',1,0.24,0,0.11,[],null,0,0,0,-0.97,0.97],
+['c130','Kardex','Movimiento',0,0.89,0.95,0,[730,240],null,-0.19,0,0,-0.92,0.91],
+['n1','Proveedor','Producto',0.24,0,1,0.44,[350,150],null,0.09,0,0,-0.82,0.73],
+['c136','OrdenDeCompra','Producto',0.16,0,1,0.36,[810,130],null,0.02,0,0,-0.96,0.95],
+['c142','Recepcion','Entrada',0.23,1,1,0.74,[690,240,600,240,600,230],null,-0.11,0,0,-0.84,0.77],
+['c145','InventarioFisico','Producto',0.1,0,0.1,1,[],null,0,0,0,-0.93,0.93],
+['c148','InventarioFisico','Ajuste',1,0.1,0.3,1,[340,640],null,-0.06,0,0,-0.81,0.89],
+['c151','Reporte','Kardex',0.29,0,0.44,1,[],null,0,0,0,-0.76,0.73],
+['n2','InventarioFisico','Ubicacion',0.35,0,0.11,1,[],null,0,0,0,-0.69,0.66],
+['n3','Usuario','InventarioFisico',0,0.9,1,0.34,[],null,0,0,0,-0.97,0.95],
+['n20','Ubicacion','Movimiento',1,0.11,0,0.48,[],null,0,0,0,-0.86,0.79],
+['nota2e','nota2','Usuario',0.12,0,0.08,1,[],null,0,0,0],
+['nota3e','nota3','InventarioFisico',0,0.38,1,0.48,[],null,0,0,0],
+['nota4e','nota4','Devolucion',1,0.5,0,0.56,[],null,0,0,0]]},
+{id:'vista4',nombre:'Figura 4. Compras',
+nodos:[['Proveedor',40,110,138,208,'c'],
+['OrdenDeCompra',300,110,282,278,'c'],
+['Usuario',40,355,70,30,'s'],
+['Producto',760,150,78,30,'s'],
+['DetalleOrden',630,240,194,166,'c'],
+['Recepcion',290,470,222,208,'c'],
+['Entrada',100,535,70,30,'s'],
+['Ubicacion',300,760,82,30,'s'],
+['BitacoraDeAuditoria',430,760,142,30,'s'],
+['nota1',630,440,236,53,'n',['DetalleOrden es la propiedad «Detalle de','productos» de la tarjeta CRC Orden de compra,','separada como clase de asociación.']]],
+aristas:[['c133','Proveedor','OrdenDeCompra',1,0.43,0,0.32,[],null,0,0,0,-0.84,0.75],
+['n1','Proveedor','Producto',0.5,0,0.5,0,[109,40,800,40],null,-0.05,0.5,0,-0.97,0.97],
+['c136','OrdenDeCompra','Producto',1,0.2,0,0.5,[],null,-0.4,0,-0.03,-0.83,0.83],
+['c154','DetalleOrden',null,0.5,0,null,null,[],[688.8,165.02],0,0,0],
+['nota1e','nota1','DetalleOrden',0.5,0,0.5,1,[],null,0,0,0],
+['c139','OrdenDeCompra','Recepcion',0.43,1,0.58,0,[],null,0,0,0,-0.73,0.71],
+['c115','Usuario','OrdenDeCompra',1,0.5,0,0.94,[],null,0,0,0,-0.89,0.84],
+['c142','Recepcion','Entrada',0,0.4,1,0.5,[],null,0,0,0,-0.73,0.75],
+['n4','Recepcion','Producto',1,0.39,1,0.5,[890,550,890,165],null,-0.54,0,0],
+['n5','Recepcion','Ubicacion',0.2,1,0.5,0,[],null,0,0,0],
+['n6','Recepcion','BitacoraDeAuditoria',0.8,1,0.5,0,[],null,0,0,0]]},
+{id:'vista5',nombre:'Figura 5. Reportes y auditoría',
+nodos:[['DashboardEjecutivo',40,100,152,82,'c'],
+['Reporte',282,40,162,208,'c'],
+['Kardex',600,50,66,30,'s'],
+['Producto',600,160,78,30,'s'],
+['Movimiento',240,370,92,30,'s'],
+['OrdenDeCompra',390,370,122,30,'s'],
+['BitacoraDeAuditoria',290,560,182,166,'c'],
+['Usuario',680,630,70,30,'s']],
+aristas:[['c111','DashboardEjecutivo','Reporte',1,0.5,0,0.49,[],null,0,0,0],
+['c151','Reporte','Kardex',1,0.17,0,0.5,[],null,0,0,0,-0.81,0.81],
+['n7','Reporte','Producto',1,0.65,0,0.5,[],null,0,0,0],
+['n8','Reporte','Movimiento',0.25,1,0.5,0,[],null,-0.01,-0.14,0.48],
+['n9','Reporte','OrdenDeCompra',0.75,1,0.5,0,[],null,0,0,0],
+['n10','BitacoraDeAuditoria','Movimiento',0.2,0,0.5,1,[],null,-0.01,-0.12,-0.48],
+['n11','BitacoraDeAuditoria','OrdenDeCompra',0.8,0,0.5,1,[],null,0,0,0],
+['c118','Usuario','BitacoraDeAuditoria',0,0.5,1,0.5,[],null,0,0,0,-0.9,0.87]]}];
+
+  /* correspondencia responsabilidad CRC -> método (scripts/docx/corr_clases.json) */
+var CORR={Interfaz:{mostrarPantalla:'Mostrar las pantallas del sistema',capturarDatos:'Recibir los datos capturados o escaneados',validarCampos:'Validar campos obligatorios',enviarSolicitud:'Enviar solicitudes a su clase de control',mostrarMensaje:'Mostrar confirmaciones y errores',habilitarOpciones:'Habilitar solo las opciones del rol'},
+ControladorMovimientos:{recibirSolicitud:'Recibir las solicitudes de la interfaz',buscarProducto:'Buscar el producto escaneado',validarDatos:'Validar la ubicación y la existencia',registrarMovimiento:'Coordinar el registro del movimiento',registrarEnBitacora:'Registrar el evento en la bitácora',notificarReorden:'Revisar el punto de reorden'},
+ControladorRecepcion:{recibirSolicitud:'Recibir las solicitudes de la interfaz',buscarOrden:'Buscar la orden de compra pendiente',registrarRecepcion:'Coordinar la creación de la recepción',compararCantidades:'Comparar lo recibido contra lo pedido',generarEntradas:'Generar una entrada por partida',actualizarEstadoOrden:'Actualizar el estado de la orden'},
+Usuario:{agregarUsuario:'Agregar un nuevo usuario',cambiarUsuario:'Modificar información',iniciarSesion:'Iniciar sesión',validarCredenciales:'Validar credenciales',bloquearCuenta:'Bloquear tras tres intentos',cerrarSesion:'Cerrar sesión'},
+Producto:{agregarProducto:'Agregar un nuevo producto',cambiarProducto:'Modificar información',obtenerProducto:'Buscar por código, descripción o familia',verificarExistencia:'Mostrar existencia y ubicación',verificarPuntoDeReorden:'Indicar si está bajo el punto de reorden',darDeBaja:'Dar de baja'},
+Ubicacion:{agregarUbicacion:'Agregar una nueva ubicación',cambiarUbicacion:'Modificar una ubicación',verProductos:'Mostrar los productos'},
+Movimiento:{crearMovimiento:'Registrar un nuevo movimiento',validarCantidad:'Validar la cantidad',actualizarExistenciaProducto:'Actualizar la existencia',generarFolio:'Generar el folio',verMovimiento:'Mostrar información'},
+Kardex:{agregarRegistro:'Agregar el movimiento al historial',verHistorial:'Mostrar el historial',filtrar:'Filtrar por fechas o tipo',exportar:'Exportar a Excel o CSV'},
+InventarioFisico:{generarHojaDeConteo:'Generar la hoja de conteo',registrarConteo:'Registrar cantidades contadas',compararExistencia:'Comparar contra la existencia',generarReporteDiferencias:'Generar reporte de diferencias',aplicarAjustes:'Aplicar ajustes autorizados'},
+Proveedor:{agregarProveedor:'Agregar un nuevo proveedor',cambiarProveedor:'Modificar información',buscarProveedor:'Buscar un proveedor',verProductosSurtidos:'Mostrar los productos que surte',desactivarProveedor:'Desactivar un proveedor'},
+OrdenDeCompra:{crearOrden:'Crear una nueva orden',agregarProducto:'Agregar productos y cantidades',guardarBorrador:'Guardar como borrador',emitirOrden:'Emitir la orden',generarDocumento:'Generar el documento corporativo',actualizarEstado:'Cambiar el estado'},
+Recepcion:{crearRecepcion:'Registrar la recepción',validarCantidades:'Validar cantidades contra la orden',solicitarAutorizacion:'Solicitar autorización de excedentes',generarEntrada:'Generar la entrada al inventario',actualizarEstadoOrden:'Actualizar el estado de la orden'},
+Reporte:{calcularIndicadores:'Calcular los indicadores',verValorYRotacion:'Mostrar valor y rotación',verProductosBajoReorden:'Mostrar productos bajo reorden',verDesglose:'Mostrar el desglose',exportar:'Exportar a Excel o CSV'},
+BitacoraDeAuditoria:{registrarEvento:'Registrar cada operación',registrarAcceso:'Registrar los accesos',verRegistros:'Mostrar registros por usuario o fecha'}};
+
+  var SIN_RESP = {
+    'ControladorRecepcion.notificarDiferencias': 'No sale de una responsabilidad: sale de la propiedad «Conozco las diferencias encontradas» de la tarjeta Controlador de recepción.',
+    'DetalleOrden.agregarDetalle': 'Sale de la responsabilidad «Agregar productos y cantidades» de la tarjeta Orden de compra (DetalleOrden no tiene tarjeta).',
+    'DetalleOrden.cambiarCantidad': 'Sale de la responsabilidad «Agregar productos y cantidades» de la tarjeta Orden de compra (DetalleOrden no tiene tarjeta).',
+    'DetalleOrden.calcularSaldoPendiente': 'Sale de la propiedad «Sé si quedó saldo pendiente» de la tarjeta Recepción.',
+    'DashboardEjecutivo.actualizarGraficas': 'No hay tarjeta propia: sale de CU7 Visualizar Dashboard de KPIs.',
+    'OrdenDeCompra.cancelarOrden': 'Decisión de modelado: cubre el paso al estado Cancelada (no viene de tarjeta ni de secuencia).',
+    'OrdenDeCompra.cerrarOrden': 'Decisión de modelado: cubre el paso al estado Cerrada (no viene de tarjeta ni de secuencia).'
+  };
+  var DE_SECUENCIA = {
+    'InterfazRecepcion.seleccionarOrden': 'SD1, mensaje 1', 'InterfazRecepcion.mostrarComprobante': 'SD1, mensajes 24–26',
+    'InterfazRegistroMovimientos.escanearCodigo': 'SD2, mensaje 1', 'InterfazRegistroMovimientos.mostrarNotaDeSalida': 'SD2, mensaje 23',
+    'OrdenDeCompra.buscarOrdenPendiente': 'SD1, mensaje 3', 'OrdenDeCompra.compararCantidades': 'SD1, mensaje 9',
+    'Producto.actualizarExistencia': 'SD1 mensaje 18 y SD2 mensaje 16', 'Ubicacion.validarUbicacion': 'SD1 mensaje 15 y SD2 mensaje 10'
+  };
+  var CRC = {
+    Interfaz: 'Tarjeta «Interfaz».',
+    InterfazRegistroMovimientos: 'Subclase «Interfaz de registro de movimientos» de la tarjeta Interfaz.',
+    InterfazRecepcion: 'Subclase «Interfaz de recepción de mercancía» de la tarjeta Interfaz.',
+    ControladorMovimientos: 'Tarjeta «Controlador de movimientos».',
+    ControladorRecepcion: 'Tarjeta «Controlador de recepción».',
+    Usuario: 'Tarjeta «Usuario» (sus subclases de rol se modelan con el atributo rol).',
+    Producto: 'Tarjeta «Producto».', Ubicacion: 'Tarjeta «Ubicación».',
+    Movimiento: 'Tarjeta «Movimiento».',
+    Entrada: 'Subclase «Entrada» de la tarjeta Movimiento.', Salida: 'Subclase «Salida» de la tarjeta Movimiento.',
+    Ajuste: 'Subclase «Ajuste» de la tarjeta Movimiento.', Devolucion: 'Subclase «Devolución» de la tarjeta Movimiento.',
+    Kardex: 'Tarjeta «Kardex».',
+    InventarioFisico: 'Tarjeta «Inventario físico» (conteo cíclico y completo se modelan con tipoConteo).',
+    Proveedor: 'Tarjeta «Proveedor».', OrdenDeCompra: 'Tarjeta «Orden de compra».',
+    DetalleOrden: 'Sin tarjeta: es la propiedad «Detalle de productos» de la tarjeta Orden de compra, separada como clase de asociación.',
+    Recepcion: 'Tarjeta «Recepción».', Reporte: 'Tarjeta «Reporte».',
+    DashboardEjecutivo: 'Sin tarjeta: subclase «Dashboard ejecutivo» de la tarjeta Reporte.',
+    BitacoraDeAuditoria: 'Tarjeta «Bitácora de auditoría».'
+  };
+  var CU = {
+    Interfaz: ['CU1–CU8 (superclase de las pantallas)'], InterfazRegistroMovimientos: ['CU1 (SD2)'], InterfazRecepcion: ['CU6 (SD1)'],
+    ControladorMovimientos: ['CU1 (SD2)'], ControladorRecepcion: ['CU6 (SD1)'],
+    Usuario: ['CU8', 'registra en CU1, CU3, CU5'], Producto: ['CU1', 'CU2', 'CU3', 'CU5', 'CU6'], Ubicacion: ['CU1', 'CU3', 'CU6'],
+    Movimiento: ['CU1', 'CU2', 'CU3', 'CU4', 'CU6'], Entrada: ['CU1', 'CU6'], Salida: ['CU1'], Ajuste: ['CU3'], Devolucion: ['CU4'],
+    Kardex: ['CU1', 'CU2', 'CU6'], InventarioFisico: ['CU3'], Proveedor: ['CU5'], OrdenDeCompra: ['CU5', 'CU6'], DetalleOrden: ['CU5', 'CU6'],
+    Recepcion: ['CU6'], Reporte: ['CU7'], DashboardEjecutivo: ['CU7'], BitacoraDeAuditoria: ['CU1', 'CU6', 'CU8']
+  };
+  var NOMBRE_TIPO = {gen: 'Generalización', assoc: 'Asociación', agg: 'Agregación', comp: 'Composición (todo y sus partes)', dep: 'Dependencia', assocclass: 'Clase de asociación'};
+
+  var CL = {}, RID = {};
+  CLASES.forEach(function(c){ CL[c[0]] = c; });
+  REL.forEach(function(r){ RID[r[0]] = r; });
+  function capa(n){ var c = CL[n]; return !c ? null : (c[1] === 'interfaz' ? 'interfaz' : c[1] === 'control' ? 'control' : 'entidad'); }
+  function altoClase(c){ var hdr = c[1] ? 40 : 26; var ha = c[2].length ? 14 * c[2].length + 10 : 10; var hm = c[3].length ? 14 * c[3].length + 10 : 10; return hdr + ha + 8 + hm; }
+  function superDe(n){ for (var i = 0; i < REL.length; i++) if (REL[i][1] === 'gen' && REL[i][2] === n) return REL[i][3]; return null; }
+  function q(sel){ return raiz.querySelector('[data-r="' + sel + '"]'); }
+  function esc(s){ return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  var el = SIA.svg;
+
+  /* ---------------- geometría ---------------- */
+  function largo(pts){ var L = 0; for (var i = 1; i < pts.length; i++) L += dist(pts[i - 1], pts[i]); return L; }
+  function dist(a, b){ var dx = b[0] - a[0], dy = b[1] - a[1]; return Math.sqrt(dx * dx + dy * dy); }
+  function unit(a, b){ var d = dist(a, b) || 1; return [(b[0] - a[0]) / d, (b[1] - a[1]) / d]; }
+  /* punto a la fracción t del recorrido y dirección del tramo */
+  function puntoEn(pts, t){
+    var L = largo(pts) * t, acc = 0;
+    for (var i = 1; i < pts.length; i++) {
+      var d = dist(pts[i - 1], pts[i]);
+      if (acc + d >= L || i === pts.length - 1) {
+        var f = d ? Math.max(0, Math.min(1, (L - acc) / d)) : 0;
+        return {p: [pts[i - 1][0] + (pts[i][0] - pts[i - 1][0]) * f, pts[i - 1][1] + (pts[i][1] - pts[i - 1][1]) * f], u: unit(pts[i - 1], pts[i])};
+      }
+      acc += d;
+    }
+    return {p: pts[0], u: [1, 0]};
+  }
+  function ruta(pts){ var s = ''; for (var i = 0; i < pts.length; i++) s += (i ? ' L' : 'M') + r1(pts[i][0]) + ' ' + r1(pts[i][1]); return s; }
+  function r1(v){ return Math.round(v * 10) / 10; }
+  function poly(ps){ return ps.map(function(p){ return r1(p[0]) + ',' + r1(p[1]); }).join(' '); }
+
+  function etiqueta(g, x, y, txt, tam, extra){
+    var w = txt.length * tam * 0.53 + 6;
+    el('rect', {x: r1(x - w / 2), y: r1(y - tam * 0.62), width: r1(w), height: r1(tam * 1.24), fill: '#fff', 'class': 'fondo'}, g);
+    var t = el('text', {x: r1(x), y: r1(y + tam * 0.36), 'text-anchor': 'middle', 'font-size': tam, texto: txt}, g);
+    if (extra) t.setAttribute('class', extra);
+    return t;
+  }
+  /* decoraciones de los extremos */
+  function triangulo(g, fin, ant){
+    var u = unit(ant, fin), n = [-u[1], u[0]], b = [fin[0] - u[0] * 13, fin[1] - u[1] * 13];
+    el('polygon', {points: poly([fin, [b[0] + n[0] * 7, b[1] + n[1] * 7], [b[0] - n[0] * 7, b[1] - n[1] * 7]]), fill: '#fff', stroke: '#111'}, g);
+  }
+  function flechaAbierta(g, fin, ant){
+    var u = unit(ant, fin), n = [-u[1], u[0]], b = [fin[0] - u[0] * 10, fin[1] - u[1] * 10];
+    el('polyline', {points: poly([[b[0] + n[0] * 5, b[1] + n[1] * 5], fin, [b[0] - n[0] * 5, b[1] - n[1] * 5]]), fill: 'none', stroke: '#111'}, g);
+  }
+  function rombo(g, ini, sig, lleno){
+    var u = unit(ini, sig), n = [-u[1], u[0]];
+    var m = [ini[0] + u[0] * 9, ini[1] + u[1] * 9], f = [ini[0] + u[0] * 18, ini[1] + u[1] * 18];
+    el('polygon', {points: poly([ini, [m[0] + n[0] * 5.5, m[1] + n[1] * 5.5], f, [m[0] - n[0] * 5.5, m[1] - n[1] * 5.5]]), fill: lleno ? '#111' : '#fff', stroke: '#111', 'class': lleno ? 'lleno' : ''}, g);
+  }
+
+  /* ---------------- dibujo de una clase ---------------- */
+  function dibujarClase(g, c, x, y, w, h){
+    var hdr = c[1] ? 40 : 26, abst = ABSTRACTAS[c[0]];
+    el('rect', {x: x, y: y, width: w, height: h, fill: '#fff', stroke: '#111'}, g);
+    el('rect', {x: x, y: y, width: w, height: hdr, fill: '#E6E6E6', stroke: '#111', 'class': 'cab'}, g);
+    if (c[1]) {
+      el('text', {x: x + w / 2, y: y + 16, 'text-anchor': 'middle', 'font-size': 12, 'font-style': 'italic', texto: '«' + c[1] + '»'}, g);
+      el('text', {x: x + w / 2, y: y + 32, 'text-anchor': 'middle', 'font-size': 12, 'font-weight': 'bold', texto: c[0]}, g);
+    } else {
+      var tn = el('text', {x: x + w / 2, y: y + 17, 'text-anchor': 'middle', 'font-size': 12, 'font-weight': 'bold', texto: c[0]}, g);
+      if (abst) tn.setAttribute('font-style', 'italic');
+    }
+    var ya = y + hdr, ha = c[2].length ? 14 * c[2].length + 10 : 10;
+    var ga = el('g', {'class': 'comp-a'}, g);
+    c[2].forEach(function(a, i){ el('text', {x: x + 6, y: ya + 16 + i * 14, 'font-size': 11, texto: a}, ga); });
+    el('line', {x1: x, y1: ya + ha + 4, x2: x + w, y2: ya + ha + 4, stroke: '#111'}, g);
+    var ym = ya + ha + 8, gm = el('g', {'class': 'comp-m'}, g);
+    c[3].forEach(function(m, i){ el('text', {x: x + 6, y: ym + 16 + i * 14, 'font-size': 11, texto: m}, gm); });
+  }
+  function dibujarSoloNombre(g, n, x, y, w, h){
+    el('rect', {x: x, y: y, width: w, height: h, fill: '#E6E6E6', stroke: '#111', 'class': 'cab'}, g);
+    var t = el('text', {x: x + w / 2, y: y + h / 2 + 4, 'text-anchor': 'middle', 'font-size': 12, 'font-weight': 'bold', texto: n}, g);
+    if (ABSTRACTAS[n]) t.setAttribute('font-style', 'italic');
+  }
+  function dibujarNota(g, lineas, x, y, w, h){
+    el('path', {d: 'M' + x + ' ' + y + ' L' + (x + w - 14) + ' ' + y + ' L' + (x + w) + ' ' + (y + 14) + ' L' + (x + w) + ' ' + (y + h) + ' L' + x + ' ' + (y + h) + ' Z', fill: '#fff', stroke: '#111'}, g);
+    el('path', {d: 'M' + (x + w - 14) + ' ' + y + ' L' + (x + w - 14) + ' ' + (y + 14) + ' L' + (x + w) + ' ' + (y + 14), fill: 'none', stroke: '#111'}, g);
+    lineas.forEach(function(l, i){ el('text', {x: x + 6, y: y + 15 + i * 12.5, 'font-size': 10, texto: l}, g); });
+  }
+
+  /* ---------------- dibujo de una vista completa ---------------- */
+  function dibujar(vista){
+    var pos = {}, x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    function ext(x, y){ if (x < x0) x0 = x; if (y < y0) y0 = y; if (x > x1) x1 = x; if (y > y1) y1 = y; }
+    vista.nodos.forEach(function(n){ pos[n[0]] = {x: n[1], y: n[2], w: n[3], h: n[4]}; ext(n[1], n[2]); ext(n[1] + n[3], n[2] + n[4]); });
+    vista.aristas.forEach(function(a){ for (var k = 0; k < a[7].length; k += 2) ext(a[7][k], a[7][k + 1]); });
+    var m = 24, W = x1 - x0 + 2 * m, H = y1 - y0 + 2 * m;
+    var svg = el('svg', {viewBox: (x0 - m) + ' ' + (y0 - m) + ' ' + W + ' ' + H, width: W, height: H, role: 'img', 'aria-label': vista.nombre});
+    var capaA = el('g', {}, svg), capaN = el('g', {}, svg);
+    var res = {svg: svg, nodos: {}, aristas: {}, vista: vista};
+    vista.nodos.forEach(function(n){
+      var g = el('g', {'class': n[5] === 'n' ? 'nota' : 'nodo', 'data-n': n[0]}, capaN);
+      if (n[5] === 'c') dibujarClase(g, CL[n[0]], n[1], n[2], n[3], n[4]);
+      else if (n[5] === 's') dibujarSoloNombre(g, n[0], n[1], n[2], n[3], n[4]);
+      else dibujarNota(g, n[6], n[1], n[2], n[3], n[4]);
+      var t = el('title', {texto: n[5] === 'n' ? 'Nota' : n[0] + ' (clic para ver su ficha)'}); g.insertBefore(t, g.firstChild);
+      res.nodos[n[0]] = g;
+    });
+    vista.aristas.forEach(function(a){
+      var id = a[0], r = RID[id], tipo = r ? r[1] : (id === 'c154' ? 'assocclass' : 'nota');
+      var s = pos[a[1]], t = a[2] ? pos[a[2]] : null;
+      var pts = [[s.x + a[3] * s.w, s.y + a[4] * s.h]];
+      for (var k = 0; k < a[7].length; k += 2) pts.push([a[7][k], a[7][k + 1]]);
+      pts.push(t ? [t.x + a[5] * t.w, t.y + a[6] * t.h] : a[8]);
+      var g = el('g', {'class': 'arista', 'data-id': id, 'data-tipo': tipo}, capaA);
+      var punteada = tipo === 'dep' || tipo === 'assocclass' || tipo === 'nota';
+      el('path', {d: ruta(pts), fill: 'none', stroke: '#111', 'stroke-width': 1.1, 'stroke-dasharray': punteada ? '6 4' : 'none'}, g);
+      var n = pts.length;
+      if (tipo === 'gen') triangulo(g, pts[n - 1], pts[n - 2]);
+      if (tipo === 'dep') flechaAbierta(g, pts[n - 1], pts[n - 2]);
+      if (tipo === 'agg') rombo(g, pts[0], pts[1], false);
+      if (tipo === 'comp') rombo(g, pts[0], pts[1], true);
+      if (r && r[4]) { var pe = puntoEn(pts, (a[9] + 1) / 2); etiqueta(g, pe.p[0] + a[10], pe.p[1] + a[11], r[4], 11); }
+      if (r && r[5] && a.length > 12) {
+        [[a[12], r[5]], [a[13], r[6]]].forEach(function(mm){
+          var pm = puntoEn(pts, (mm[0] + 1) / 2), nn = [-pm.u[1], pm.u[0]];
+          etiqueta(g, pm.p[0] + nn[0] * 9, pm.p[1] + nn[1] * 9, mm[1], 10);
+        });
+      }
+      if (r || tipo === 'assocclass') {
+        var tt = r ? (NOMBRE_TIPO[tipo] + ': ' + r[2] + (r[4] ? ' «' + r[4] + '» ' : ' → ') + r[3] + (r[5] ? ' (' + r[5] + ' — ' + r[6] + ')' : '')) : 'Clase de asociación: DetalleOrden en la relación OrdenDeCompra–Producto';
+        g.insertBefore(el('title', {texto: tt}), g.firstChild);
+      }
+      res.aristas[id] = g;
+    });
+    return res;
+  }
+  function limpiar(res){
+    var t = res.svg.querySelectorAll('.resaltado,.atenuado');
+    for (var i = 0; i < t.length; i++) { t[i].classList.remove('resaltado'); t[i].classList.remove('atenuado'); }
+  }
+  function marcar(res, ids, clase){
+    ids.forEach(function(id){ var e = res.nodos[id] || res.aristas[id]; if (e) e.classList.add(clase || 'resaltado'); });
+  }
+  /* relaciones (ids de arista) en las que participa una clase */
+  function relacionesDe(nombre){
+    var out = [];
+    REL.forEach(function(r){ if (r[2] === nombre || r[3] === nombre) out.push(r[0]); });
+    if (nombre === 'DetalleOrden') out.push('c136');
+    if (nombre === 'DetalleOrden' || nombre === 'OrdenDeCompra' || nombre === 'Producto') out.push('c154');
+    return out;
+  }
+
+  /* ---------------- explorador (vistas del entregable) ---------------- */
+  var tabsV = q('tabs-vistas'), lienzoV = q('lienzo-vista'), ficha = q('ficha'), listaC = q('lista-clases');
+  var cache = {}, actualV = null, sel = null;
+  VISTAS.forEach(function(v, i){
+    var b = document.createElement('button'); b.type = 'button'; b.textContent = v.nombre.replace(/^Figura (\d)\. /, 'Fig. $1 · ');
+    b.setAttribute('data-v', i); tabsV.appendChild(b);
+  });
+  var PIES = ['Figura 1. Diagrama de clases del SIA-NP', 'Figura 2. Vista de interfaz y control del diagrama de clases.', 'Figura 3. Vista de inventario del diagrama de clases.', 'Figura 4. Vista de compras del diagrama de clases.', 'Figura 5. Vista de reportes y auditoría del diagrama de clases.'];
+  function verVista(i){
+    if (!cache[i]) cache[i] = dibujar(VISTAS[i]);
+    actualV = cache[i]; lienzoV.innerHTML = ''; lienzoV.appendChild(actualV.svg);
+    var bs = tabsV.querySelectorAll('button');
+    for (var k = 0; k < bs.length; k++) { bs[k].classList.toggle('activo', +bs[k].getAttribute('data-v') === i); bs[k].setAttribute('aria-selected', +bs[k].getAttribute('data-v') === i ? 'true' : 'false'); }
+    q('pie-vista').textContent = PIES[i];
+    var completas = 0, stubs = 0;
+    VISTAS[i].nodos.forEach(function(n){ if (n[5] === 'c') completas++; if (n[5] === 's') stubs++; });
+    q('cuenta-vista').textContent = completas + ' clases completas' + (stubs ? ', ' + stubs + ' solo con su nombre' : '') + ', ' + VISTAS[i].aristas.filter(function(a){ return RID[a[0]] || a[0] === 'c154'; }).length + ' relaciones';
+    listaC.innerHTML = '<span class="nota-fuente" style="margin:0 4px 0 0">Clases de esta figura:</span>';
+    VISTAS[i].nodos.forEach(function(n){
+      if (n[5] === 'n') return;
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = n[0]; b.setAttribute('data-c', n[0]); listaC.appendChild(b);
+    });
+    seleccionar(sel && actualV.nodos[sel] ? sel : null);
+  }
+  function seleccionar(nombre){
+    sel = nombre; limpiar(actualV);
+    var bs = listaC.querySelectorAll('button');
+    for (var k = 0; k < bs.length; k++) bs[k].classList.toggle('activo', bs[k].getAttribute('data-c') === nombre);
+    if (!nombre) return;
+    var ids = relacionesDe(nombre), con = {}; con[nombre] = 1;
+    Object.keys(actualV.aristas).forEach(function(id){
+      var g = actualV.aristas[id], r = RID[id];
+      if (ids.indexOf(id) >= 0) { g.classList.add('resaltado'); if (r) { con[r[2]] = 1; con[r[3]] = 1; } if (id === 'c154') { con.DetalleOrden = 1; con.OrdenDeCompra = 1; con.Producto = 1; } }
+      else g.classList.add('atenuado');
+    });
+    Object.keys(actualV.nodos).forEach(function(n){
+      if (n === nombre) actualV.nodos[n].classList.add('resaltado');
+      else if (!con[n]) actualV.nodos[n].classList.add('atenuado');
+    });
+    var notas = actualV.svg.querySelectorAll('g.nota');
+    for (var j = 0; j < notas.length; j++) notas[j].classList.add('atenuado');
+    pintarFicha(nombre);
+  }
+  function pintarFicha(n){
+    var c = CL[n], h = '';
+    var cp = capa(n);
+    h += '<h3>' + (ABSTRACTAS[n] ? '<i>' + n + '</i>' : n) + '</h3>';
+    h += '<span class="chip">' + (cp === 'entidad' ? 'entidad' : '«' + cp + '»') + '</span>';
+    if (ABSTRACTAS[n]) h += '<span class="chip acento">abstracta</span>';
+    var sup = superDe(n);
+    if (sup) h += '<span class="chip">subclase de ' + sup + '</span>';
+    h += '<h4>Tarjeta CRC de origen</h4><p style="margin:2px 0">' + esc(CRC[n]) + '</p>';
+    h += '<h4>Casos de uso donde participa</h4><p style="margin:2px 0">' + CU[n].map(function(x){ return '<span class="chip">' + x + '</span>'; }).join('') + '</p>';
+    h += '<h4>Atributos (' + c[2].filter(function(a){ return a.charAt(0) === '-'; }).length + ')</h4>';
+    if (c[2].length) h += '<ul>' + c[2].map(function(a){ return '<li><code>' + esc(a) + '</code></li>'; }).join('') + '</ul>';
+    else h += '<p style="margin:2px 0">Ninguno propio: hereda todos los de <b>' + sup + '</b>.</p>';
+    h += '<h4>Métodos (' + c[3].length + ')</h4>';
+    if (c[3].length) {
+      h += '<ul>' + c[3].map(function(m){
+        var nom = m.replace(/^\+/, '').replace(/\(.*$/, ''), clave = n + '.' + nom, o;
+        if (CORR[n] && CORR[n][nom]) o = '<span class="orig">← CRC: «' + esc(CORR[n][nom]) + '»</span>';
+        else if (SIN_RESP[clave]) o = '<span class="orig sin">★ ' + esc(SIN_RESP[clave]) + '</span>';
+        else if (DE_SECUENCIA[clave]) o = '<span class="orig">← mensaje de la secuencia (' + DE_SECUENCIA[clave] + ')</span>';
+        else o = '';
+        return '<li><code>' + esc(m) + '</code>' + o + '</li>';
+      }).join('') + '</ul>';
+    } else h += '<p style="margin:2px 0">Ninguno propio: hereda todos los de <b>' + sup + '</b>.</p>';
+    if (sup && CL[sup]) h += '<p class="nota-fuente">Además hereda ' + CL[sup][2].length + ' atributos y ' + CL[sup][3].length + ' métodos de ' + sup + '.</p>';
+    var rels = relacionesDe(n);
+    h += '<h4>Relaciones (' + rels.length + ')</h4><ul>';
+    rels.forEach(function(id){
+      var r = RID[id];
+      if (!r) { h += '<li><b>Clase de asociación</b>: DetalleOrden, en la relación OrdenDeCompra «solicita» Producto</li>'; return; }
+      var txt;
+      if (r[1] === 'gen') txt = r[2] + ' es un ' + r[3];
+      else txt = r[2] + ' «' + esc(r[4]) + '» ' + r[3] + (r[5] ? ' <span class="chip">' + r[5] + ' — ' + r[6] + '</span>' : '');
+      h += '<li><b>' + NOMBRE_TIPO[r[1]] + '</b>: ' + txt + '</li>';
+    });
+    h += '</ul>';
+    var en = [];
+    VISTAS.forEach(function(v, i){ v.nodos.forEach(function(nd){ if (nd[0] === n) en.push('Fig. ' + (i + 1) + (nd[5] === 's' ? ' (solo nombre)' : '')); }); });
+    h += '<p class="nota-fuente">Aparece en: ' + en.join(', ') + '. Casos de uso según los escenarios y SD1/SD2.</p>';
+    ficha.innerHTML = h;
+  }
+  tabsV.addEventListener('click', function(ev){ var b = ev.target.closest('button'); if (b) verVista(+b.getAttribute('data-v')); });
+  lienzoV.addEventListener('click', function(ev){ var g = ev.target.closest('g.nodo'); seleccionar(g ? g.getAttribute('data-n') : null); if (!g) ficha.innerHTML = '<h3>Explorador de clases</h3><p>Haz clic en una clase del diagrama.</p>'; });
+  listaC.addEventListener('click', function(ev){ var b = ev.target.closest('button'); if (b) seleccionar(b.getAttribute('data-c')); });
+  q('zoom').addEventListener('click', function(){ var z = lienzoV.classList.toggle('cls-zoom'); this.textContent = z ? 'Ajustar al ancho' : 'Ver a tamaño real'; });
+  q('limpiar').addEventListener('click', function(){ seleccionar(null); ficha.innerHTML = '<h3>Explorador de clases</h3><p>Haz clic en una clase del diagrama.</p>'; });
+  verVista(0);
+
+  /* ---------------- animación 1: construcción ---------------- */
+  var cons = dibujar(VISTAS[0]);
+  q('lienzo-cons').appendChild(cons.svg);
+  var INTERFAZ = ['Interfaz', 'InterfazRegistroMovimientos', 'InterfazRecepcion'], CONTROL = ['ControladorMovimientos', 'ControladorRecepcion'];
+  var ENTIDAD = CLASES.map(function(c){ return c[0]; }).filter(function(n){ return capa(n) === 'entidad'; });
+  function idsTipo(t){ return REL.filter(function(r){ return r[1] === t; }).map(function(r){ return r[0]; }); }
+  var NOTAS = ['nota1', 'nota2', 'nota3', 'nota4'], NOTAS_E = ['nota1e', 'nota2e', 'nota3e', 'nota4e'];
+  function ver(res, ids){ ids.forEach(function(id){ var e = res.nodos[id] || res.aristas[id]; if (!e) { var nn = res.svg.querySelector('[data-n="' + id + '"]'); e = nn; } if (e) e.classList.remove('oculto'); }); }
+  function pasoC(titulo, texto, mostrar, resaltar){
+    return {titulo: titulo, texto: texto, aplicar: function(i, ult){ ver(cons, mostrar); if (ult) resaltar.forEach(function(id){ var e = cons.nodos[id] || cons.aristas[id] || cons.svg.querySelector('[data-n="' + id + '"]'); if (e) e.classList.add('resaltado'); }); }};
+  }
+  var assocIds = idsTipo('assoc');
+  var pasosCons = [
+    pasoC('Capa de interfaz: 3 clases «interfaz»', 'Primero las pantallas: <b>Interfaz</b> (superclase) y sus subclases <b>InterfazRegistroMovimientos</b> (CU1) e <b>InterfazRecepcion</b> (CU6). Llevan el estereotipo «interfaz» sobre el nombre; sus atributos son los campos de la pantalla (<code>-campoCodigo: String</code>, <code>-campoFactura: String</code>…). Kendall: capa de presentación (pág. 302).', INTERFAZ, INTERFAZ),
+    pasoC('Capa de control: 2 clases «control»', 'Un controlador por caso de uso crítico: <b>ControladorMovimientos</b> coordina CU1 y <b>ControladorRecepcion</b> coordina CU6. Sus atributos guardan el trabajo en curso: <code>-movimientoActual: Movimiento</code>, <code>-ordenActual: OrdenDeCompra</code>. Capa de negocios (pág. 302).', CONTROL, CONTROL),
+    pasoC('Capa de entidad: 17 clases', 'Las cosas que el sistema recuerda: Usuario, Producto, Ubicacion, Movimiento y sus 4 subclases, Kardex, InventarioFisico, Proveedor, OrdenDeCompra, DetalleOrden, Recepcion, Reporte, DashboardEjecutivo y BitacoraDeAuditoria. No llevan estereotipo. Capa de persistencia (pág. 302).', ENTIDAD, ENTIDAD),
+    pasoC('Dentro de una clase: Producto', 'Tres compartimentos: nombre (encabezado gris), atributos y métodos. <code>-existencia: Decimal=0.0</code> se lee: privado (<code>-</code>), nombre, tipo y valor inicial. <code>+verificarExistencia(cantidad): Boolean</code>: público (<code>+</code>), parámetro y tipo de retorno. Cada atributo sale de una propiedad de la tarjeta CRC Producto («Existencia», «Punto de reorden»…).', [], ['Producto']),
+    pasoC('Clase abstracta y valores finitos: Movimiento', '<i>Movimiento</i> va en cursiva: es abstracta. Sus subclases Entrada, Salida, Ajuste y Devolucion tienen los compartimentos vacíos porque heredan todo. <code>-tipoMovimiento: char{E,S,A,D}</code> usa llaves para los valores permitidos, uno por subclase.', [], ['Movimiento', 'Entrada', 'Salida', 'Ajuste', 'Devolucion']),
+    pasoC('Un atributo de dos líneas: estado de OrdenDeCompra', '<code>-estado: String{Pendiente, Emitida, Parcialmente recibida, Recibida, Cerrada, Cancelada}</code>: los seis estados que recorre la orden en el diagrama de estados (entregable 6). Por eso existen <code>+emitirOrden()</code>, <code>+actualizarEstado(diferencias)</code>, <code>+cancelarOrden()</code> y <code>+cerrarOrden()</code>.', [], ['OrdenDeCompra']),
+    pasoC('Relaciones 1: generalización (triángulo hueco)', 'La flecha con triángulo vacío apunta a la <b>superclase</b>: «es un». Siete líneas: InterfazRegistroMovimientos e InterfazRecepcion → Interfaz; Entrada, Salida, Ajuste y Devolucion → Movimiento; DashboardEjecutivo → Reporte.', idsTipo('gen'), idsTipo('gen')),
+    pasoC('Relaciones 2: asociación con multiplicidad', 'Línea simple con un <b>nombre</b> (verbo) y la multiplicidad en cada extremo: <code>1</code>, <code>0..1</code>, <code>0..*</code>, <code>1..*</code>. Se lee: «un Usuario <i>registra</i> 0..* Movimientos», «un Producto <i>tiene</i> 1 Kardex», «la interfaz <i>envía solicitudes a</i> 1 controlador». Son ' + assocIds.length + ' asociaciones.', assocIds, assocIds),
+    pasoC('Relaciones 3: agregación (rombo hueco)', 'El rombo vacío va del lado del todo: <b>Ubicacion</b> 1 <i>contiene</i> 0..* <b>Producto</b>. Es una relación «tiene un»: el producto existe aunque se reacomode el anaquel.', idsTipo('agg'), idsTipo('agg')),
+    pasoC('Relaciones 4: composición (rombo lleno)', 'Rombo relleno del lado del todo: <b>Kardex</b> 1 <i>consiste de</i> 0..* <b>Movimiento</b>. Todo y sus partes: el kardex de un producto es la suma de sus movimientos.', idsTipo('comp'), idsTipo('comp')),
+    pasoC('Relaciones 5: clase de asociación (línea punteada)', 'OrdenDeCompra 0..* <i>solicita</i> 1..* Producto es de muchos a muchos. <b>DetalleOrden</b> se une con línea punteada a esa relación y guarda los datos de cada par orden–producto: <code>cantidadSolicitada</code>, <code>cantidadRecibida</code>, <code>costoUnitario</code>.', ['c154'], ['c154', 'c136', 'DetalleOrden']),
+    pasoC('Relaciones 6: dependencia (punteada con flecha abierta)', 'Una clase <b>usa</b> a otra sin guardar una referencia permanente. Así se conectan los controladores con las entidades (<i>coordina, valida, crea, genera, registra en</i>), y Recepcion, Reporte y BitacoraDeAuditoria con lo que actualizan, consultan o registran. Son ' + idsTipo('dep').length + ' dependencias.', idsTipo('dep'), idsTipo('dep')),
+    pasoC('Las 4 notas', 'Rectángulo con esquina doblada unido con línea punteada: DetalleOrden sin tarjeta CRC; roles de Usuario con el atributo <code>rol</code> (sin Vendedor); conteo cíclico/completo con <code>tipoConteo</code>; el catálogo de clientes de CU4 no se modela.', NOTAS.concat(NOTAS_E), NOTAS),
+    pasoC('Diagrama completo: 22 clases, 44 relaciones', 'Fíjate en lo que <b>no</b> hay: ninguna línea va de una clase «interfaz» a una de entidad. Las interfaces solo tocan a su controlador (y a su superclase Interfaz).', [], INTERFAZ.concat(['c93', 'c96', 'c91', 'c92']))
+  ];
+  SIA.reproductor(q('repro-cons'), pasosCons, {
+    intervalo: 3600,
+    tituloInicial: 'Construir el diagrama de clases paso a paso',
+    textoInicial: 'Pulsa ▶ para ver aparecer las capas, el contenido de las clases y cada tipo de relación.',
+    reiniciar: function(){
+      limpiar(cons);
+      var todos = cons.svg.querySelectorAll('g.nodo,g.nota,g.arista');
+      for (var i = 0; i < todos.length; i++) todos[i].classList.add('oculto');
+    }
+  });
+
+  /* ---------------- animación 2: objetos ---------------- */
+  function caja(svg, o){
+    var g = el('g', {'class': 'oculto', 'data-o': o.id}, svg);
+    var h = 24 + o.filas.length * 15 + 8;
+    o.h = h;
+    el('rect', {x: o.x, y: o.y, width: o.w, height: h, fill: '#fff', stroke: '#111'}, g);
+    el('rect', {x: o.x, y: o.y, width: o.w, height: 24, fill: '#E6E6E6', stroke: '#111', 'class': 'cab'}, g);
+    el('text', {x: o.x + o.w / 2, y: o.y + 16, 'text-anchor': 'middle', 'font-size': 12, 'font-weight': 'bold', 'text-decoration': 'underline', texto: o.t}, g);
+    o.vals = {};
+    o.filas.forEach(function(f, i){
+      var t = el('text', {x: o.x + 6, y: o.y + 24 + 15 + i * 15 - 2, 'font-size': 11}, g);
+      el('tspan', {texto: f[0] + ' = '}, t);
+      o.vals[f[0]] = {t: t, v: el('tspan', {texto: f[1]}, t), ini: f[1]};
+    });
+    o.g = g;
+  }
+  function borde(o, hacia){
+    var c = [o.x + o.w / 2, o.y + o.h / 2], dx = hacia[0] - c[0], dy = hacia[1] - c[1];
+    var tx = dx ? (o.w / 2) / Math.abs(dx) : 1e9, ty = dy ? (o.h / 2) / Math.abs(dy) : 1e9, t = Math.min(tx, ty);
+    return [c[0] + dx * t, c[1] + dy * t];
+  }
+  function construirObjetos(def){
+    var svg = el('svg', {viewBox: '0 0 ' + def.W + ' ' + def.H, width: def.W, height: def.H, role: 'img', 'aria-label': def.nombre});
+    var go = el('g', {}, svg), gl = el('g', {}, svg);
+    var M = {svg: svg, obj: {}, lnk: {}};
+    def.objs.forEach(function(o){ caja(go, o); M.obj[o.id] = o; });
+    def.links.forEach(function(l){
+      var a = M.obj[l.a], b = M.obj[l.b], pts;
+      if (l.pts) pts = l.pts;
+      else { var ca = [a.x + a.w / 2, a.y + a.h / 2], cb = [b.x + b.w / 2, b.y + b.h / 2]; pts = [borde(a, cb), borde(b, ca)]; }
+      var g = el('g', {'class': 'lnk oculto'}, gl);
+      el('path', {d: ruta(pts), fill: 'none', stroke: '#111', 'stroke-width': 1.1, 'stroke-dasharray': l.dep || l.ac ? '6 4' : 'none'}, g);
+      if (l.dep) flechaAbierta(g, pts[pts.length - 1], pts[pts.length - 2]);
+      if (l.txt) { var pe = l.en ? {p: l.en} : puntoEn(pts, 0.5); etiqueta(g, pe.p[0], pe.p[1], l.txt, 10.5); }
+      M.lnk[l.id] = g;
+    });
+    var alerta = el('g', {'class': 'oculto'}, svg);
+    M.alertaR = el('rect', {x: def.W / 2 - 300, y: def.H - 46, width: 600, height: 36, rx: 6, fill: '#fff', stroke: '#c92a2a', 'stroke-width': 2}, alerta);
+    M.alertaT = el('text', {x: def.W / 2, y: def.H - 23, 'text-anchor': 'middle', 'font-size': 13, 'font-weight': 'bold', 'class': 'error-t'}, alerta);
+    M.alerta = alerta;
+    return M;
+  }
+  function reiniciarObjetos(M){
+    Object.keys(M.obj).forEach(function(k){
+      var o = M.obj[k]; o.g.classList.add('oculto'); o.g.classList.remove('resaltado'); o.g.classList.remove('atenuado');
+      Object.keys(o.vals).forEach(function(a){ o.vals[a].v.textContent = o.vals[a].ini; o.vals[a].t.classList.remove('cambio'); });
+      if (o.t0) o.g.querySelector('text').textContent = o.t0;
+    });
+    Object.keys(M.lnk).forEach(function(k){ M.lnk[k].classList.add('oculto'); M.lnk[k].classList.remove('resaltado'); });
+    M.alerta.classList.add('oculto');
+  }
+  /* p: {t: titulo, x: texto, ver: [ids obj/lnk], set: [[obj, attr, valor]], res: [ids], alt: 'texto alerta', ok: bool, nombre: [[obj, nuevoTitulo]]} */
+  function pasosObjetos(M, lista){
+    return lista.map(function(p){
+      return {titulo: p.t, texto: p.x, aplicar: function(i, ult){
+        if (p.alt && !ult) return;
+        (p.ver || []).forEach(function(id){ var e = M.obj[id] ? M.obj[id].g : M.lnk[id]; if (e) e.classList.remove('oculto'); });
+        (p.nombre || []).forEach(function(nn){ var o = M.obj[nn[0]]; if (!o.t0) o.t0 = o.t; o.g.querySelector('text').textContent = nn[1]; });
+        if (ult) {
+          Object.keys(M.obj).forEach(function(k){ var o = M.obj[k]; Object.keys(o.vals).forEach(function(a){ o.vals[a].t.classList.remove('cambio'); }); });
+        }
+        (p.set || []).forEach(function(s){ var v = M.obj[s[0]].vals[s[1]]; v.v.textContent = s[2]; if (ult) v.t.classList.add('cambio'); });
+        if (ult) {
+          (p.res || []).forEach(function(id){ var e = M.obj[id] ? M.obj[id].g : M.lnk[id]; if (e) e.classList.add('resaltado'); });
+          if (p.alt) { M.alertaT.textContent = p.alt; M.alertaT.setAttribute('class', p.ok ? 'ok-t' : 'error-t'); M.alertaR.setAttribute('stroke', p.ok ? '#2b8a3e' : '#c92a2a'); M.alerta.classList.remove('oculto'); }
+        }
+      }};
+    });
+  }
+
+  var Q = function(s){ return '“' + s + '”'; };
+  var DEF_CU1 = {
+    nombre: 'Objetos de CU1', W: 1160, H: 540,
+    objs: [
+      {id: 'usr', t: 'ricardo:Usuario', x: 10, y: 30, w: 265, filas: [['nombreCompleto', Q('Ricardo Mendoza Quintero')], ['rol', "'A'"], ['activo', 'Y']]},
+      {id: 'irm', t: 'irm:InterfazRegistroMovimientos', x: 295, y: 30, w: 230, filas: [['campoCodigo', Q('')], ['campoTipo', "' '"], ['campoCantidad', '0'], ['campoUbicacion', Q('')], ['campoDocumento', Q('')]]},
+      {id: 'cm', t: 'cm:ControladorMovimientos', x: 630, y: 30, w: 230, filas: [['productoActual', 'null'], ['movimientoActual', 'null'], ['usuarioSolicitante', Q('')], ['resultadoValidacion', '—']]},
+      {id: 'bit', t: 'bit:BitacoraDeAuditoria', x: 900, y: 30, w: 230, filas: [['usuario', 'null'], ['accion', Q('')], ['fechaHora', '—']]},
+      {id: 'prod', t: 'prod:Producto', x: 10, y: 230, w: 280, filas: [['codigo', Q('RAC-0408')], ['descripcion', Q('Racor recto 1/4" NPT × 8 mm')], ['familia', Q('Racores')], ['unidadMedida', Q('pza')], ['existencia', '40'], ['puntoReorden', '30']]},
+      {id: 'ub', t: 'ub:Ubicacion', x: 330, y: 330, w: 200, filas: [['claveUbicacion', Q('B-04-2')], ['pasillo', Q('B')], ['anaquel', Q('4')], ['nivel', '2'], ['disponible', 'Y']]},
+      {id: 'sal', t: 'sal:Salida', x: 600, y: 220, w: 250, filas: [['folio', Q('')], ['tipoMovimiento', "' '"], ['fecha', '—'], ['cantidad', '0'], ['documentoReferencia', Q('')], ['usuarioResponsable', 'null']]},
+      {id: 'kdx', t: 'kdx:Kardex', x: 900, y: 230, w: 200, filas: [['producto', 'prod'], ['tipoMovimiento', "' '"], ['cantidad', '—'], ['saldo', '40']]}
+    ],
+    links: [
+      {id: 'l1', a: 'irm', b: 'cm', txt: 'envía solicitudes a', pts: [[525, 72], [630, 72]], en: [577, 58]},
+      {id: 'l2', a: 'cm', b: 'prod', dep: 1, txt: 'coordina', pts: [[670, 122], [240, 230]]},
+      {id: 'l3', a: 'cm', b: 'ub', dep: 1, txt: 'valida', pts: [[700, 122], [450, 330]]},
+      {id: 'l4', a: 'cm', b: 'sal', dep: 1, txt: 'crea', pts: [[740, 122], [740, 220]]},
+      {id: 'l5', a: 'cm', b: 'bit', dep: 1, txt: 'registra en', pts: [[860, 60], [900, 60]], en: [880, 22]},
+      {id: 'l6', a: 'ub', b: 'prod', txt: 'contiene', pts: [[330, 380], [250, 352]]},
+      {id: 'l7', a: 'prod', b: 'sal', txt: 'afecta', pts: [[290, 280], [600, 280]]},
+      {id: 'l8', a: 'ub', b: 'sal', txt: 'ubica', pts: [[530, 380], [640, 342]]},
+      {id: 'l9', a: 'prod', b: 'kdx', txt: 'tiene', pts: [[100, 352], [100, 500], [1000, 500], [1000, 322]]},
+      {id: 'l10', a: 'kdx', b: 'sal', txt: 'consiste de', pts: [[900, 280], [850, 280]], en: [875, 212]},
+      {id: 'l11', a: 'usr', b: 'sal', txt: 'registra', pts: [[120, 107], [120, 180], [660, 180], [660, 220]]},
+      {id: 'l12', a: 'usr', b: 'bit', txt: 'genera', pts: [[60, 30], [60, 8], [1010, 8], [1010, 30]]}
+    ]
+  };
+  var P_CU1 = [
+    {t: 'SD2 · 1: escanearCodigo("RAC-0408")', x: 'Ricardo escanea el racor con la pistola. La pantalla <b>irm:InterfazRegistroMovimientos</b> guarda el código en su atributo <code>campoCodigo</code>. Ricardo es una instancia de <b>Usuario</b> con <code>rol</code> de Auxiliar.', ver: ['usr', 'irm'], set: [['irm', 'campoCodigo', Q('RAC-0408')]], res: ['irm']},
+    {t: 'SD2 · 2: buscarProducto("RAC-0408")', x: 'La interfaz no busca el producto: se lo pide a su controlador. Recorre la <b>asociación «envía solicitudes a»</b> (1 — 1) entre InterfazRegistroMovimientos y ControladorMovimientos.', ver: ['cm', 'l1'], res: ['l1', 'cm']},
+    {t: 'SD2 · 3–5: obtenerProducto("RAC-0408") → existencia 40, ubicación B-04-2', x: 'El controlador recorre la <b>dependencia «coordina»</b> hacia Producto. Aparece el objeto <b>prod</b> con existencia 40; su ubicación sale de la <b>agregación Ubicacion «contiene» Producto</b> (1 — 0..*): pasillo B, anaquel 4, nivel 2. El controlador anota <code>productoActual = prod</code>.', ver: ['prod', 'ub', 'l2', 'l6'], set: [['cm', 'productoActual', 'prod']], res: ['l2', 'l6', 'prod', 'ub']},
+    {t: 'SD2 · 6–7: capturarDatos() y validarCampos(): true', x: 'Ricardo captura tipo S, 12 pzas, ubicación B-04-2 y la nota de salida NS-2026-0318. Se llenan los atributos de la pantalla; <code>campoTipo: char{E,S,A,D}</code> toma el valor \'S\'. La interfaz valida que no falte nada.', set: [['irm', 'campoTipo', "'S'"], ['irm', 'campoCantidad', '12'], ['irm', 'campoUbicacion', Q('B-04-2')], ['irm', 'campoDocumento', Q('NS-2026-0318')]], res: ['irm']},
+    {t: 'Alterno 8b: falta un campo obligatorio', x: 'Si Ricardo deja vacío el documento, <code>validarCampos()</code> regresa <b>false</b>: la interfaz lo señala con <code>mostrarMensaje()</code> y no se envía nada al controlador. Ningún objeto de entidad se toca.', alt: '8b · validarCampos() = false: falta campoDocumento; no se envía la solicitud', res: ['irm']},
+    {t: 'Alterno 7a: cancela', x: 'Si Ricardo cancela antes de confirmar, no se envía el mensaje 8 y el inventario no cambia: prod.existencia sigue en 40.', alt: '7a · Cancelar: no se envía registrarMovimiento(); existencia sigue en 40', res: ['prod']},
+    {t: 'SD2 · 8: registrarMovimiento("S", 12, "B-04-2", "NS-2026-0318")', x: 'Confirma y la interfaz envía el movimiento a su controlador, otra vez por la <b>asociación «envía solicitudes a»</b>. El controlador guarda quién lo pidió.', set: [['cm', 'usuarioSolicitante', Q('Ricardo')]], res: ['l1', 'cm']},
+    {t: 'SD2 · 9–11: validarDatos() → validarUbicacion("B-04-2"): true', x: 'El controlador recorre la <b>dependencia «valida»</b> hacia Ubicacion: <code>claveUbicacion</code> existe y <code>disponible = Y</code>.', ver: ['l3'], res: ['l3', 'ub']},
+    {t: 'SD2 · 12–13: verificarExistencia(12): true', x: 'Por ser salida, revisa por la dependencia «coordina» que 12 ≤ 40. El controlador anota <code>resultadoValidacion = true</code>.', set: [['cm', 'resultadoValidacion', 'true']], res: ['l2', 'prod']},
+    {t: 'Alterno 8a: pide 50 piezas', x: 'Si la cantidad fuera 50, <code>verificarExistencia(50)</code> regresaría <b>false</b> (50 > 40): no se crea la Salida (mensajes 14 a 21) y la interfaz muestra la alerta. Es el problema de Lodevar: no vender lo que no hay.', alt: '8a · verificarExistencia(50) = false (50 > 40): no se crea el movimiento', res: ['prod']},
+    {t: 'SD2 · 14: crearMovimiento("S", 12, "B-04-2", "NS-2026-0318")', x: 'El controlador recorre la <b>dependencia «crea»</b> hacia Movimiento. Como <i>Movimiento</i> es abstracta, se crea una instancia de su subclase <b>Salida</b>, que <b>hereda</b> (generalización) todos sus atributos: folio, tipoMovimiento, fecha, cantidad, documentoReferencia, usuarioResponsable. Ricardo queda ligado por la asociación <b>Usuario «registra» Movimiento</b> (1 — 0..*); la salida queda en su ubicación por <b>Ubicacion «ubica» Movimiento</b>.', ver: ['sal', 'l4', 'l11', 'l8'], set: [['sal', 'tipoMovimiento', "'S'"], ['sal', 'cantidad', '12'], ['sal', 'documentoReferencia', Q('NS-2026-0318')], ['sal', 'usuarioResponsable', 'ricardo'], ['sal', 'fecha', 'hoy'], ['cm', 'movimientoActual', 'sal']], res: ['l4', 'sal', 'l11', 'l8']},
+    {t: 'SD2 · 15: generarFolio(): String', x: 'Mensaje a sí misma: la Salida genera su folio.', set: [['sal', 'folio', Q('MOV-2026-01542')]], res: ['sal']},
+    {t: 'SD2 · 16: actualizarExistencia("S", 12) → 40 − 12 = 28', x: 'La Salida resta la cantidad en Producto recorriendo la asociación <b>Producto «afecta» Movimiento</b> (1 — 0..*). <code>existencia</code> pasa de 40 a <b>28</b>.', ver: ['l7'], set: [['prod', 'existencia', '28']], res: ['l7', 'prod']},
+    {t: 'SD2 · 17: agregarRegistro(movimiento)', x: 'La Salida se agrega al kardex: <b>composición Kardex «consiste de» Movimiento</b> (rombo lleno), y el kardex es del producto por <b>Producto «tiene» Kardex</b> (1 — 1). Saldo: 28.', ver: ['kdx', 'l10', 'l9'], set: [['kdx', 'tipoMovimiento', "'S'"], ['kdx', 'cantidad', '12'], ['kdx', 'saldo', '28']], res: ['kdx', 'l10', 'l9']},
+    {t: 'SD2 · 18–19: registrarEvento(usuario, "Salida")', x: 'Con el folio de vuelta, el controlador recorre la <b>dependencia «registra en»</b> hacia BitacoraDeAuditoria. Queda quién lo hizo: <b>Usuario «genera» BitacoraDeAuditoria</b> (1 — 0..*). Esto es lo que hoy no existe en el Excel: saber quién movió qué.', ver: ['bit', 'l5', 'l12'], set: [['bit', 'usuario', 'ricardo'], ['bit', 'accion', Q('Salida')], ['bit', 'fechaHora', 'ahora']], res: ['bit', 'l5', 'l12']},
+    {t: 'SD2 · 20–21: verificarPuntoDeReorden(): true → notificarReorden()', x: 'El controlador pregunta a Producto (dependencia «coordina»). Como 28 < 30 (<code>puntoReorden</code>), regresa <b>true</b> y el controlador llama a <code>notificarReorden()</code>: la interfaz muestra el aviso. Esto enlaza con CU5 (Karla genera la OC-2026-0147). En la figura de SD2 la respuesta dibujada es false; con este ejemplo toma la rama que el texto de SD2 describe para true.', set: [['prod', 'puntoReorden', '30  (28 < 30)']], res: ['l2', 'prod']},
+    {t: 'SD2 · 22–24: mostrarNotaDeSalida()', x: 'El folio vuelve por la asociación «envía solicitudes a» y la pantalla muestra la nota de salida con <b>MOV-2026-01542</b>. Resultado: los atributos de 5 objetos de entidad cambiaron y la interfaz nunca tocó a uno solo.', alt: 'Nota de salida NS-2026-0318 · folio MOV-2026-01542 · existencia 28 (bajo el punto de reorden)', ok: true, res: ['irm', 'l1']},
+    {t: 'Alterno 4a: el código no existe', x: 'Si Ricardo escanea un código que no está en el catálogo, <code>obtenerProducto()</code> regresa vacío (mensaje 4): no hay objeto Producto que enlazar, y la interfaz ofrece darlo de alta o cancelar.', alt: '4a · obtenerProducto() regresa vacío: se ofrece dar de alta o cancelar', res: ['cm']}
+  ];
+
+  var DEF_CU6 = {
+    nombre: 'Objetos de CU6', W: 1120, H: 690,
+    objs: [
+      {id: 'ir', t: 'ir:InterfazRecepcion', x: 10, y: 10, w: 220, filas: [['campoFolioOC', Q('')], ['campoFactura', Q('')], ['campoCantidades', Q('')], ['campoUbicacion', Q('')]]},
+      {id: 'cr', t: 'cr:ControladorRecepcion', x: 340, y: 10, w: 250, filas: [['ordenActual', 'null'], ['recepcionActual', 'null'], ['diferencias', Q('')], ['usuarioSolicitante', Q('')]]},
+      {id: 'bit', t: 'bit:BitacoraDeAuditoria', x: 870, y: 10, w: 240, filas: [['usuario', 'null'], ['accion', Q('')]]},
+      {id: 'oc', t: 'oc:OrdenDeCompra', x: 10, y: 150, w: 220, filas: [['folio', Q('OC-2026-0147')], ['proveedor', 'proveedor nacional'], ['estado', Q('Emitida')]]},
+      {id: 'rec', t: 'rec:Recepcion', x: 300, y: 150, w: 270, filas: [['ordenDeCompra', 'oc'], ['numeroFactura', Q('')], ['cantidadRecibida', '0'], ['saldoPendiente', '—']]},
+      {id: 'e1', t: 'e1:Entrada', x: 600, y: 150, w: 240, filas: [['tipoMovimiento', "' '"], ['cantidad', '0'], ['documentoReferencia', Q('')], ['folio', Q('')]]},
+      {id: 'e2', t: 'e2:Entrada', x: 870, y: 150, w: 240, filas: [['tipoMovimiento', "' '"], ['cantidad', '0'], ['documentoReferencia', Q('')], ['folio', Q('')]]},
+      {id: 'd1', t: 'd1:DetalleOrden', x: 300, y: 285, w: 270, filas: [['codigoProducto', Q('RAC-0408')], ['cantidadSolicitada', '100'], ['cantidadRecibida', '0.0']]},
+      {id: 'p1', t: 'p1:Producto', x: 600, y: 330, w: 240, filas: [['codigo', Q('RAC-0408')], ['existencia', '28']]},
+      {id: 'p2', t: 'p2:Producto', x: 870, y: 330, w: 240, filas: [['codigo', Q('CIL-32100')], ['existencia', '3']]},
+      {id: 'd2', t: 'd2:DetalleOrden', x: 300, y: 500, w: 270, filas: [['codigoProducto', Q('CIL-32100')], ['cantidadSolicitada', '10'], ['cantidadRecibida', '0.0']]},
+      {id: 'ub', t: 'ub:Ubicacion', x: 600, y: 520, w: 240, filas: [['claveUbicacion', Q('B-04-2')], ['disponible', 'Y']]},
+      {id: 'kdx', t: 'kdx:Kardex', x: 870, y: 520, w: 200, filas: [['producto', 'p1'], ['cantidad', '—'], ['saldo', '28']]}
+    ],
+    links: [
+      {id: 'k1', a: 'ir', b: 'cr', txt: 'envía solicitudes a', pts: [[230, 56], [340, 56]], en: [285, 44]},
+      {id: 'k2', a: 'cr', b: 'oc', dep: 1, txt: 'coordina', pts: [[360, 102], [190, 150]]},
+      {id: 'k3', a: 'cr', b: 'rec', dep: 1, txt: 'crea', pts: [[460, 102], [460, 150]]},
+      {id: 'k4', a: 'cr', b: 'bit', dep: 1, txt: 'registra en', pts: [[590, 50], [870, 50]]},
+      {id: 'k5', a: 'oc', b: 'rec', txt: 'se surte con', pts: [[230, 190], [300, 190]], en: [265, 177]},
+      {id: 'k6', a: 'rec', b: 'e1', txt: 'genera', pts: [[570, 196], [600, 196]], en: [585, 140]},
+      {id: 'k7', a: 'rec', b: 'e2', txt: 'genera', pts: [[520, 242], [520, 265], [930, 265], [930, 242]]},
+      {id: 'k8', a: 'e1', b: 'ub', txt: 'ubica', pts: [[600, 225], [585, 225], [585, 550], [600, 550]], en: [585, 480]},
+      {id: 'k9', a: 'e1', b: 'p1', txt: 'afecta', pts: [[720, 242], [720, 330]], en: [720, 300]},
+      {id: 'k10', a: 'e2', b: 'p2', txt: 'afecta', pts: [[1050, 242], [1050, 330]], en: [1050, 300]},
+      {id: 'k11', a: 'e1', b: 'kdx', txt: 'consiste de', pts: [[840, 220], [855, 220], [855, 580], [870, 580]], en: [855, 440]},
+      {id: 'k12', a: 'p1', b: 'kdx', txt: 'tiene', pts: [[780, 392], [780, 480], [970, 480], [970, 520]]},
+      {id: 'k13', a: 'oc', b: 'p1', txt: 'solicita', pts: [[60, 227], [60, 450], [700, 450], [700, 392]], en: [200, 450]},
+      {id: 'k14', a: 'oc', b: 'p2', txt: 'solicita', pts: [[120, 227], [120, 650], [1095, 650], [1095, 392]], en: [200, 650]},
+      {id: 'k15', a: 'd1', b: 'oc', ac: 1, pts: [[435, 362], [435, 450]]},
+      {id: 'k16', a: 'd2', b: 'oc', ac: 1, pts: [[435, 577], [435, 650]]}
+    ]
+  };
+  var P_CU6 = [
+    {t: 'SD1 · 1: seleccionarOrden("OC-2026-0147")', x: 'Karla (Encargada de Compras, actor principal de CU6 y actor que inicia SD1) elige la orden en la pantalla <b>ir:InterfazRecepcion</b>; se llena <code>campoFolioOC</code>. Lodevar, Encargado de Almacén, es actor secundario.', ver: ['ir'], set: [['ir', 'campoFolioOC', Q('OC-2026-0147')]], res: ['ir']},
+    {t: 'SD1 · 2: buscarOrden("OC-2026-0147")', x: 'La interfaz se lo pide a su controlador por la <b>asociación «envía solicitudes a»</b> (1 — 1).', ver: ['cr', 'k1'], res: ['k1', 'cr']},
+    {t: 'Alterno 2a: no se localiza la orden', x: 'Si el folio no existe, el mensaje 4 regresa vacío: la interfaz permite buscar de nuevo o cancelar. No se crea ningún objeto.', alt: '2a · buscarOrdenPendiente() regresa vacío: buscar de nuevo o cancelar', res: ['cr']},
+    {t: 'SD1 · 3–5: buscarOrdenPendiente("OC-2026-0147") → partidas pendientes', x: 'El controlador recorre la <b>dependencia «coordina»</b> hacia OrdenDeCompra. La orden está <code>Emitida</code>. Sus partidas son la relación de muchos a muchos <b>OrdenDeCompra «solicita» Producto</b> (0..* — 1..*), y cada par guarda sus datos en la <b>clase de asociación DetalleOrden</b>: d1 = 100 racores, d2 = 10 cilindros.', ver: ['oc', 'k2', 'p1', 'p2', 'd1', 'd2', 'k13', 'k14', 'k15', 'k16'], set: [['cr', 'ordenActual', 'oc']], res: ['k2', 'oc', 'd1', 'd2', 'k15', 'k16']},
+    {t: 'SD1 · 6–7: capturarDatos() y validarCampos(): true', x: 'Primera entrega: 60 racores y 10 cilindros, factura F-A-88213, ubicación B-04-2 para los racores (los cilindros van a C-02-1; <code>campoUbicacion</code> es un solo String).', set: [['ir', 'campoFactura', Q('F-A-88213')], ['ir', 'campoCantidades', Q('60, 10')], ['ir', 'campoUbicacion', Q('B-04-2')]], res: ['ir']},
+    {t: 'SD1 · 8: registrarRecepcion("OC-2026-0147", cantidades, ubicacion, "F-A-88213")', x: 'La recepción confirmada viaja de la interfaz al controlador por la asociación «envía solicitudes a».', set: [['cr', 'usuarioSolicitante', Q('Karla')]], res: ['k1', 'cr']},
+    {t: 'SD1 · 9–10: compararCantidades(cantidades) → diferencias', x: 'El controlador compara contra lo pedido (dependencia «coordina»): faltan 40 racores. Es el alterno <b>4a, recepción parcial</b>: se conserva el saldo pendiente.', set: [['cr', 'diferencias', Q('faltan 40 RAC-0408')]], res: ['k2', 'oc', 'cr']},
+    {t: 'Alterno 7a: llegan 110 racores', x: 'Si llegaran 110 de 100, el mensaje 10 reporta el excedente y el controlador pide a la recepción <code>solicitarAutorizacion()</code> antes de continuar.', alt: '7a · 110 > 100: excedente → rec.solicitarAutorizacion()', res: ['oc']},
+    {t: 'SD1 · 11–12: crearRecepcion("OC-2026-0147", "F-A-88213"): String', x: 'El controlador recorre la <b>dependencia «crea»</b> y nace <b>rec:Recepcion</b>, ligada a su orden por la asociación <b>OrdenDeCompra «se surte con» Recepcion</b> (1 — 0..*: una orden puede surtirse en varias entregas).', ver: ['rec', 'k3', 'k5'], set: [['rec', 'numeroFactura', Q('F-A-88213')], ['rec', 'cantidadRecibida', '70'], ['cr', 'recepcionActual', 'rec']], res: ['rec', 'k3', 'k5']},
+    {t: 'SD1 · 13–14: generarEntrada(cantidades, ubicacion) → crearMovimiento("E", 60, …)', x: 'La Recepcion crea una <b>Entrada</b> por partida: asociación <b>Recepcion «genera» Entrada</b> (0..1 — 1..*). Entrada es subclase de <i>Movimiento</i> (generalización): hereda folio, tipoMovimiento, cantidad, documentoReferencia…', ver: ['e1', 'k6'], set: [['e1', 'tipoMovimiento', "'E'"], ['e1', 'cantidad', '60'], ['e1', 'documentoReferencia', Q('F-A-88213')]], res: ['e1', 'k6']},
+    {t: 'SD1 · 15–17: validarUbicacion("B-04-2"): true y generarFolio()', x: 'La entrada queda en su lugar por <b>Ubicacion «ubica» Movimiento</b> (1 — 0..*) y genera su folio (mensaje a sí misma).', ver: ['ub', 'k8'], set: [['e1', 'folio', Q('(nuevo folio)')]], res: ['ub', 'k8', 'e1']},
+    {t: 'SD1 · 18: actualizarExistencia("E", 60) → 28 + 60 = 88', x: 'Asociación <b>Producto «afecta» Movimiento</b>: la existencia del racor sube de 28 (después de la salida de CU1) a <b>88</b>.', ver: ['k9'], set: [['p1', 'existencia', '88']], res: ['k9', 'p1']},
+    {t: 'SD1 · 19: agregarRegistro(movimiento)', x: 'Composición <b>Kardex «consiste de» Movimiento</b> y <b>Producto «tiene» Kardex</b>: el kardex del racor registra +60, saldo 88.', ver: ['kdx', 'k11', 'k12'], set: [['kdx', 'cantidad', '+60'], ['kdx', 'saldo', '88']], res: ['kdx', 'k11', 'k12']},
+    {t: 'SD1 · 14–20 otra vez: los 10 cilindros', x: '«Los mensajes 14 a 20 se repiten por cada partida recibida»: nace <b>e2:Entrada</b> (Recepcion «genera» Entrada) y el cilindro pasa de 3 a <b>13</b>.', ver: ['e2', 'k7', 'k10'], set: [['e2', 'tipoMovimiento', "'E'"], ['e2', 'cantidad', '10'], ['e2', 'documentoReferencia', Q('F-A-88213')], ['e2', 'folio', Q('(nuevo folio)')], ['p2', 'existencia', '13']], res: ['e2', 'k7', 'k10', 'p2']},
+    {t: 'Alterno 6a: 2 cilindros con defecto', x: 'Si 2 cilindros llegan dañados, se registran como no conformes y no se suman al inventario disponible: la entrada sería de 8 y el cilindro quedaría en 11. (El modelo no tiene un atributo para «no conforme».)', alt: '6a · 2 cilindros no conformes: no se suman (3 + 8 = 11)', res: ['e2', 'p2']},
+    {t: 'SD1 · 22: actualizarEstado(diferencias)', x: 'El controlador cambia la orden (dependencia «coordina»): <code>estado</code> pasa de Emitida a <b>Parcialmente recibida</b>. El saldo por producto se lee en DetalleOrden: <code>calcularSaldoPendiente()</code> = 100 − 60 = 40 racores; los cilindros quedan completos.', set: [['oc', 'estado', Q('Parcialmente recibida')], ['d1', 'cantidadRecibida', '60'], ['d2', 'cantidadRecibida', '10'], ['rec', 'saldoPendiente', '40']], res: ['k2', 'oc', 'd1', 'd2']},
+    {t: 'SD1 · 23–26: registrarEvento(usuario, "Recepción") y mostrarComprobante()', x: 'Dependencia <b>«registra en»</b> hacia la bitácora; luego el comprobante vuelve a la pantalla. La interfaz nunca habló con OrdenDeCompra, Recepcion ni Producto: todo pasó por ControladorRecepcion.', ver: ['bit', 'k4'], set: [['bit', 'usuario', 'karla'], ['bit', 'accion', Q('Recepción')]], res: ['bit', 'k4']},
+    {t: 'Segunda entrega: 40 racores → «Recibida»', x: 'Llega el resto. Como la orden <b>se surte con 0..*</b> recepciones, nace <b>otra</b> Recepcion (rec2) con su Entrada (e3): el racor sube de 88 a <b>128</b>, d1 llega a 100 de 100 y la orden pasa a <b>Recibida</b>.', nombre: [['rec', 'rec2:Recepcion'], ['e1', 'e3:Entrada']], set: [['rec', 'cantidadRecibida', '40'], ['rec', 'saldoPendiente', '0'], ['e1', 'cantidad', '40'], ['p1', 'existencia', '128'], ['kdx', 'cantidad', '+40'], ['kdx', 'saldo', '128'], ['d1', 'cantidadRecibida', '100'], ['oc', 'estado', Q('Recibida')]], res: ['rec', 'e1', 'p1', 'oc', 'd1']}
+  ];
+  var MOBJ = [construirObjetos(DEF_CU1), construirObjetos(DEF_CU6)], PASOS_OBJ = [pasosObjetos(MOBJ[0], P_CU1), pasosObjetos(MOBJ[1], P_CU6)];
+  var tabsO = q('tabs-obj'), repObj = null;
+  function verObj(i){
+    if (repObj) repObj.destruir();
+    var lz = q('lienzo-obj'); lz.innerHTML = ''; lz.appendChild(MOBJ[i].svg);
+    var bs = tabsO.querySelectorAll('button');
+    for (var k = 0; k < bs.length; k++) { bs[k].classList.toggle('activo', k === i); bs[k].setAttribute('aria-selected', k === i ? 'true' : 'false'); }
+    repObj = SIA.reproductor(q('repro-obj'), PASOS_OBJ[i], {
+      intervalo: 4200,
+      tituloInicial: i === 0 ? 'CU1: la salida de 12 racores, objeto por objeto' : 'CU6: recibir la OC-2026-0147, objeto por objeto',
+      textoInicial: 'Pulsa ▶. Los valores que cambian se pintan en naranja; los pasos «Alterno» muestran qué pasaría sin cambiar el estado.',
+      reiniciar: function(){ reiniciarObjetos(MOBJ[i]); }
+    });
+  }
+  tabsO.addEventListener('click', function(ev){ var b = ev.target.closest('button'); if (b) verObj(+b.getAttribute('data-o')); });
+  verObj(0);
+
+  /* ---------------- regla de capas ---------------- */
+  (function(){
+    var W = 820, H = 320, svg = el('svg', {viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, role: 'img', 'aria-label': 'Regla de capas'});
+    var capas = [['Capa de interfaz (presentación)', 10], ['Capa de control (negocios)', 285], ['Capa de entidad (persistencia)', 560]];
+    var gC = capas.map(function(c){
+      var g = el('g', {}, svg);
+      el('rect', {x: c[1], y: 10, width: 250, height: 300, rx: 8, fill: '#fafafa', stroke: '#111', 'stroke-dasharray': '4 3'}, g);
+      el('text', {x: c[1] + 125, y: 30, 'text-anchor': 'middle', 'font-size': 13, 'font-weight': 'bold', texto: c[0]}, g);
+      return g;
+    });
+    function stub(n, x, y, w){ var g = el('g', {}, svg); dibujarSoloNombre(g, n, x, y, w, 30); return g; }
+    var sIrm = stub('InterfazRegistroMovimientos', 30, 140, 210), sCm = stub('ControladorMovimientos', 300, 140, 220);
+    var ent = [['Producto', 'coordina', 70], ['Ubicacion', 'valida', 125], ['Movimiento', 'crea', 180], ['BitacoraDeAuditoria', 'registra en', 235]];
+    var gA = el('g', {}, svg);
+    var a1 = el('g', {}, gA); el('path', {d: 'M240 155 L300 155', stroke: '#111', fill: 'none'}, a1); etiqueta(a1, 270, 140, '1', 10); etiqueta(a1, 270, 170, '1', 10);
+    var deps = ent.map(function(e){
+      stub(e[0], 600, e[2], 170);
+      var g = el('g', {}, gA), p = [[520, 155], [600, e[2] + 15]];
+      el('path', {d: ruta(p), stroke: '#111', fill: 'none', 'stroke-dasharray': '6 4'}, g); flechaAbierta(g, p[1], p[0]);
+      var pl = puntoEn(p, 0.62); etiqueta(g, pl.p[0], pl.p[1], e[1], 10);
+      return g;
+    });
+    var prohibida = el('g', {'class': 'oculto'}, svg);
+    el('path', {d: 'M135 170 C 135 300, 520 300, 600 92', stroke: '#c92a2a', fill: 'none', 'stroke-width': 2, 'stroke-dasharray': '6 4', 'class': 'error-l'}, prohibida);
+    el('text', {x: 330, y: 290, 'text-anchor': 'middle', 'font-size': 26, 'font-weight': 'bold', 'class': 'error-t', texto: '✗'}, prohibida);
+    el('text', {x: 330, y: 306, 'text-anchor': 'middle', 'font-size': 11, 'class': 'error-t', texto: 'nunca interfaz → entidad'}, prohibida);
+    var ficha = el('circle', {cx: 0, cy: 0, r: 9, fill: '#d9480f', stroke: '#111', 'class': 'ficha oculto'}, svg);
+    ficha.style.transform = 'translate(135px,155px)';
+    var etF = el('text', {x: 0, y: 0, 'font-size': 11, 'font-weight': 'bold', 'class': 'oculto', fill: '#d9480f'}, svg);
+    function mover(x, y, txt){ ficha.classList.remove('oculto'); ficha.style.transform = 'translate(' + x + 'px,' + y + 'px)'; etF.classList.remove('oculto'); etF.setAttribute('x', x + 12); etF.setAttribute('y', y - 12); etF.textContent = txt; }
+    q('lienzo-capas').appendChild(svg);
+    var malas = REL.filter(function(r){ var a = capa(r[2]), b = capa(r[3]); return (a === 'interfaz' && b === 'entidad') || (a === 'entidad' && b === 'interfaz'); }).length;
+    var pasos = [
+      {titulo: 'Tres capas', texto: 'Kendall (pág. 302): presentación = clases de interfaz; negocios = clases de control; persistencia = clases de entidad.', aplicar: function(i, u){ if (u) gC.forEach(function(g){ g.firstChild.classList.add('resaltado'); }); }},
+      {titulo: 'Ricardo escanea RAC-0408', texto: 'La solicitud nace en la pantalla: <code>escanearCodigo("RAC-0408")</code>.', aplicar: function(i, u){ mover(135, 155, 'RAC-0408'); if (u) sIrm.classList.add('resaltado'); }},
+      {titulo: 'Interfaz → control ✓', texto: '<code>buscarProducto("RAC-0408")</code> viaja por la asociación «envía solicitudes a» (1 — 1). Es la única línea que sale de la interfaz hacia otra capa.', aplicar: function(i, u){ mover(410, 155, 'buscarProducto'); if (u) { a1.classList.add('resaltado'); sCm.classList.add('resaltado'); } }},
+      {titulo: 'Control → entidad ✓', texto: 'El controlador usa a las entidades por dependencias: <i>coordina</i> Producto, <i>valida</i> Ubicacion, <i>crea</i> Movimiento, <i>registra en</i> BitacoraDeAuditoria.', aplicar: function(i, u){ mover(685, 85, 'obtenerProducto'); if (u) deps.forEach(function(g){ g.classList.add('resaltado'); }); }},
+      {titulo: 'La respuesta regresa por el mismo camino', texto: 'Existencia 40 y ubicación B-04-2 vuelven al controlador y de ahí a la pantalla.', aplicar: function(i, u){ mover(135, 155, '40 · B-04-2'); if (u) { a1.classList.add('resaltado'); deps[0].classList.add('resaltado'); } }},
+      {titulo: '¿Y si la pantalla le pregunta directo a Producto? ✗', texto: 'Prohibido: «las clases de interfaz […] nunca se conectan de manera directa a las clases de entidad» (pág. 299). Si la pantalla cambia, las entidades no se enteran; si cambia la regla de negocio, solo se toca el controlador. Comprobado sobre el modelo: <span class="cls-cuenta">' + malas + '</span> de ' + REL.length + ' relaciones unen una clase «interfaz» con una de entidad. Lo mismo vale para InterfazRecepcion → ControladorRecepcion en CU6.', aplicar: function(i, u){ prohibida.classList.remove('oculto'); mover(135, 155, ''); }}
+    ];
+    SIA.reproductor(q('repro-capas'), pasos, {
+      intervalo: 3000,
+      tituloInicial: 'Nunca interfaz → entidad',
+      reiniciar: function(){
+        var t = svg.querySelectorAll('.resaltado'); for (var k = 0; k < t.length; k++) t[k].classList.remove('resaltado');
+        prohibida.classList.add('oculto'); ficha.classList.add('oculto'); etF.classList.add('oculto');
+      }
+    });
+  })();
+
+  /* ---------------- herencia y clase de asociación ---------------- */
+  (function(){
+    function nodo(n, x, y, w){ return [n, x, y, w, altoClase(CL[n]), 'c']; }
+    var ESP = [
+      {nombre: 'Movimiento → Entrada, Salida, Ajuste, Devolucion', v: {nombre: 'Herencia de Movimiento', nodos: [nodo('Movimiento', 140, 20, 328), nodo('Entrada', 40, 320, 66), nodo('Salida', 200, 320, 66), nodo('Ajuste', 360, 320, 66), nodo('Devolucion', 500, 320, 86)],
+        aristas: [['c107', 'Entrada', 'Movimiento', 0.5, 0, 0.1, 1, [73, 280, 172.8, 280], null, 0, 0, 0], ['c108', 'Salida', 'Movimiento', 0.5, 0, 0.3, 1, [233, 280, 238.4, 280], null, 0, 0, 0], ['c109', 'Ajuste', 'Movimiento', 0.5, 0, 0.7, 1, [393, 280, 369.6, 280], null, 0, 0, 0], ['c110', 'Devolucion', 'Movimiento', 0.5, 0, 0.9, 1, [543, 280, 435.2, 280], null, 0, 0, 0]]},
+        txt: '<p><i>Movimiento</i> es <b>abstracta</b> (nombre en cursiva): nunca se crea un «movimiento» genérico. Las cuatro subclases tienen los compartimentos <b>vacíos</b> porque heredan los 6 atributos y los 5 métodos. Así, en CU1 se crea una <b>Salida</b> que ya sabe <code>generarFolio()</code> y <code>actualizarExistenciaProducto()</code>; en CU6, una <b>Entrada</b>; en CU3, un <b>Ajuste</b> (InventarioFisico «genera» Ajuste, 1 — 0..*); en CU4, una <b>Devolucion</b>.</p><p>La generalización se lee «es un»: <i>una Salida es un Movimiento</i>, y por eso toda Salida entra al Kardex por la composición Kardex «consiste de» Movimiento.</p>'},
+      {nombre: 'Reporte → DashboardEjecutivo', v: {nombre: 'Herencia de Reporte', nodos: [nodo('Reporte', 30, 20, 162), nodo('DashboardEjecutivo', 300, 80, 152)],
+        aristas: [['c111', 'DashboardEjecutivo', 'Reporte', 0, 0.5, 1, 0.4856, [], null, 0, 0, 0]]},
+        txt: '<p>DashboardEjecutivo <b>es un</b> Reporte: hereda <code>tipoReporte</code>, <code>periodo</code>, <code>valorInventario</code>, <code>rotacion</code>… y <code>calcularIndicadores()</code>, y además agrega lo propio: <code>-periodoAnalisis: char{S,M}</code> (semanal o mensual) y <code>+actualizarGraficas()</code>. Es lo que ve Paulina en CU7: el KPI de exactitud de inventario (de 5 % de diferencia a la meta de menos de 1 %).</p><p>No tiene tarjeta CRC propia: la tarjeta Reporte lo menciona como subclase «Dashboard ejecutivo»; <code>actualizarGraficas()</code> sale de CU7.</p>'},
+      {nombre: 'Interfaz → 2 pantallas', v: {nombre: 'Herencia de Interfaz', nodos: [nodo('Interfaz', 200, 20, 188), nodo('InterfazRegistroMovimientos', 20, 320, 186), nodo('InterfazRecepcion', 380, 320, 190)],
+        aristas: [['c91', 'InterfazRegistroMovimientos', 'Interfaz', 0.5, 0, 0.3, 1, [113, 280, 256.4, 280], null, 0, 0, 0], ['c92', 'InterfazRecepcion', 'Interfaz', 0.5, 0, 0.7, 1, [475, 280, 331.6, 280], null, 0, 0, 0]]},
+        txt: '<p>Las dos pantallas heredan lo común de <b>Interfaz</b>: <code>mostrarPantalla()</code>, <code>capturarDatos()</code>, <code>validarCampos(): Boolean</code>, <code>mostrarMensaje(mensaje: String)</code>, <code>habilitarOpciones(rol: char)</code>. Cada una agrega sus campos y métodos propios: <code>escanearCodigo(codigo: String)</code> y <code>mostrarNotaDeSalida()</code> (CU1); <code>seleccionarOrden(folioOC: String)</code> y <code>mostrarComprobante()</code> (CU6). Corresponden a las subclases de la tarjeta CRC Interfaz.</p>'},
+      {nombre: 'DetalleOrden: clase de asociación', v: {nombre: 'Clase de asociación DetalleOrden', nodos: [nodo('OrdenDeCompra', 20, 20, 282), nodo('Producto', 560, 40, 210), nodo('DetalleOrden', 334, 330, 194), ['nota1', 560, 360, 236, 53, 'n', VISTAS[0].nodos.filter(function(n){ return n[0] === 'nota1'; })[0][6]]],
+        aristas: [['c136', 'OrdenDeCompra', 'Producto', 1, 0.3, 0, 0.2536, [], null, 0, 0, -10, -0.85, 0.85], ['c154', 'DetalleOrden', null, 0.5, 0, 0, 0, [], [431, 103.4], 0, 0, 0], ['nota1e', 'nota1', 'DetalleOrden', 0, 0.5, 1, 0.5, [], null, 0, 0, 0]]},
+        txt: '<p>OrdenDeCompra <b>0..*</b> «solicita» <b>1..*</b> Producto es de <b>muchos a muchos</b>. ¿Dónde se guarda que la OC-2026-0147 pide 100 de RAC-0408 y 10 de CIL-32100? No en la orden (tiene varios productos) ni en el producto (está en varias órdenes): en la <b>clase de asociación</b> DetalleOrden, unida con línea punteada a la relación. Es el mismo recurso que usa Kendall con Estudiante–Curso y la clase Seccion (pág. 305).</p><p>Cada objeto DetalleOrden guarda <code>cantidadSolicitada</code>, <code>cantidadRecibida</code> y <code>costoUnitario</code>, y <code>calcularSaldoPendiente()</code> da lo que falta: tras la primera entrega, 100 − 60 = 40 racores. No tiene tarjeta CRC: es la propiedad «Detalle de productos» de la tarjeta Orden de compra (lo dice la nota).</p>'}
+    ];
+    var tabs = q('tabs-esp'), lz = q('lienzo-esp'), tx = q('texto-esp'), hechos = {};
+    ESP.forEach(function(e, i){ var b = document.createElement('button'); b.type = 'button'; b.textContent = e.nombre; b.setAttribute('data-e', i); tabs.appendChild(b); });
+    function verE(i){
+      if (!hechos[i]) hechos[i] = dibujar(ESP[i].v);
+      lz.innerHTML = ''; lz.appendChild(hechos[i].svg); tx.innerHTML = ESP[i].txt;
+      var bs = tabs.querySelectorAll('button');
+      for (var k = 0; k < bs.length; k++) { bs[k].classList.toggle('activo', k === i); bs[k].setAttribute('aria-selected', k === i ? 'true' : 'false'); }
+    }
+    tabs.addEventListener('click', function(ev){ var b = ev.target.closest('button'); if (b) verE(+b.getAttribute('data-e')); });
+    verE(0);
+  })();
+
+  /* ---------------- leyenda ---------------- */
+  (function(){
+    var W = 900, H = 330, svg = el('svg', {viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, role: 'img', 'aria-label': 'Leyenda de notación'});
+    var g = el('g', {}, svg);
+    dibujarClase(g, ['Clase', null, ['-atributo: Tipo=valor', '-tipo: char{E,S}'], ['+metodo(param): Tipo']], 10, 10, 170, altoClase(['Clase', null, ['a', 'b'], ['m']]));
+    el('text', {x: 10, y: 125, 'font-size': 12, texto: 'Nombre · atributos (-) · métodos (+)'}, g);
+    dibujarClase(el('g', {}, svg), ['Controlador', 'control', [], []], 10, 160, 170, altoClase(['x', 'control', [], []]));
+    el('text', {x: 10, y: 250, 'font-size': 12, texto: '«estereotipo»: interfaz / control'}, g);
+    var gi = el('g', {}, svg); dibujarSoloNombre(gi, 'Movimiento', 10, 270, 170, 30);
+    el('text', {x: 10, y: 318, 'font-size': 12, texto: 'Cursiva: clase abstracta'}, g);
+    var filas = [
+      ['assoc', 'Asociación: nombre y multiplicidad (1, 0..1, 0..*, 1..*)'],
+      ['gen', 'Generalización: el triángulo apunta a la superclase'],
+      ['agg', 'Agregación: rombo vacío del lado del todo («tiene un»)'],
+      ['comp', 'Composición: rombo lleno, todo y sus partes'],
+      ['dep', 'Dependencia: usa a otra clase sin guardarla'],
+      ['assocclass', 'Clase de asociación: punteada hasta la relación'],
+      ['nota', 'Nota: aclaración unida con línea punteada']
+    ];
+    filas.forEach(function(f, i){
+      var y = 25 + i * 42, x0 = 230, x1 = 420, gg = el('g', {}, svg), p = [[x0, y], [x1, y]];
+      el('path', {d: ruta(p), stroke: '#111', fill: 'none', 'stroke-dasharray': (f[0] === 'dep' || f[0] === 'assocclass' || f[0] === 'nota') ? '6 4' : 'none'}, gg);
+      if (f[0] === 'gen') triangulo(gg, p[1], p[0]);
+      if (f[0] === 'dep') flechaAbierta(gg, p[1], p[0]);
+      if (f[0] === 'agg') rombo(gg, p[0], p[1], false);
+      if (f[0] === 'comp') rombo(gg, p[0], p[1], true);
+      if (f[0] === 'assoc') { etiqueta(gg, 325, y, 'registra', 11); el('text', {x: x0 + 2, y: y - 6, 'font-size': 10, texto: '1'}, gg); el('text', {x: x1 - 24, y: y - 6, 'font-size': 10, texto: '0..*'}, gg); }
+      el('text', {x: 440, y: y + 4, 'font-size': 12.5, texto: f[1]}, gg);
+    });
+    q('lienzo-leyenda').appendChild(svg);
+  })();
+});
+})();
+</script>

@@ -1,0 +1,593 @@
+<style>
+#sec-est .est-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(270px,1fr);gap:12px;align-items:start}
+@media (max-width:860px){#sec-est .est-grid{grid-template-columns:1fr}}
+#sec-est .est-svg{width:100%;max-width:640px}
+#sec-est .ficha{transition:transform .8s ease}
+#sec-est .ficha rect{fill:#fff;stroke:var(--acento);stroke-width:2}
+#sec-est .ficha text{fill:var(--acento);font-weight:bold;font-size:9px}
+#sec-est .ficha-in.vuelta{animation:est-vuelta 1.2s ease}
+@keyframes est-vuelta{0%{transform:none}50%{transform:translate(262px,8px)}100%{transform:none}}
+#sec-est rect.err{stroke:var(--error)!important;stroke-width:3;fill:#fdecec!important}
+#sec-est .arista.resaltado polyline{stroke-width:2.2}
+#sec-est .objeto{background:var(--papel);border:1px solid var(--tinta);border-radius:6px;padding:12px;font-size:14px}
+#sec-est .objeto .o-tit{border-bottom:1px solid var(--tinta);padding-bottom:4px;margin-bottom:6px}
+#sec-est .objeto table.t{font-size:13px;margin:6px 0}
+#sec-est .objeto table.t td,#sec-est .objeto table.t th{padding:3px 6px}
+#sec-est .o-barra{height:5px;background:var(--gris);border-radius:3px;margin-top:3px;overflow:hidden}
+#sec-est .o-barra i{display:block;height:100%;background:var(--tinta);transition:width .6s}
+#sec-est .o-trans{border:1px solid var(--acento);border-left:5px solid var(--acento);border-radius:4px;padding:6px 8px;margin:8px 0;background:#fff8f3}
+#sec-est .o-tn{font-size:12.5px;color:var(--texto2)}
+#sec-est .o-et{font-family:Consolas,"Courier New",monospace;font-size:13px;margin:3px 0}
+#sec-est .o-et .ev{font-weight:bold}
+#sec-est .o-et .gu{color:var(--acento)}
+#sec-est .o-err{border:1px solid var(--error);border-left:5px solid var(--error);border-radius:4px;padding:6px 8px;margin:8px 0;background:#fdecec;color:var(--error)}
+#sec-est .o-nota{font-size:13px;margin:6px 0;color:#333}
+#sec-est .o-vacio{color:var(--texto2);font-style:italic}
+#sec-est .o-obs{font-size:12.5px;color:var(--texto2);margin-top:3px}
+#sec-est .est-desc{font-size:14.5px;color:#333;margin:4px 0 8px}
+#sec-est .est-ev{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+#sec-est .est-ev button{font:inherit;font-size:13.5px;padding:5px 10px;border:1px solid var(--tinta);background:var(--papel);border-radius:4px;cursor:pointer}
+#sec-est .est-ev button:hover{background:var(--gris)}
+#sec-est .est-ev button.reini{background:var(--tinta);color:var(--papel)}
+#sec-est .est-sal{font-size:13.5px;margin:6px 0}
+#sec-est .est-log{font-size:13px;max-height:180px;overflow:auto;margin:6px 0;padding-left:22px}
+#sec-est .est-log li{margin:2px 0}
+#sec-est .est-log li.mal{color:var(--error)}
+#sec-est dl.est-conc dt{font-weight:bold;margin-top:8px}
+#sec-est dl.est-conc dd{margin:2px 0 0 18px}
+#sec-est .leyenda{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
+#sec-est .leyenda > div{display:flex;gap:10px;align-items:center;background:var(--papel);border:1px solid var(--tinta);border-radius:6px;padding:8px}
+#sec-est .leyenda svg{flex:0 0 auto}
+#sec-est code{font-size:13.5px}
+</style>
+
+<section id="sec-est" class="sec">
+  <h1>6 · Diagrama de estados de OrdenDeCompra</h1>
+  <p class="lead">Sigue la vida de <b>un solo objeto</b>: la orden de compra. Se crea como borrador, se emite al proveedor, se recibe por partes o completa y al final se cierra o se cancela.</p>
+
+  <h2>Qué es este entregable</h2>
+  <div class="panel">
+    <p>Según Kendall y Kendall (cap. 10, pp. 309–311), el <b>diagrama de estados</b>, o de transiciones de estado, es otra herramienta para determinar los métodos de las clases. Se dibuja para <b>una sola clase</b> y muestra los distintos estados por los que pasa un objeto: por lo general los objetos se crean, pasan por cambios y se eliminan.</p>
+    <dl class="est-conc">
+      <dt>Estado (p. 309)</dt>
+      <dd>La condición de un objeto en un momento específico. La definen los valores de sus atributos; a veces hay un atributo que lo indica directamente (el libro pone de ejemplo «Estado del pedido»). En <code>OrdenDeCompra</code> ese atributo es <code>-estado: String{Pendiente, Emitida, Parcialmente recibida, Recibida, Cerrada, Cancelada}</code>. Su nombre empieza cada palabra con mayúscula. Se dibuja como rectángulo con esquinas redondeadas.</dd>
+      <dt>Evento y transición (pp. 309 y 311)</dt>
+      <dd>Un evento es algo que ocurre en un tiempo y lugar específicos; provoca el cambio de estado y se dice que la transición se «dispara». Los eventos se nombran <b>en pasado</b> porque ya ocurrieron: «se creó la orden», «se recibió mercancía».</dd>
+      <dt>Condición de guardia o guarda (p. 309)</dt>
+      <dd>Algo que se evalúa como verdadero o falso y se escribe <b>entre corchetes</b> junto al evento: <code>[total &gt; 0]</code>, <code>[calcularSaldoPendiente() = 0]</code>. Si es falsa, la transición no se dispara.</dd>
+      <dt>Acción (p. 309)</dt>
+      <dd>El libro habla de las <b>acciones de entrada y de salida</b>: lo que el objeto debe hacer cada vez que entra o sale de un estado. En el entregable se escriben dentro del estado como <code>entry / …</code> y <code>do / …</code>, y la acción de una transición va después de la diagonal: la etiqueta completa queda <b>evento [guarda] / acción</b>.</dd>
+      <dt>Autotransición</dt>
+      <dd>Transición que sale de un estado y vuelve a entrar al mismo (T7 en Parcialmente recibida). Como el objeto <i>sale y vuelve a entrar</i>, su <code>entry</code> se ejecuta otra vez. El libro no usa el término; el entregable la explica en su nota 6.</dd>
+      <dt>Inicio y fin (p. 311)</dt>
+      <dd>Círculo relleno para el inicio y círculos concéntricos con el centro relleno para el fin, como en el diagrama de actividad.</dd>
+    </dl>
+    <p><b>¿Por qué OrdenDeCompra?</b> El libro dice que no hay que hacer diagramas de estados para todas las clases, sino cuando una clase tiene un ciclo de vida complejo, actualiza sus atributos de varias formas o su comportamiento depende de lo que ocurrió antes (p. 311). La orden cumple: lo que se puede hacer con ella depende de si ya se emitió o de si ya se recibió parte de la mercancía. Sus cambios los provocan <b>CU5</b> Generar orden de compra y <b>CU6</b> Recibir mercancía contra orden de compra (uno de los dos CU críticos).</p>
+    <p class="nota-fuente">Fuente: Diagrama_de_Estados_SIA-NP (secciones 1 y 2) y Kendall &amp; Kendall, cap. 10, pp. 309–311.</p>
+  </div>
+
+  <h2>El diagrama, animado</h2>
+  <p>Elige un recorrido. La <b>ficha naranja</b> es el objeto <code>oc::OrdenDeCompra</code>; en cada paso se resalta la flecha que se dispara y a la derecha ves cómo cambian sus atributos.</p>
+  <div class="tabs est-tabs" role="tablist">
+    <button type="button" data-esc="normal" aria-selected="true">Ciclo normal (OC-2026-0147)</button>
+    <button type="button" data-esc="auto" aria-selected="false">Con entrega intermedia (T7)</button>
+    <button type="button" data-esc="unasola" aria-selected="false">Todo en una entrega (T6)</button>
+    <button type="button" data-esc="canPend" aria-selected="false">Cancelada estando Pendiente</button>
+    <button type="button" data-esc="canEmit" aria-selected="false">Cancelada estando Emitida</button>
+    <button type="button" data-esc="invalido" aria-selected="false">Intentos inválidos</button>
+  </div>
+  <p class="est-desc"></p>
+  <div class="est-grid">
+    <div class="lienzo est-lienzo-a"></div>
+    <div class="objeto est-panel-a"></div>
+  </div>
+  <div class="est-repro"></div>
+
+  <div class="ejemplo"><b>Ejemplo real: la OC-2026-0147</b>
+    Ricardo surtió 12 racores <code>RAC-0408</code> y la existencia bajó de 40 a 28, debajo del mínimo de 30. Karla (Encargada de Compras) genera la <b>OC-2026-0147</b> al <i>proveedor nacional de neumática</i> (lead time 7 días): <b>100 × RAC-0408</b> (racor recto 1/4" NPT × 8 mm) y <b>10 × CIL-32100</b> (cilindro neumático Ø32 × 100 mm). Llega con la factura <code>F-A-88213</code>: 1.ª entrega 60 racores y 10 cilindros; 2.ª entrega 40 racores. Karla la recibe en CU6 (actor principal; Lodevar participa como Encargado de Almacén).
+    <div class="nota-fuente">Cifras de ejemplo con datos reales del cliente. La entrega intermedia de 20 racores (pestaña T7) es hipotética, solo para mostrar la autotransición.</div>
+  </div>
+
+  <h2>Los estados y las transiciones</h2>
+  <table class="t">
+    <tr><th>Estado</th><th>Descripción (Tabla 1 del entregable)</th><th>Actividades</th></tr>
+    <tr><td>Pendiente</td><td>La Encargada de Compras creó la orden y está capturando los productos. Es un borrador sin folio definitivo (CU5, flujo alternativo 7a).</td><td><code>entry / guardarBorrador()</code><br><code>do / agregarProducto(producto, cantidad)</code></td></tr>
+    <tr><td>Emitida</td><td>La orden se confirmó con folio consecutivo y se envió al proveedor. Espera la llegada de la mercancía (CU5, paso 8).</td><td><code>entry / generarDocumento()</code></td></tr>
+    <tr><td>Parcialmente recibida</td><td>Se registró al menos una recepción, pero algún producto todavía tiene saldo pendiente. La orden sigue abierta (CU6, flujo alternativo 4a).</td><td><code>entry / actualizarEstado(diferencias)</code></td></tr>
+    <tr><td>Recibida</td><td>Se recibió la cantidad solicitada de todos los productos: el saldo pendiente es cero (CU6, paso 9).</td><td><code>entry / actualizarEstado(diferencias)</code></td></tr>
+    <tr><td>Cerrada</td><td>La Encargada de Compras dio por terminada la orden. Ya no admite recepciones; solo se consulta.</td><td>—</td></tr>
+    <tr><td>Cancelada</td><td>La orden se anuló antes de recibir mercancía, desde Pendiente o desde Emitida.</td><td>—</td></tr>
+  </table>
+  <table class="t">
+    <tr><th>#</th><th>Origen</th><th>Evento [guarda] / acción</th><th>Destino</th><th>CU / RF</th></tr>
+    <tr><td>T1</td><td>Inicio</td><td>se creó la orden / crearOrden()</td><td>Pendiente</td><td>CU5, RF12</td></tr>
+    <tr><td>T2</td><td>Pendiente</td><td>se confirmó la emisión [total &gt; 0] / emitirOrden()</td><td>Emitida</td><td>CU5 (pasos 7–8), RF12</td></tr>
+    <tr><td>T3</td><td>Pendiente</td><td>se canceló la orden / cancelarOrden()</td><td>Cancelada</td><td>CU5, RF12</td></tr>
+    <tr><td>T4</td><td>Emitida</td><td>se canceló la orden / cancelarOrden()</td><td>Cancelada</td><td>RF12 <span class="chip error">sin CU</span></td></tr>
+    <tr><td>T5</td><td>Emitida</td><td>se recibió mercancía [calcularSaldoPendiente() &gt; 0] / compararCantidades(cantidades)</td><td>Parcialmente recibida</td><td>CU6 (4a, 9), RF13</td></tr>
+    <tr><td>T6</td><td>Emitida</td><td>se recibió mercancía [calcularSaldoPendiente() = 0] / compararCantidades(cantidades)</td><td>Recibida</td><td>CU6 (paso 9), RF13</td></tr>
+    <tr><td>T7</td><td>Parcialmente recibida</td><td>se recibió mercancía [calcularSaldoPendiente() &gt; 0] / compararCantidades(cantidades) (autotransición)</td><td>Parcialmente recibida</td><td>CU6 (4a), RF13</td></tr>
+    <tr><td>T8</td><td>Parcialmente recibida</td><td>se recibió mercancía [calcularSaldoPendiente() = 0] / compararCantidades(cantidades)</td><td>Recibida</td><td>CU6 (paso 9), RF13</td></tr>
+    <tr><td>T9</td><td>Recibida</td><td>se cerró la orden / cerrarOrden()</td><td>Cerrada</td><td>RF12 <span class="chip error">sin CU</span></td></tr>
+    <tr><td>T10</td><td>Cerrada</td><td>(fin del ciclo de vida)</td><td>Final</td><td>—</td></tr>
+    <tr><td>T11</td><td>Cancelada</td><td>(fin del ciclo de vida)</td><td>Final</td><td>—</td></tr>
+  </table>
+  <p class="nota-fuente">Tablas 1 y 2 del entregable (scripts/docx/06_estados.js). RF con la numeración del Apéndice C de la ERS: RF12 Generación de órdenes de compra, RF13 Recepción de mercancía contra OC. La nota 6 del entregable dice que T3, T4 y T9 no tienen CU propio, aunque la Tabla 2 relaciona T3 con CU5.</p>
+
+  <h2>Simulador: tú disparas los eventos</h2>
+  <p>Pulsa un evento. La ficha <b>solo se mueve si desde el estado actual sale una transición con ese evento y su guarda es verdadera</b>. Prueba, por ejemplo, a recibir mercancía en una orden Pendiente o a emitir una orden sin productos.</p>
+  <div class="est-ev">
+    <button type="button" data-ev="crear">se creó la orden</button>
+    <button type="button" data-ev="agregar">do / agregarProducto (100 RAC-0408 + 10 CIL-32100)</button>
+    <button type="button" data-ev="emitir">se confirmó la emisión</button>
+    <button type="button" data-ev="cancelar">se canceló la orden</button>
+    <button type="button" data-ev="r60">se recibió mercancía: 60 RAC + 10 CIL</button>
+    <button type="button" data-ev="r20">se recibió mercancía: 20 RAC</button>
+    <button type="button" data-ev="r40">se recibió mercancía: 40 RAC</button>
+    <button type="button" data-ev="rtodo">se recibió mercancía: todo lo pendiente</button>
+    <button type="button" data-ev="cerrar">se cerró la orden</button>
+    <button type="button" data-ev="terminar">(fin del ciclo de vida)</button>
+    <button type="button" data-ev="reiniciar" class="reini">Reiniciar</button>
+  </div>
+  <p class="est-sal"></p>
+  <div class="est-grid">
+    <div class="lienzo est-lienzo-b"></div>
+    <div>
+      <div class="objeto est-panel-b"></div>
+      <ol class="est-log"></ol>
+    </div>
+  </div>
+  <p class="nota-fuente">El simulador aplica las reglas del diagrama. El rechazo de un excedente viene de CU6 alterno 7a (el sistema pide autorización); aquí simplemente no se registra.</p>
+
+  <h2>Cómo leer la notación</h2>
+  <div class="leyenda">
+    <div><svg width="40" height="30" viewBox="0 0 40 30" aria-hidden="true"><circle cx="20" cy="15" r="10" fill="#111"/></svg><span><b>Inicio</b>: el objeto aún no existe; la primera flecha lo crea (T1).</span></div>
+    <div><svg width="40" height="30" viewBox="0 0 40 30" aria-hidden="true"><circle cx="20" cy="15" r="12" fill="#fff" stroke="#111"/><circle cx="20" cy="15" r="8" fill="#111"/></svg><span><b>Fin</b>: el ciclo de vida terminó. Hay dos: después de Cerrada y después de Cancelada.</span></div>
+    <div><svg width="120" height="50" viewBox="0 0 120 50" aria-hidden="true"><rect x="1" y="1" width="118" height="48" rx="8" fill="#fff" stroke="#111"/><line x1="1" y1="20" x2="119" y2="20" stroke="#111"/><text x="60" y="14" font-size="10" text-anchor="middle">Nombre</text><text x="6" y="38" font-size="9">entry / acción()</text></svg><span><b>Estado</b>: rectángulo redondeado; arriba el nombre, abajo las actividades <code>entry</code> (al entrar) y <code>do</code> (mientras está ahí).</span></div>
+    <div><svg width="120" height="50" viewBox="0 0 120 50" aria-hidden="true"><line x1="10" y1="40" x2="110" y2="40" stroke="#111"/><polyline points="100,35 110,40 100,45" fill="none" stroke="#111"/><text x="60" y="14" font-size="9" text-anchor="middle">evento [guarda]</text><text x="60" y="28" font-size="9" text-anchor="middle">/ acción()</text></svg><span><b>Transición</b>: flecha de punta abierta con la etiqueta <i>evento [guarda] / acción</i>. El evento va en pasado.</span></div>
+    <div><svg width="90" height="50" viewBox="0 0 90 50" aria-hidden="true"><rect x="1" y="5" width="55" height="40" rx="8" fill="#fff" stroke="#111"/><polyline points="56,15 80,15 80,35 56,35" fill="none" stroke="#111"/><polyline points="66,30 56,35 66,40" fill="none" stroke="#111"/></svg><span><b>Autotransición</b> (T7): sale del estado y vuelve a él; el <code>entry</code> se ejecuta de nuevo.</span></div>
+    <div><svg width="90" height="50" viewBox="0 0 90 50" aria-hidden="true"><text x="45" y="20" font-size="10" text-anchor="middle">[… &gt; 0]</text><text x="45" y="40" font-size="10" text-anchor="middle">[… = 0]</text></svg><span><b>Guardas excluyentes</b>: desde Emitida salen dos flechas con el mismo evento; la guarda decide cuál se dispara (T5 o T6; T7 o T8).</span></div>
+  </div>
+
+  <h2>Para la exposición</h2>
+  <details class="pregunta"><summary>¿Por qué hicieron el diagrama de estados de OrdenDeCompra y no de otra clase?</summary>
+    <p>Porque es la clase con ciclo de vida más claro y su comportamiento depende de lo que pasó antes (criterios del libro, p. 311): una orden Pendiente no se puede recibir, una Recibida no se puede cancelar. Además tiene un atributo que dice su estado (<code>estado</code>) y la cambian dos CU, CU5 y CU6 (crítico).</p></details>
+  <details class="pregunta"><summary>¿Qué caso de uso dispara cada transición?</summary>
+    <p>CU5 (Karla): T1 crear, T2 emitir (pasos 7–8). CU6 (Karla): T5, T6, T7 y T8, todas con el evento «se recibió mercancía»; la guarda <code>calcularSaldoPendiente()</code> de DetalleOrden decide si queda Parcialmente recibida o Recibida (paso 9 y alterno 4a). <b>T4 (cancelar una orden Emitida) y T9 (cerrar) no tienen CU propio</b>: se incluyeron porque <code>cancelarOrden()</code>, <code>cerrarOrden()</code> y los valores Cancelada y Cerrada ya existen en la clase. La Tabla 2 relaciona T3 con CU5, aunque la nota del entregable dice que las cancelaciones no tienen CU propio.</p></details>
+  <details class="pregunta"><summary>¿Qué diferencia hay entre la guarda y la acción en «se recibió mercancía [calcularSaldoPendiente() &gt; 0] / compararCantidades(cantidades)»?</summary>
+    <p>El evento es lo que ocurrió (llegó mercancía); la guarda, entre corchetes, es la condición verdadero/falso que decide si esa flecha se dispara; la acción, después de la diagonal, es el método que se ejecuta al dispararse. Con la 1.ª entrega (60 de 100 racores) el saldo es 40 &gt; 0, así que se dispara T5 y no T6.</p></details>
+  <details class="pregunta"><summary>¿Para qué sirve la autotransición T7 si la orden se queda en el mismo estado?</summary>
+    <p>Porque la orden sale y vuelve a entrar: se ejecuta otra vez <code>entry / actualizarEstado(diferencias)</code> y la orden refleja el nuevo saldo pendiente, como pide la poscondición de CU6. Ej.: tras 60 racores llegan otros 20; el saldo baja de 40 a 20, pero sigue &gt; 0.</p></details>
+  <details class="pregunta"><summary>¿Esos estados son los de la ERS?</summary>
+    <p>No exactamente: el diccionario de datos de la ERS (§4.1, ORDEN_COMPRA.estatus) usa <b>Abierta / Parcial / Cerrada / Cancelada</b>. Los seis estados del diagrama son una propuesta del equipo, tomada de los CU5 y CU6 («Emitida», «Pendiente» en 7a, «Recibida» o «Parcialmente recibida» en el paso 9) y del atributo <code>estado</code> del diagrama de clases.</p></details>
+  <details class="pregunta"><summary>(Solo si preguntan) ¿Por qué no está hecho en StarUML?</summary>
+    <p>La consigna pedía StarUML, pero se entregó como imagen PNG generada por un script de Python (<code>scripts/estados/diagrama_estados.py</code>, que también genera un .drawio editable), porque no se contaba con la herramienta de diagramado. La notación es la del libro: estados redondeados, evento [guarda] / acción, inicio y fin.</p></details>
+</section>
+
+<script>
+(function(){
+  SIA.registrar('est', function(raiz){
+    var S = SIA.svg;
+
+    /* Geometría tomada de scripts/estados/diagrama_estados.py (en puntos). */
+    var NODOS = {
+      ini:  {tipo:'ini', cx:305, cy:20, r:10},
+      pend: {tipo:'est', nom:'Pendiente', x:200, y:70, w:210, h:68, act:['entry / guardarBorrador()', 'do / agregarProducto(producto, cantidad)']},
+      emit: {tipo:'est', nom:'Emitida', x:200, y:230, w:210, h:54, act:['entry / generarDocumento()']},
+      parc: {tipo:'est', nom:'Parcialmente recibida', x:200, y:400, w:210, h:54, act:['entry / actualizarEstado(diferencias)']},
+      rec:  {tipo:'est', nom:'Recibida', x:200, y:570, w:210, h:54, act:['entry / actualizarEstado(diferencias)']},
+      cer:  {tipo:'est', nom:'Cerrada', x:200, y:700, w:210, h:34, act:[]},
+      fin:  {tipo:'fin', cx:305, cy:802, r:12},
+      can:  {tipo:'est', nom:'Cancelada', x:470, y:168, w:120, h:34, act:[]},
+      fin2: {tipo:'fin', cx:632, cy:185, r:12}
+    };
+    var RECEP = 'se recibió mercancía', ACR = '/ compararCantidades(cantidades)';
+    var ARISTAS = [
+      {id:'t1', p:[[305,30],[305,70]], l:['se creó la orden / crearOrden()'], cx:227, cy:50},
+      {id:'t2', p:[[305,138],[305,230]], l:['se confirmó la emisión', '[total > 0]', '/ emitirOrden()'], cx:361, cy:184},
+      {id:'t3', p:[[410,90.4],[530,90.4],[530,168]], l:['se canceló la orden', '/ cancelarOrden()'], cx:470, cy:69.4},
+      {id:'t4', p:[[410,257],[530,257],[530,202]], l:['se canceló la orden', '/ cancelarOrden()'], cx:470, cy:278},
+      {id:'t5', p:[[305,284],[305,400]], l:[RECEP, '[calcularSaldoPendiente() > 0]', ACR], cx:388, cy:342},
+      {id:'t6', p:[[200,257],[20,257],[20,597],[200,597]], l:[RECEP, '[calcularSaldoPendiente() = 0]', ACR], cx:103, cy:427},
+      {id:'t7', p:[[410,416.2],[445,416.2],[445,443.2],[410,443.2]], l:[RECEP, '[calcularSaldoPendiente() > 0]', ACR], cx:528, cy:429.7},
+      {id:'t8', p:[[305,454],[305,570]], l:[RECEP, '[calcularSaldoPendiente() = 0]', ACR], cx:388, cy:512},
+      {id:'t9', p:[[305,624],[305,700]], l:['se cerró la orden / cerrarOrden()'], cx:383, cy:662},
+      {id:'t10', p:[[305,734],[305,790]], l:[]},
+      {id:'t11', p:[[590,185],[620,185]], l:[]}
+    ];
+    /* Tabla 2 del entregable */
+    var T = {
+      t1:{n:'T1', o:'ini', d:'pend', ev:'se creó la orden', g:'', ac:'crearOrden()', cu:'CU5, RF12'},
+      t2:{n:'T2', o:'pend', d:'emit', ev:'se confirmó la emisión', g:'[total > 0]', ac:'emitirOrden()', cu:'CU5 (pasos 7–8), RF12'},
+      t3:{n:'T3', o:'pend', d:'can', ev:'se canceló la orden', g:'', ac:'cancelarOrden()', cu:'CU5, RF12', obs:'La Tabla 2 la liga a CU5, pero la nota 6 del entregable dice que las cancelaciones (T3 y T4) no tienen CU propio.'},
+      t4:{n:'T4', o:'emit', d:'can', ev:'se canceló la orden', g:'', ac:'cancelarOrden()', cu:'RF12', sinCU:true},
+      t5:{n:'T5', o:'emit', d:'parc', ev:RECEP, g:'[calcularSaldoPendiente() > 0]', ac:'compararCantidades(cantidades)', cu:'CU6 (4a, 9), RF13'},
+      t6:{n:'T6', o:'emit', d:'rec', ev:RECEP, g:'[calcularSaldoPendiente() = 0]', ac:'compararCantidades(cantidades)', cu:'CU6 (paso 9), RF13'},
+      t7:{n:'T7', o:'parc', d:'parc', ev:RECEP, g:'[calcularSaldoPendiente() > 0]', ac:'compararCantidades(cantidades)', cu:'CU6 (4a), RF13', obs:'Autotransición: sale y vuelve a entrar; se ejecuta otra vez entry / actualizarEstado(diferencias).'},
+      t8:{n:'T8', o:'parc', d:'rec', ev:RECEP, g:'[calcularSaldoPendiente() = 0]', ac:'compararCantidades(cantidades)', cu:'CU6 (paso 9), RF13'},
+      t9:{n:'T9', o:'rec', d:'cer', ev:'se cerró la orden', g:'', ac:'cerrarOrden()', cu:'RF12', sinCU:true},
+      t10:{n:'T10', o:'cer', d:'fin', ev:'(fin del ciclo de vida)', g:'', ac:'', cu:'—'},
+      t11:{n:'T11', o:'can', d:'fin2', ev:'(fin del ciclo de vida)', g:'', ac:'', cu:'—'}
+    };
+    var NOMBRE = {ini:'Inicio', pend:'Pendiente', emit:'Emitida', parc:'Parcialmente recibida', rec:'Recibida', cer:'Cerrada', can:'Cancelada', fin:'Final', fin2:'Final'};
+    var POS = {ini:[318,11], fin:[320,793], fin2:[584,202]};
+
+    function puntos(arr){ var s = []; for (var i = 0; i < arr.length; i++) s.push(arr[i][0] + ',' + arr[i][1]); return s.join(' '); }
+
+    function dibujar(cont){
+      var svg = S('svg', {viewBox:'0 0 660 826', 'class':'est-svg', role:'img', 'aria-label':'Diagrama de estados de la clase OrdenDeCompra'}, cont);
+      var gA = S('g', {}, svg), gN = S('g', {}, svg), gE = S('g', {}, svg), gF = S('g', {}, svg);
+      var ref = {svg:svg, n:{}, a:{}};
+      ARISTAS.forEach(function(a){
+        var g = S('g', {'class':'arista'}, gA);
+        S('polyline', {points:puntos(a.p), fill:'none', stroke:'#111', 'stroke-width':1}, g);
+        var tip = a.p[a.p.length - 1], prev = a.p[a.p.length - 2];
+        var dx = prev[0] - tip[0], dy = prev[1] - tip[1], L = Math.sqrt(dx * dx + dy * dy) || 1;
+        var ux = dx / L, uy = dy / L, nx = -uy, ny = ux;
+        var pa = [tip[0] + ux * 10 + nx * 5, tip[1] + uy * 10 + ny * 5];
+        var pb = [tip[0] + ux * 10 - nx * 5, tip[1] + uy * 10 - ny * 5];
+        S('polyline', {points:puntos([pa, tip, pb]), fill:'none', stroke:'#111', 'stroke-width':1}, g);
+        var textos = [], n = a.l.length;
+        for (var i = 0; i < n; i++) {
+          textos.push(S('text', {x:a.cx, y:(a.cy - 7 * (n - 1) + 14 * i + 3.5).toFixed(1), 'text-anchor':'middle', 'font-size':10, texto:a.l[i]}, gE));
+        }
+        ref.a[a.id] = {g:g, t:textos};
+      });
+      Object.keys(NODOS).forEach(function(k){
+        var n = NODOS[k], g = S('g', {'class':'nodo'}, gN), r, acts = [];
+        if (n.tipo === 'ini') {
+          r = S('circle', {cx:n.cx, cy:n.cy, r:n.r, fill:'#111'}, g);
+        } else if (n.tipo === 'fin') {
+          r = S('circle', {cx:n.cx, cy:n.cy, r:n.r, fill:'#fff', stroke:'#111'}, g);
+          S('circle', {cx:n.cx, cy:n.cy, r:n.r - 4, fill:'#111'}, g);
+        } else {
+          r = S('rect', {x:n.x, y:n.y, width:n.w, height:n.h, rx:8, ry:8, fill:'#fff', stroke:'#111'}, g);
+          if (n.act.length) {
+            S('text', {x:n.x + n.w / 2, y:n.y + 18, 'text-anchor':'middle', 'font-size':11, texto:n.nom}, g);
+            S('line', {x1:n.x, y1:n.y + 28, x2:n.x + n.w, y2:n.y + 28, stroke:'#111'}, g);
+            for (var i = 0; i < n.act.length; i++) {
+              acts.push(S('text', {x:n.x + 6, y:n.y + 28 + 6 + 14 * i + 10.5, 'font-size':10, texto:n.act[i]}, g));
+            }
+          } else {
+            S('text', {x:n.x + n.w / 2, y:n.y + n.h / 2 + 4, 'text-anchor':'middle', 'font-size':11, texto:n.nom}, g);
+          }
+        }
+        ref.n[k] = {r:r, acts:acts};
+      });
+      var ficha = S('g', {'class':'ficha'}, gF);
+      var interior = S('g', {'class':'ficha-in'}, ficha);
+      S('rect', {x:0, y:0, width:74, height:18, rx:9, ry:9}, interior);
+      ref.fichaTxt = S('text', {x:37, y:12.5, 'text-anchor':'middle', texto:'nueva OC'}, interior);
+      ref.ficha = ficha; ref.fichaIn = interior;
+      return ref;
+    }
+
+    function nuevaOC(){
+      return {estadoAttr:'', folio:'', conLineas:false, trans:null, error:'', nota:'',
+        lineas:[{cod:'RAC-0408', sol:100, rec:0}, {cod:'CIL-32100', sol:10, rec:0}]};
+    }
+
+    function etiquetaHTML(t){
+      return '<span class="ev">' + t.ev + '</span>' + (t.g ? ' <span class="gu">' + t.g.replace('>', '&gt;') + '</span>' : '') + (t.ac ? ' <span class="ac">/ ' + t.ac + '</span>' : '');
+    }
+    function salientes(k){
+      var r = [];
+      for (var id in T) if (T.hasOwnProperty(id) && T[id].o === k) r.push(T[id].n + ' «' + T[id].ev + '»');
+      return r.length ? r.join(', ') : 'ninguna';
+    }
+
+    function crearVista(lienzo, panel){
+      var ref = dibujar(lienzo);
+      var v = {actual:'ini', oc:nuevaOC(), ref:ref};
+      function quitar(cls){
+        var els = ref.svg.querySelectorAll('.' + cls);
+        for (var i = 0; i < els.length; i++) els[i].classList.remove(cls);
+      }
+      v.enfocar = function(k){
+        quitar('resaltado'); quitar('err');
+        if (NODOS[k].tipo === 'est') ref.n[k].r.classList.add('resaltado');
+      };
+      v.mover = function(k){
+        v.actual = k;
+        if (NODOS[k].tipo === 'est') v.oc.estadoAttr = NOMBRE[k];
+        var n = NODOS[k], p = POS[k] || [n.x - 22, n.y - 11];
+        ref.ficha.style.transform = 'translate(' + p[0] + 'px,' + p[1] + 'px)';
+        ref.fichaTxt.textContent = v.oc.folio || (k === 'ini' ? 'nueva OC' : 'OC borrador');
+        v.enfocar(k);
+      };
+      v.marcarAct = function(k, i){ var a = ref.n[k].acts[i]; if (a) a.classList.add('resaltado'); };
+      v.disparar = function(id, marcar){
+        var t = T[id];
+        v.oc.trans = id; v.oc.error = ''; v.oc.nota = '';
+        v.mover(t.d);
+        if (marcar) {
+          var a = ref.a[id];
+          a.g.classList.add('resaltado');
+          for (var i = 0; i < a.t.length; i++) a.t[i].classList.add('resaltado');
+          if (NODOS[t.d].tipo === 'est' && NODOS[t.d].act.length && NODOS[t.d].act[0].indexOf('entry') === 0) v.marcarAct(t.d, 0);
+          if (id === 't7') {
+            ref.fichaIn.classList.remove('vuelta');
+            ref.fichaIn.getBoundingClientRect();
+            ref.fichaIn.classList.add('vuelta');
+          }
+        }
+      };
+      v.fallo = function(msg){
+        v.enfocar(v.actual);
+        var nd = ref.n[v.actual];
+        if (NODOS[v.actual].tipo === 'est') { nd.r.classList.remove('resaltado'); nd.r.classList.add('err'); }
+        v.oc.trans = null; v.oc.nota = ''; v.oc.error = msg;
+      };
+      v.reset = function(){ v.oc = nuevaOC(); v.mover('ini'); };
+      /* acciones sobre el objeto */
+      v.crear = function(m){ v.disparar('t1', m); if (m) v.oc.nota = 'Se ejecutó crearOrden() y, al entrar, guardarBorrador().'; };
+      v.agregar = function(m){
+        v.oc.conLineas = true; v.oc.trans = null; v.oc.error = '';
+        v.enfocar('pend'); if (m) v.marcarAct('pend', 1);
+        v.oc.nota = 'Actividad <code>do / agregarProducto(producto, cantidad)</code> dentro de Pendiente: no es transición, la ficha no se mueve.';
+      };
+      v.emitir = function(m){
+        v.oc.folio = 'OC-2026-0147';
+        v.disparar('t2', m);
+        v.oc.nota = '[total &gt; 0] es verdadera. emitirOrden() asigna el folio consecutivo; al entrar, generarDocumento().';
+      };
+      v.recibir = function(r, c, m){
+        var L = v.oc.lineas, k = v.actual;
+        L[0].rec += r; L[1].rec += c;
+        var s0 = L[0].sol - L[0].rec, s1 = L[1].sol - L[1].rec, hay = s0 > 0 || s1 > 0;
+        var id = k === 'emit' ? (hay ? 't5' : 't6') : (hay ? 't7' : 't8');
+        v.disparar(id, m);
+        v.oc.nota = 'Recepción: ' + r + ' × RAC-0408' + (c ? ' y ' + c + ' × CIL-32100' : '') +
+          '. calcularSaldoPendiente(): RAC-0408 = ' + s0 + ', CIL-32100 = ' + s1 + ' → ' +
+          (hay ? 'algún saldo &gt; 0' : 'todos los saldos = 0') + ' → se cumple ' + T[id].g.replace('>', '&gt;') + ' y se dispara ' + T[id].n + '.';
+        return id;
+      };
+      v.pintar = function(){
+        var oc = v.oc, k = v.actual, h = '<div class="o-tit"><b>oc::OrdenDeCompra</b> <span class="chip">' + NOMBRE[k] + '</span></div>';
+        if (k === 'ini') {
+          h += '<p class="o-vacio">El objeto todavía no existe: estamos en el inicio (círculo relleno).</p>';
+        } else {
+          var fin = (k === 'fin' || k === 'fin2');
+          h += '<table class="t"><tr><th>Atributo</th><th>Valor</th></tr>' +
+            '<tr><td>folio</td><td>' + (oc.folio ? '<b>' + oc.folio + '</b>' : '<i>(borrador, sin folio definitivo)</i>') + '</td></tr>' +
+            '<tr><td>proveedor</td><td>Proveedor nacional de neumática</td></tr>' +
+            '<tr><td>total</td><td>' + (oc.conLineas ? '&gt; 0 (100 RAC-0408 + 10 CIL-32100)' : '0.0') + '</td></tr>' +
+            '<tr><td>estado</td><td><span class="chip acento">' + oc.estadoAttr + '</span>' + (fin ? ' (fin del ciclo de vida)' : '') + '</td></tr></table>';
+          if (oc.conLineas) {
+            h += '<table class="t"><tr><th>DetalleOrden</th><th>Pedida</th><th>Recibida</th><th>Saldo</th></tr>';
+            for (var i = 0; i < oc.lineas.length; i++) {
+              var l = oc.lineas[i], s = l.sol - l.rec, pct = Math.min(100, Math.round(l.rec / l.sol * 100));
+              h += '<tr><td><code>' + l.cod + '</code></td><td>' + l.sol + '</td><td>' + l.rec +
+                '<div class="o-barra"><i style="width:' + pct + '%"></i></div></td><td>' +
+                (s === 0 ? '<span class="chip ok">0</span>' : s) + '</td></tr>';
+            }
+            h += '</table>';
+          }
+        }
+        if (oc.trans) {
+          var t = T[oc.trans];
+          h += '<div class="o-trans"><div class="o-tn">' + t.n + ' · ' + NOMBRE[t.o] + ' → ' + NOMBRE[t.d] + '</div>' +
+            '<div class="o-et">' + etiquetaHTML(t) + '</div>' +
+            '<div>Lo dispara: ' + (t.sinCU ? '<span class="chip error">sin CU propio</span> ' + t.cu : '<span class="chip">' + t.cu + '</span>') + '</div>' +
+            (t.obs ? '<div class="o-obs">' + t.obs + '</div>' : '') + '</div>';
+        }
+        if (oc.error) h += '<div class="o-err">✗ ' + oc.error + '</div>';
+        if (oc.nota) h += '<div class="o-nota">' + oc.nota + '</div>';
+        panel.innerHTML = h;
+      };
+      v.reset();
+      v.pintar();
+      return v;
+    }
+
+    /* ---------------- Animación con escenarios ---------------- */
+    var va = crearVista(raiz.querySelector('.est-lienzo-a'), raiz.querySelector('.est-panel-a'));
+
+    function hastaEmitida(m){ va.crear(false); va.agregar(false); va.emitir(m); }
+    function pasoCerrar(){
+      return {titulo:'T9 · se cerró la orden / cerrarOrden()',
+        texto:'Karla da por terminada la orden: <b>Cerrada</b>. Ya no admite recepciones; solo se consulta. <span class="chip error">sin CU propio</span> Ningún CU de CU1–CU8 describe el cierre; solo se relaciona con RF12.',
+        aplicar:function(i, u){ va.disparar('t9', u); }};
+    }
+    function pasoFin(id){
+      return {titulo:T[id].n + ' · fin del ciclo de vida',
+        texto:'Transición sin evento hacia el estado final (círculos concéntricos). El objeto ya no cambia más.',
+        aplicar:function(i, u){ va.disparar(id, u); }};
+    }
+    var pasoHastaEmitida = {titulo:'T1 y T2 · hasta Emitida',
+      texto:'Igual que en el ciclo normal: Karla crea la orden (T1), agrega 100 × RAC-0408 y 10 × CIL-32100 y confirma la emisión (T2). La OC-2026-0147 queda <b>Emitida</b> esperando mercancía.',
+      aplicar:function(i, u){ hastaEmitida(u); }};
+    var pasoPrimera = {titulo:'T5 · 1.ª entrega: 60 racores y 10 cilindros',
+      texto:'Karla recibe con factura F-A-88213 (CU6). Saldo de RAC-0408 = 40 &gt; 0: se dispara <b>T5</b> hacia <b>Parcialmente recibida</b> (CU6 alterno 4a: la orden sigue abierta).',
+      aplicar:function(i, u){ va.recibir(60, 10, u); }};
+
+    var ESC = {
+      normal:{desc:'El recorrido completo de la OC-2026-0147 tal como lo cuenta el escenario canónico: dos entregas y cierre.',
+        pasos:[
+          {titulo:'T1 · se creó la orden / crearOrden()',
+            texto:'Karla (Encargada de Compras) elige «Generar orden de compra» (CU5, pasos 1–2). Nace el objeto <code>oc::OrdenDeCompra</code> y entra a <b>Pendiente</b>; su <code>entry / guardarBorrador()</code> lo guarda como borrador, sin folio definitivo (CU5, alterno 7a).',
+            aplicar:function(i, u){ va.crear(u); }},
+          {titulo:'do / agregarProducto(producto, cantidad)',
+            texto:'Dentro de Pendiente, Karla elige al proveedor nacional de neumática (paso 3) y agrega <b>100 × RAC-0408</b> y <b>10 × CIL-32100</b> (paso 4); el sistema calcula el total (paso 5). Es la actividad <i>do</i> del estado, no una transición: la ficha no se mueve.',
+            aplicar:function(i, u){ va.agregar(u); }},
+          {titulo:'T2 · se confirmó la emisión [total > 0] / emitirOrden()',
+            texto:'Karla confirma la emisión (CU5, paso 7). La guarda <b>[total &gt; 0]</b> es verdadera, se dispara T2 y <code>emitirOrden()</code> asigna el folio consecutivo <b>OC-2026-0147</b> (paso 8). Al entrar a <b>Emitida</b> corre <code>entry / generarDocumento()</code>: el documento que se envía al proveedor.',
+            aplicar:function(i, u){ va.emitir(u); }},
+          {titulo:'T5 · se recibió mercancía [calcularSaldoPendiente() > 0]',
+            texto:'Llega la 1.ª entrega con factura <b>F-A-88213</b>. Karla busca la OC-2026-0147 (CU6, paso 2), captura <b>60 racores y 10 cilindros</b> con su ubicación (paso 4), registra la factura y confirma (pasos 5–6); el sistema valida y genera la entrada (pasos 7–8). <code>compararCantidades(cantidades)</code>: a RAC-0408 le faltan 40, así que la guarda <b>&gt; 0</b> es verdadera y la orden pasa a <b>Parcialmente recibida</b> (paso 9 y alterno 4a).',
+            aplicar:function(i, u){ va.recibir(60, 10, u); }},
+          {titulo:'T8 · se recibió mercancía [calcularSaldoPendiente() = 0]',
+            texto:'2.ª entrega: <b>40 racores</b>. Ahora RAC-0408 = 0 y CIL-32100 = 0: la guarda <b>= 0</b> es verdadera y se dispara <b>T8</b> a <b>Recibida</b> (CU6, paso 9). Al entrar se ejecuta <code>entry / actualizarEstado(diferencias)</code>.',
+            aplicar:function(i, u){ va.recibir(40, 0, u); }},
+          pasoCerrar(),
+          pasoFin('t10')
+        ]},
+      auto:{desc:'Supongamos que, entre la 1.ª y la última entrega, llegan solo 20 racores. La orden sigue con saldo: autotransición T7.',
+        pasos:[
+          pasoHastaEmitida,
+          pasoPrimera,
+          {titulo:'T7 · autotransición: llegan 20 racores (entrega intermedia)',
+            texto:'Recibidos 80 de 100: saldo de RAC-0408 = 20, todavía <b>&gt; 0</b>. Se dispara <b>T7</b>: la orden <i>sale y vuelve a entrar</i> a Parcialmente recibida, así que <code>entry / actualizarEstado(diferencias)</code> se ejecuta otra vez y refleja el nuevo saldo (poscondición de CU6; CU6 alterno 4a).',
+            aplicar:function(i, u){ va.recibir(20, 0, u); }},
+          {titulo:'T8 · llegan los 20 racores restantes',
+            texto:'Recibidos 100 de 100 y 10 de 10: todos los saldos = 0, se dispara <b>T8</b> a <b>Recibida</b>.',
+            aplicar:function(i, u){ va.recibir(20, 0, u); }},
+          pasoCerrar(),
+          pasoFin('t10')
+        ]},
+      unasola:{desc:'Variante: el proveedor manda todo en una sola entrega. La orden salta de Emitida a Recibida por la flecha larga de la izquierda (T6).',
+        pasos:[
+          pasoHastaEmitida,
+          {titulo:'T6 · se recibió mercancía [calcularSaldoPendiente() = 0]',
+            texto:'Llegan <b>100 racores y 10 cilindros</b> juntos. Todos los saldos quedan en 0: la guarda de T5 (&gt; 0) es falsa y la de <b>T6</b> (= 0) es verdadera. La orden pasa directo a <b>Recibida</b> sin pasar por Parcialmente recibida (CU6, paso 9).',
+            aplicar:function(i, u){ va.recibir(100, 10, u); }},
+          pasoCerrar(),
+          pasoFin('t10')
+        ]},
+      canPend:{desc:'Contraejemplo: la orden se anula cuando todavía es un borrador.',
+        pasos:[
+          {titulo:'T1 · se creó la orden / crearOrden()',
+            texto:'Karla crea la orden (CU5): queda <b>Pendiente</b>, como borrador.',
+            aplicar:function(i, u){ va.crear(u); }},
+          {titulo:'do / agregarProducto(producto, cantidad)',
+            texto:'Agrega 100 × RAC-0408 y 10 × CIL-32100. Sigue siendo borrador: no tiene folio definitivo.',
+            aplicar:function(i, u){ va.agregar(u); }},
+          {titulo:'T3 · se canceló la orden / cancelarOrden()',
+            texto:'Karla decide anular el borrador antes de emitirlo. Se dispara <b>T3</b> hacia <b>Cancelada</b>. La Tabla 2 la relaciona con CU5 y RF12, pero la nota del entregable aclara que las cancelaciones no tienen un CU propio.',
+            aplicar:function(i, u){ va.disparar('t3', u); }},
+          pasoFin('t11')
+        ]},
+      canEmit:{desc:'Contraejemplo: la orden ya se envió al proveedor, pero se anula antes de recibir mercancía.',
+        pasos:[
+          pasoHastaEmitida,
+          {titulo:'T4 · se canceló la orden / cancelarOrden()',
+            texto:'Antes de que llegue mercancía, la OC-2026-0147 se anula: <b>T4</b> a <b>Cancelada</b>. <span class="chip error">sin CU propio</span> Ningún CU de CU1–CU8 describe este paso; se incluyó porque <code>cancelarOrden()</code> y el valor Cancelada ya existen en la clase (solo RF12).',
+            aplicar:function(i, u){ va.disparar('t4', u); }},
+          pasoFin('t11')
+        ]},
+      invalido:{desc:'Qué pasa cuando llega un evento que no tiene flecha desde el estado actual: nada. El objeto se queda donde está.',
+        pasos:[
+          {titulo:'Partimos de una OC Cancelada',
+            texto:'Supongamos que la OC-2026-0147 se canceló estando Emitida (T1 → T2 → T4).',
+            aplicar:function(i, u){ hastaEmitida(false); va.disparar('t4', u); }},
+          {titulo:'✗ «se recibió mercancía» estando Cancelada',
+            texto:'De <b>Cancelada</b> solo sale la flecha al fin (T11). No hay transición con el evento «se recibió mercancía»: la ficha no se mueve y no se registra nada. (Interpretación: en CU6 la orden no aparecería como pendiente de recibir; sería el alterno 2a, «no se localiza la orden».)',
+            aplicar:function(){ va.fallo('No hay transición «se recibió mercancía» desde Cancelada. Salen: ' + salientes('can') + '.'); }},
+          {titulo:'Ahora una OC Pendiente (borrador)',
+            texto:'Otra situación: la orden se creó y tiene productos, pero todavía no se emite.',
+            aplicar:function(i, u){ va.reset(); va.crear(false); va.agregar(u); }},
+          {titulo:'✗ «se recibió mercancía» estando Pendiente',
+            texto:'Desde <b>Pendiente</b> solo salen T2 (emitir) y T3 (cancelar). No se puede recibir mercancía de una orden que el proveedor ni siquiera ha recibido.',
+            aplicar:function(){ va.fallo('No hay transición «se recibió mercancía» desde Pendiente. Salen: ' + salientes('pend') + '.'); }},
+          {titulo:'Una OC Recibida',
+            texto:'La orden llegó completa en una sola entrega (T6).',
+            aplicar:function(i, u){ va.reset(); hastaEmitida(false); va.recibir(100, 10, u); }},
+          {titulo:'✗ «se canceló la orden» estando Recibida',
+            texto:'Las cancelaciones solo salen de Pendiente (T3) y de Emitida (T4): una orden se anula <i>antes</i> de recibir mercancía. Desde <b>Recibida</b> solo sale T9 (cerrar).',
+            aplicar:function(){ va.fallo('No hay transición «se canceló la orden» desde Recibida. Salen: ' + salientes('rec') + '.'); }}
+        ]}
+    };
+
+    var tabs = raiz.querySelector('.est-tabs'), desc = raiz.querySelector('.est-desc'), contR = raiz.querySelector('.est-repro'), rep = null;
+    function elegir(k){
+      var bs = tabs.querySelectorAll('button');
+      for (var i = 0; i < bs.length; i++) {
+        var si = bs[i].getAttribute('data-esc') === k;
+        bs[i].setAttribute('aria-selected', si ? 'true' : 'false');
+        bs[i].classList.toggle('activo', si);
+      }
+      desc.textContent = ESC[k].desc;
+      if (rep) rep.destruir();
+      rep = SIA.reproductor(contR, ESC[k].pasos, {
+        reiniciar: va.reset,
+        alCambiar: function(){ va.pintar(); },
+        tituloInicial: 'La ficha está en el inicio: la orden aún no existe',
+        textoInicial: 'Pulsa ▶ Reproducir o avanza paso a paso con ▶|.'
+      });
+    }
+    tabs.addEventListener('click', function(ev){
+      var b = ev.target.closest('button'); if (!b) return;
+      elegir(b.getAttribute('data-esc'));
+    });
+    elegir('normal');
+
+    /* ---------------- Simulador ---------------- */
+    var vb = crearVista(raiz.querySelector('.est-lienzo-b'), raiz.querySelector('.est-panel-b'));
+    var log = raiz.querySelector('.est-log'), sal = raiz.querySelector('.est-sal');
+    var NOMEV = {crear:'se creó la orden', agregar:'do / agregarProducto', emitir:'se confirmó la emisión', cancelar:'se canceló la orden',
+      r60:'se recibió mercancía (60 RAC + 10 CIL)', r20:'se recibió mercancía (20 RAC)', r40:'se recibió mercancía (40 RAC)',
+      rtodo:'se recibió mercancía (todo lo pendiente)', cerrar:'se cerró la orden', terminar:'(fin del ciclo de vida)'};
+
+    function anotar(texto, bien){
+      var li = document.createElement('li');
+      li.className = bien ? 'bien' : 'mal';
+      li.innerHTML = texto;
+      log.appendChild(li);
+      log.scrollTop = log.scrollHeight;
+    }
+    function actualizarSal(){
+      sal.innerHTML = 'Estado actual: <b>' + NOMBRE[vb.actual] + '</b>. Transiciones que salen de aquí: ' + salientes(vb.actual) + '.';
+    }
+    function rechazar(ev, extra){
+      var msg = 'Desde ' + NOMBRE[vb.actual] + ' no sale ninguna transición «' + NOMEV[ev] + '». ' + (extra || '') + ' La ficha no se mueve.';
+      vb.fallo(msg);
+      anotar('✗ ' + NOMEV[ev] + ' — rechazado en ' + NOMBRE[vb.actual], false);
+    }
+    function aceptar(ev, id){
+      anotar('✓ ' + NOMEV[ev] + (id ? ' → ' + T[id].n + ' a ' + NOMBRE[T[id].d] : ' (actividad do)'), true);
+    }
+    function evento(ev){
+      var k = vb.actual;
+      if (ev === 'reiniciar') { vb.reset(); log.innerHTML = ''; return; }
+      if (ev === 'crear') { if (k === 'ini') { vb.crear(true); aceptar(ev, 't1'); } else rechazar(ev, 'El objeto ya existe: T1 solo sale del inicio.'); return; }
+      if (ev === 'agregar') {
+        if (k === 'pend') { vb.agregar(true); aceptar(ev, null); }
+        else rechazar(ev, 'agregarProducto es la actividad do de Pendiente: solo se hace mientras la orden es borrador.');
+        return;
+      }
+      if (ev === 'emitir') {
+        if (k !== 'pend') { rechazar(ev); return; }
+        if (!vb.oc.conLineas) {
+          vb.fallo('T2 sí sale de Pendiente, pero su guarda [total &gt; 0] es falsa: la orden no tiene productos (total = 0.0). Agrega productos primero.');
+          anotar('✗ se confirmó la emisión — guarda [total > 0] falsa', false);
+          return;
+        }
+        vb.emitir(true); aceptar(ev, 't2'); return;
+      }
+      if (ev === 'cancelar') {
+        if (k === 'pend') { vb.disparar('t3', true); aceptar(ev, 't3'); }
+        else if (k === 'emit') { vb.disparar('t4', true); aceptar(ev, 't4'); }
+        else rechazar(ev, 'Solo se cancela desde Pendiente (T3) o Emitida (T4), antes de recibir mercancía.');
+        return;
+      }
+      if (ev === 'r60' || ev === 'r20' || ev === 'r40' || ev === 'rtodo') {
+        if (k !== 'emit' && k !== 'parc') { rechazar(ev, 'Solo se recibe mercancía en Emitida o Parcialmente recibida.'); return; }
+        var L = vb.oc.lineas, r, c;
+        if (ev === 'r60') { r = 60; c = 10; }
+        else if (ev === 'r20') { r = 20; c = 0; }
+        else if (ev === 'r40') { r = 40; c = 0; }
+        else { r = L[0].sol - L[0].rec; c = L[1].sol - L[1].rec; }
+        if (L[0].rec + r > L[0].sol || L[1].rec + c > L[1].sol) {
+          vb.fallo('Lo recibido excedería lo solicitado (CU6, paso 7 y alterno 7a: alerta y solicitud de autorización). El simulador no registra la recepción.');
+          anotar('✗ ' + NOMEV[ev] + ' — excede lo solicitado (CU6 7a)', false);
+          return;
+        }
+        var id = vb.recibir(r, c, true); aceptar(ev, id); return;
+      }
+      if (ev === 'cerrar') { if (k === 'rec') { vb.disparar('t9', true); aceptar(ev, 't9'); } else rechazar(ev, 'Solo se cierra una orden Recibida (T9).'); return; }
+      if (ev === 'terminar') {
+        if (k === 'cer') { vb.disparar('t10', true); aceptar(ev, 't10'); }
+        else if (k === 'can') { vb.disparar('t11', true); aceptar(ev, 't11'); }
+        else rechazar(ev, 'El fin solo se alcanza desde Cerrada (T10) o Cancelada (T11).');
+      }
+    }
+    raiz.querySelector('.est-ev').addEventListener('click', function(e){
+      var b = e.target.closest('button'); if (!b) return;
+      evento(b.getAttribute('data-ev'));
+      vb.pintar();
+      actualizarSal();
+    });
+    actualizarSal();
+  });
+})();
+</script>
