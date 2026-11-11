@@ -35,7 +35,7 @@ SIA-NP = Sistema de Inventario y Almacén para el cliente real Neumática del Pa
 - DetalleOrden no tiene tarjeta CRC: es la propiedad "Detalle de productos" de la tarjeta Orden de compra (hay una nota en el diagrama).
 
 ## Estado de los entregables (al 9 nov 2026)
-Los 6 tienen .docx y .pdf. Cada .docx sale de su generador `scripts/docx/0N_*.js` (Node + `docx`, con la portada y los estilos comunes de `scripts/docx/comun.js`); el .pdf se obtiene con `python scripts/docx/a_pdf.py archivo.docx`. **Para corregir texto se edita el generador y se regenera; ya no se parchea el PDF.** Portada unificada (salvo CRC): Materia:, Trabajo:, Profesora:, Grupo:, Integrantes: y fecha 9 nov 2026.
+Los 7 tienen .docx y .pdf. Cada .docx sale de su generador `scripts/docx/0N_*.js` (Node + `docx`, con la portada y los estilos comunes de `scripts/docx/comun.js`); el .pdf se obtiene con `python scripts/docx/a_pdf.py archivo.docx`. **Para corregir texto se edita el generador y se regenera; ya no se parchea el PDF.** Portada unificada (salvo CRC): Materia:, Trabajo:, Profesora:, Grupo:, Integrantes: y fecha 9 nov 2026.
 
 | # | Entregable | Estado |
 |---|---|---|
@@ -45,6 +45,7 @@ Los 6 tienen .docx y .pdf. Cada .docx sale de su generador `scripts/docx/0N_*.js
 | 4 | Diagramas de secuencia CU1 y CU6 | SD1 = CU6, SD2 = CU1. El 9 nov 2026: el mensaje 6 de las figuras ya lleva los parámetros de la tabla, los alternos citados siguen la numeración nueva de los CU y la tabla de la sección 1 está corregida. Las figuras son PNG de 300 dpi en `figuras/`, recortados del PDF vectorial anterior: para cambiar una figura hay que editar ese PDF (`git show f6827ff:...`) o redibujarla. |
 | 5 | Diagrama de clases | .drawio (5 páginas) generado con `scripts/`. El PDF de 13 págs. junta las págs. de Word (portada, intro y tablas) con las figuras vectoriales (págs. 3–7) del PDF de scripts. Se agregaron DashboardEjecutivo a "Tipos de clases" y una tabla de los 5 métodos que no salen de una responsabilidad CRC. `verificar_clases.py` da TODO OK. |
 | 6 | Diagrama de estados (OrdenDeCompra) | Hecho el 9 nov 2026: Pendiente → Emitida → Parcialmente recibida (con autotransición) → Recibida → Cerrada; Cancelada desde Pendiente o Emitida. Fuente: `scripts/estados/diagrama_estados.py` (genera .drawio, `_figura.pdf` y .png). **Entregado el 9 nov 2026 tal cual (la imagen PNG generada por script). La consigna pedía dibujarlo en StarUML; se envió así. NO modificar.** |
+| 7 | Diccionario de datos | Hecho el 11 nov 2026: 80 datos de 13 entidades (tabla Núm. consecutivo, Nombre, Descripción, Tipo, Tamaño, Entidad), tomados de los atributos de `scripts/modelo_clases.py` y los tipos de la ERS 4.1. Fuente: `scripts/docx/07_diccionario.js`. Sección 7 del explicador. |
 
 Las CRC ya están entregadas: si algo no cuadra, se corrige en el diagrama, no en las tarjetas.
 

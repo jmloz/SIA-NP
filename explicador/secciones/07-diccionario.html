@@ -1,0 +1,122 @@
+<style>
+#sec-dic .dic-tabs{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}
+#sec-dic .dic-tabs button{font:inherit;font-size:13px;padding:4px 9px;border:1px solid var(--tinta);background:var(--papel);border-radius:4px;cursor:pointer}
+#sec-dic .dic-tabs button.activo{background:var(--tinta);color:var(--papel)}
+#sec-dic table.dic{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--papel)}
+#sec-dic table.dic th,#sec-dic table.dic td{border:1px solid var(--tinta);padding:4px 7px;text-align:left;vertical-align:top}
+#sec-dic table.dic th{background:var(--gris)}
+#sec-dic table.dic tr.resaltado td{outline:2px solid var(--acento);outline-offset:-2px;background:#fff8f3;stroke:none;fill:none}
+#sec-dic table.dic tr.atenuado{opacity:.35}
+#sec-dic .dic-fila-ent{font-weight:bold;background:var(--gris)}
+#sec-dic .dic-val{font-family:Consolas,"Courier New",monospace;font-size:13px}
+#sec-dic dl.dic-conc dt{font-weight:bold;margin-top:8px}
+#sec-dic dl.dic-conc dd{margin:2px 0 0 18px}
+</style>
+
+<section id="sec-dic" class="sec">
+  <h1>7 · Diccionario de datos</h1>
+  <p class="lead">La lista de <b>todo lo que el sistema tiene que guardar</b>, dato por dato: cómo se llama, qué significa, de qué tipo es, cuánto mide y a qué entidad pertenece.</p>
+
+  <h2>Qué es este entregable</h2>
+  <div class="panel">
+    <p>Es una tabla con seis columnas: <b>Núm. consecutivo</b>, <b>Nombre del dato</b>, <b>Descripción del dato</b>, <b>Tipo de dato</b>, <b>Tamaño del dato</b> y <b>Entidad</b>. Tiene <b>80 datos</b> de 13 entidades. Los nombres salen de los atributos del diagrama de clases (sección 5) y los tipos y tamaños siguen la descripción lógica de datos de la ERS (sección 4.1).</p>
+    <dl class="dic-conc">
+      <dt>¿Por qué no aparecen las clases de interfaz y control?</dt>
+      <dd>Sus atributos (<code>campoCodigo</code>, <code>ordenActual</code>…) son datos temporales de pantalla; no se guardan. Solo se guardan los de las clases <i>entidad</i>.</dd>
+      <dt>¿Y Entrada, Salida, Ajuste y Devolución?</dt>
+      <dd>No tienen filas propias: son tipos de <code>Movimiento</code> y se distinguen con el dato <code>tipoMovimiento</code> (<code>E, S, A, D</code>).</dd>
+      <dt>Llave primaria y llave foránea</dt>
+      <dd>La primera identifica un registro (<code>Producto.codigo</code>); la segunda lo liga con otra entidad (<code>Movimiento.codigoProducto</code> apunta a <code>Producto.codigo</code>).</dd>
+    </dl>
+  </div>
+
+  <h2>Explora el diccionario por entidad</h2>
+  <div class="dic-tabs" id="dic-tabs"></div>
+  <div class="panel" id="dic-tabla"></div>
+
+  <h2>Sigue un dato en el ejemplo</h2>
+  <p>Ricardo surte 12 racores y después llega la orden de compra de Karla. Mira qué datos se tocan en cada paso.</p>
+  <div class="ejemplo"><b>Ejemplo real</b> Salida de 12 racores <code>RAC-0408</code> (existencia 40 → 28, punto de reorden 30) y recepción de la <code>OC-2026-0147</code> en dos entregas.
+    <div class="nota-fuente">Códigos y cifras de ejemplo; personas, familias y formato de ubicación son de la ERS.</div></div>
+  <div id="dic-repro"></div>
+  <div class="panel" id="dic-caso"></div>
+
+  <h2>Cómo leer la tabla</h2>
+  <div class="panel">
+    <ul>
+      <li><b>VARCHAR(n)</b>: texto de hasta n caracteres. <b>CHAR(n)</b>: texto de longitud fija (<code>rol</code>, <code>tipoMovimiento</code>).</li>
+      <li><b>DECIMAL(10,2)</b>: hasta 10 dígitos, 2 decimales. Las cantidades son decimales porque la manguera se vende por metro.</li>
+      <li><b>INT</b>, <b>DATE</b> y <b>DATETIME</b>: entero, fecha, y fecha con hora.</li>
+      <li>Los <code>Boolean</code> del diagrama (<code>activo</code>, <code>disponible</code>) se guardan como <code>CHAR(1)</code> con Y o N.</li>
+    </ul>
+  </div>
+
+  <h2>Para la exposición</h2>
+  <div class="panel">
+    <dl class="dic-conc">
+      <dt>¿De dónde salieron los datos?</dt>
+      <dd>De los atributos del diagrama de clases y de lo que pidieron los usuarios: ubicación e imagen (Ricardo), kardex y bitácora (Lodevar), lead time y clasificación del proveedor (Karla), valor y rotación del inventario (Paulina).</dd>
+      <dt>¿Por qué la existencia es DECIMAL y la ERS dice INT?</dt>
+      <dd>Para coincidir con <code>existencia: Decimal=0.0</code> del diagrama de clases; hay productos que se venden por metro.</dd>
+      <dt>¿Por qué las llaves no son numéricas como en la ERS?</dt>
+      <dd>Usamos los datos propios del negocio (<code>codigo</code>, <code>folio</code>, <code>rfc</code>), que son los del diagrama de clases. En el diseño de la base se puede agregar una llave numérica.</dd>
+      <dt>¿Por qué el estado de la orden no es Abierta / Parcial / Cerrada / Cancelada?</dt>
+      <dd>Se mantienen los seis estados del diagrama de estados: Pendiente, Emitida, Parcialmente recibida, Recibida, Cerrada y Cancelada.</dd>
+    </dl>
+  </div>
+</section>
+
+<script>
+(function(){
+  var DATOS = [["Usuario",[["nombreUsuario","Clave de acceso única del usuario. Llave primaria.","VARCHAR","20"],["contrasena","Contraseña del usuario, guardada como hash (nunca en texto plano).","VARCHAR","255"],["nombreCompleto","Nombre completo de la persona que usa el sistema.","VARCHAR","100"],["rol","Rol asignado: E Encargado de Almacén, A Auxiliar de Almacén, C Encargada de Compras, D Dirección General, X Administrador.","CHAR","1"],["activo","Indica si la cuenta está habilitada (Y/N).","CHAR","1"],["intentosFallidos","Intentos consecutivos fallidos de inicio de sesión; sirve para bloquear la cuenta.","INT","4 bytes"]]],["Producto",[["codigo","Código interno del producto, el que lleva el código de barras y se escanea. Llave primaria.","VARCHAR","20"],["codigoProveedor","Código del fabricante o proveedor para el mismo producto.","VARCHAR","30"],["descripcion","Descripción del producto (p. ej. «Manguera poliuretano 8 mm»).","VARCHAR","150"],["familia","Familia o categoría (mangueras, racores, válvulas, cilindros, etc.).","VARCHAR","50"],["unidadMedida","Unidad en que se mide y vende (pza, m, kg).","VARCHAR","10"],["existencia","Cantidad disponible actualmente. Es decimal porque hay productos que se venden por metro.","DECIMAL","10,2"],["puntoReorden","Existencia mínima; al llegar a ella se avisa que hay que reabastecer.","DECIMAL","10,2"],["costoUnitario","Costo de compra por unidad; sirve para valuar el inventario.","DECIMAL","12,2"],["claveUbicacion","Ubicación donde está el producto. Llave foránea a Ubicacion.","VARCHAR","10"],["imagen","Nombre del archivo con la foto del producto, para no confundir racores parecidos.","VARCHAR","100"],["activo","Indica si el producto sigue vigente o fue dado de baja (Y/N).","CHAR","1"]]],["Ubicacion",[["claveUbicacion","Clave de la ubicación física (pasillo-anaquel-nivel). Llave primaria.","VARCHAR","10"],["pasillo","Pasillo del almacén (A, B, C).","CHAR","1"],["anaquel","Anaquel dentro del pasillo (1 a 8).","VARCHAR","3"],["nivel","Nivel del anaquel (1 a 3).","INT","4 bytes"],["disponible","Indica si la ubicación puede recibir mercancía (Y/N).","CHAR","1"]]],["Proveedor",[["rfc","RFC del proveedor. Llave primaria.","VARCHAR","13"],["razonSocial","Razón social del proveedor.","VARCHAR","150"],["nombreContacto","Nombre de la persona de contacto.","VARCHAR","100"],["telefono","Teléfono del proveedor.","VARCHAR","15"],["correo","Correo electrónico para enviar las órdenes de compra.","VARCHAR","100"],["clasificacion","Local, Nacional o Importación.","VARCHAR","20"],["leadTimeDias","Tiempo de entrega del proveedor, en días; sirve para comparar proveedores.","INT","4 bytes"],["activo","Indica si el proveedor está vigente (Y/N).","CHAR","1"]]],["OrdenDeCompra",[["folio","Folio consecutivo de la orden de compra. Llave primaria.","VARCHAR","20"],["fechaEmision","Fecha en que se emitió la orden al proveedor.","DATE","3 bytes"],["rfcProveedor","Proveedor al que se le compra. Llave foránea a Proveedor.","VARCHAR","13"],["nombreUsuario","Usuario que elaboró la orden. Llave foránea a Usuario.","VARCHAR","20"],["total","Importe total de la orden.","DECIMAL","12,2"],["estado","Estado de la orden: Pendiente, Emitida, Parcialmente recibida, Recibida, Cerrada o Cancelada.","VARCHAR","25"]]],["DetalleOrden",[["folioOC","Orden a la que pertenece la línea. Llave foránea a OrdenDeCompra (parte de la llave).","VARCHAR","20"],["codigoProducto","Producto solicitado. Llave foránea a Producto (parte de la llave).","VARCHAR","20"],["cantidadSolicitada","Cantidad pedida al proveedor.","DECIMAL","10,2"],["cantidadRecibida","Cantidad que ya llegó; con ella se calcula el saldo pendiente.","DECIMAL","10,2"],["costoUnitario","Costo pactado por unidad en esta orden.","DECIMAL","12,2"]]],["Recepcion",[["folioRecepcion","Folio de la recepción de mercancía. Llave primaria.","VARCHAR","20"],["fechaRecepcion","Fecha en que llegó la mercancía.","DATE","3 bytes"],["folioOC","Orden contra la que se recibe. Llave foránea a OrdenDeCompra.","VARCHAR","20"],["numeroFactura","Número de la factura o remisión del proveedor.","VARCHAR","30"],["cantidadRecibida","Total de piezas recibidas en esta recepción.","DECIMAL","10,2"],["saldoPendiente","Lo que falta por recibir de la orden después de esta recepción.","DECIMAL","10,2"]]],["Movimiento",[["folio","Folio consecutivo del movimiento. Llave primaria.","VARCHAR","20"],["tipoMovimiento","Tipo: E Entrada, S Salida, A Ajuste, D Devolución.","CHAR","1"],["fecha","Fecha y hora en que se registró el movimiento.","DATETIME","8 bytes"],["cantidad","Cantidad que entra o sale del almacén.","DECIMAL","10,2"],["documentoReferencia","Documento que respalda el movimiento (factura, orden de compra, nota de salida).","VARCHAR","50"],["nombreUsuario","Usuario que lo registró. Llave foránea a Usuario.","VARCHAR","20"],["codigoProducto","Producto afectado. Llave foránea a Producto.","VARCHAR","20"],["claveUbicacion","Ubicación de donde sale o a donde entra el producto. Llave foránea a Ubicacion.","VARCHAR","10"]]],["Kardex",[["codigoProducto","Producto al que pertenece el registro. Llave foránea a Producto.","VARCHAR","20"],["folioMovimiento","Movimiento que originó el registro. Llave foránea a Movimiento.","VARCHAR","20"],["fecha","Fecha y hora del movimiento.","DATETIME","8 bytes"],["tipoMovimiento","Tipo del movimiento (E, S, A, D).","CHAR","1"],["cantidad","Cantidad del movimiento.","DECIMAL","10,2"],["saldo","Existencia del producto después del movimiento.","DECIMAL","10,2"]]],["InventarioFisico",[["folioConteo","Folio de la hoja de conteo. Llave primaria.","VARCHAR","20"],["tipoConteo","Tipo de conteo: C cíclico, T total.","CHAR","1"],["fecha","Fecha en que se realizó el conteo.","DATE","3 bytes"],["codigoProducto","Producto contado. Llave foránea a Producto.","VARCHAR","20"],["cantidadContada","Cantidad que se contó físicamente.","DECIMAL","10,2"],["diferencia","Cantidad contada menos existencia del sistema; sirve para el reporte de diferencias.","DECIMAL","10,2"],["estado","Situación del conteo (p. ej. En proceso, Aplicado).","VARCHAR","15"]]],["Reporte",[["tipoReporte","Nombre del reporte (valor y rotación, productos bajo reorden, diferencias, etc.).","VARCHAR","30"],["periodo","Periodo que cubre el reporte.","VARCHAR","20"],["fechaGeneracion","Fecha y hora en que se generó.","DATETIME","8 bytes"],["valorInventario","Valor total del inventario en el periodo.","DECIMAL","14,2"],["rotacion","Índice de rotación del inventario.","DECIMAL","8,2"],["formato","Formato de exportación: X Excel, C CSV (para CONTPAQi).","CHAR","1"]]],["DashboardEjecutivo",[["periodoAnalisis","Periodo que se grafica en el tablero de Dirección: S semanal, M mensual.","CHAR","1"]]],["BitacoraDeAuditoria",[["idRegistro","Número consecutivo del registro. Llave primaria.","INT","4 bytes"],["fechaHora","Fecha y hora en que ocurrió la acción.","DATETIME","8 bytes"],["nombreUsuario","Usuario que realizó la acción. Llave foránea a Usuario.","VARCHAR","20"],["accion","Acción realizada (p. ej. registrar salida, recibir mercancía, iniciar sesión).","VARCHAR","100"],["modulo","Parte del sistema donde se hizo la acción.","VARCHAR","30"]]]];
+  SIA.registrar('dic', function(raiz){
+    var tabs = raiz.querySelector('#dic-tabs'), cont = raiz.querySelector('#dic-tabla');
+    function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+    var consec = {}, n = 0;
+    DATOS.forEach(function(e){ e[1].forEach(function(d){ n++; consec[e[0] + '.' + d[0]] = n; }); });
+    function tabla(ents, resalta){
+      var h = '<table class="dic"><tr><th>Núm.</th><th>Nombre del dato</th><th>Descripción del dato</th><th>Tipo</th><th>Tamaño</th><th>Entidad</th></tr>';
+      ents.forEach(function(e){ e[1].forEach(function(d){
+        var k = e[0] + '.' + d[0];
+        var cl = resalta ? (resalta[k] ? ' class="resaltado"' : ' class="atenuado"') : '';
+        h += '<tr data-k="' + k + '"' + cl + '><td>' + consec[k] + '</td><td class="dic-val">' + esc(d[0]) + '</td><td>' + esc(d[1]) + '</td><td>' + d[2] + '</td><td>' + d[3] + '</td><td>' + e[0] + '</td></tr>';
+      }); });
+      return h + '</table>';
+    }
+    function mostrar(nombre){
+      Array.prototype.forEach.call(tabs.children, function(b){ b.classList.toggle('activo', b.textContent === nombre); });
+      cont.innerHTML = tabla(nombre === 'Todas' ? DATOS : DATOS.filter(function(e){ return e[0] === nombre; }));
+    }
+    ['Todas'].concat(DATOS.map(function(e){ return e[0]; })).forEach(function(nm){
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = nm;
+      b.onclick = function(){ mostrar(nm); }; tabs.appendChild(b);
+    });
+    mostrar('Producto');
+
+    var caso = raiz.querySelector('#dic-caso');
+    function ver(claves, ents){
+      var r = {}; claves.forEach(function(k){ r[k] = 1; });
+      caso.innerHTML = tabla(DATOS.filter(function(e){ return ents.indexOf(e[0]) >= 0; }).map(function(e){
+        return [e[0], e[1].filter(function(d){ return claves.indexOf(e[0] + '.' + d[0]) >= 0; })];
+      }), r);
+    }
+    var pasos = [
+      {titulo: 'Ricardo escanea el racor', texto: 'El código de barras del racor se lee en <code>Producto.codigo</code> (<code>RAC-0408</code>) y el sistema trae su <code>descripcion</code>, <code>existencia</code> (40) y <code>claveUbicacion</code> (<code>B-04-2</code>).',
+       aplicar: function(){ ver(['Producto.codigo','Producto.descripcion','Producto.existencia','Producto.claveUbicacion'], ['Producto']); }},
+      {titulo: 'Registra la salida de 12 piezas', texto: 'Se crea un <code>Movimiento</code> con <code>folio</code>, <code>tipoMovimiento = S</code>, <code>fecha</code>, <code>cantidad = 12</code>, <code>documentoReferencia</code> (nota de salida) y quién lo hizo: <code>nombreUsuario</code>.',
+       aplicar: function(){ ver(['Movimiento.folio','Movimiento.tipoMovimiento','Movimiento.fecha','Movimiento.cantidad','Movimiento.documentoReferencia','Movimiento.nombreUsuario','Movimiento.codigoProducto','Movimiento.claveUbicacion'], ['Movimiento']); }},
+      {titulo: 'Se actualiza la existencia y el kardex', texto: '<code>Producto.existencia</code> baja de 40 a 28 y el kardex agrega un renglón con la <code>cantidad</code> y el nuevo <code>saldo</code> (28).',
+       aplicar: function(){ ver(['Producto.existencia','Kardex.codigoProducto','Kardex.cantidad','Kardex.saldo','Kardex.fecha'], ['Producto','Kardex']); }},
+      {titulo: 'Queda bajo el punto de reorden', texto: '28 es menor que <code>Producto.puntoReorden</code> (30): el racor aparece en el reporte de productos bajo reorden y se avisa a Compras. El movimiento queda en <code>BitacoraDeAuditoria</code>.',
+       aplicar: function(){ ver(['Producto.existencia','Producto.puntoReorden','BitacoraDeAuditoria.fechaHora','BitacoraDeAuditoria.nombreUsuario','BitacoraDeAuditoria.accion'], ['Producto','BitacoraDeAuditoria']); }},
+      {titulo: 'Karla emite la OC-2026-0147', texto: 'Se guarda la orden con <code>folio</code>, <code>fechaEmision</code>, <code>rfcProveedor</code>, <code>total</code> y <code>estado = Emitida</code>; cada producto va en <code>DetalleOrden</code> con <code>cantidadSolicitada = 100</code>.',
+       aplicar: function(){ ver(['OrdenDeCompra.folio','OrdenDeCompra.fechaEmision','OrdenDeCompra.rfcProveedor','OrdenDeCompra.total','OrdenDeCompra.estado','DetalleOrden.codigoProducto','DetalleOrden.cantidadSolicitada','DetalleOrden.costoUnitario'], ['OrdenDeCompra','DetalleOrden']); }},
+      {titulo: 'Llega la primera entrega: 60 racores', texto: 'Se crea la <code>Recepcion</code> con <code>folioRecepcion</code>, <code>numeroFactura</code> y <code>cantidadRecibida = 60</code>; <code>saldoPendiente = 40</code>. <code>DetalleOrden.cantidadRecibida</code> pasa a 60 y <code>OrdenDeCompra.estado</code> a <i>Parcialmente recibida</i>. Se genera una Entrada.',
+       aplicar: function(){ ver(['Recepcion.folioRecepcion','Recepcion.numeroFactura','Recepcion.cantidadRecibida','Recepcion.saldoPendiente','DetalleOrden.cantidadRecibida','OrdenDeCompra.estado'], ['Recepcion','DetalleOrden','OrdenDeCompra']); }},
+      {titulo: 'Llega el resto: 40 racores', texto: '<code>saldoPendiente</code> llega a 0 y <code>OrdenDeCompra.estado</code> pasa a <i>Recibida</i>. La existencia del racor sube a 128.',
+       aplicar: function(){ ver(['Recepcion.cantidadRecibida','Recepcion.saldoPendiente','OrdenDeCompra.estado','Producto.existencia'], ['Recepcion','OrdenDeCompra','Producto']); }}
+    ];
+    SIA.reproductor(raiz.querySelector('#dic-repro'), pasos, {reiniciar: function(){ caso.innerHTML = ''; }});
+  });
+})();
+</script>
