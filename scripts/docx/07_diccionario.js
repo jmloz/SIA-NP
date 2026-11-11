@@ -1,6 +1,6 @@
 // Entregable 07: Diccionario de datos del SIA-NP.
 // Uso (desde scripts/docx): node 07_diccionario.js   y luego   python a_pdf.py <docx>
-// Los datos salen de la base de datos SQL Server del Taller de Base de Datos (carpeta bd/).
+// Los datos salen de la base de datos SQL Server del Taller de Base de Datos (carpeta base-de-datos/).
 const path = require("path");
 const {
   RAIZ, p, titulo, vineta, tabla, portada, documento, guardar, run, docx,
@@ -11,10 +11,10 @@ const DOCX = path.join(DIR, "Diccionario_de_Datos_SIA-NP.docx");
 const FECHA = "11 de noviembre de 2026";
 const J = { justificado: true };
 
-// Fuente: proyecto de Taller de Base de Datos (SQL Server): bd/metadatos_columnas.json (extraído de
-// sys.columns) y bd/descripciones.js (descripciones de cada campo).
-const meta = require("./bd/metadatos_columnas.json");
-const { catalogos, columnas, reglas } = require("./bd/descripciones.js");
+// Fuente: proyecto de Taller de Base de Datos (SQL Server): base-de-datos/scripts/metadatos_columnas.json (extraído de
+// sys.columns) y base-de-datos/scripts/descripciones.js (descripciones de cada campo).
+const meta = require("../../base-de-datos/scripts/metadatos_columnas.json");
+const { catalogos, columnas, reglas } = require("../../base-de-datos/scripts/descripciones.js");
 
 // "VARCHAR(15)" -> ["VARCHAR", "15"]; los que no llevan tamaño declarado muestran su espacio en disco.
 const BYTES = { INT: "4 bytes", BIGINT: "8 bytes", SMALLINT: "2 bytes", TINYINT: "1 byte", DATE: "3 bytes", BIT: "1 bit" };
