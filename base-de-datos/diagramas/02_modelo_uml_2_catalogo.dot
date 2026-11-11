@@ -1,0 +1,25 @@
+graph uml {
+  graph [fontname="Liberation Sans", fontsize=13, bgcolor="white", color="black", fontcolor="black", pad=0.2];
+  node  [fontname="Liberation Sans", fontsize=11, color="black", fontcolor="black"];
+  edge  [fontname="Liberation Sans", fontsize=10, color="black", fontcolor="black"];
+
+  graph [rankdir=TB, splines=polyline, nodesep=0.3, ranksep=0.5];
+  Proveedor [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR><TD BGCOLOR="#E6E6E6"><B>Proveedor</B></TD></TR><TR><TD><TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="1"><TR><TD ALIGN="LEFT">-idProveedor: Integer</TD></TR><TR><TD ALIGN="LEFT">-rfc: String</TD></TR><TR><TD ALIGN="LEFT">-razonSocial: String</TD></TR><TR><TD ALIGN="LEFT">-clasificacion: String{LOCAL,NACIONAL,IMPORTACION}="LOCAL"</TD></TR><TR><TD ALIGN="LEFT">-nombreContacto: String</TD></TR><TR><TD ALIGN="LEFT">-telefono: String</TD></TR><TR><TD ALIGN="LEFT">-correo: String</TD></TR><TR><TD ALIGN="LEFT">-leadTimeDias: Integer=7</TD></TR><TR><TD ALIGN="LEFT">-activo: Boolean=1</TD></TR></TABLE></TD></TR><TR><TD HEIGHT="12"> </TD></TR></TABLE>>];
+  ProductoProveedor [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR><TD BGCOLOR="#E6E6E6"><B>ProductoProveedor</B></TD></TR><TR><TD><TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="1"><TR><TD ALIGN="LEFT">-codigoProveedor: String</TD></TR><TR><TD ALIGN="LEFT">-precioCompra: Decimal</TD></TR><TR><TD ALIGN="LEFT">-moneda: String{MXN,USD}="MXN"</TD></TR><TR><TD ALIGN="LEFT">-fechaActualizacion: Fecha</TD></TR></TABLE></TD></TR><TR><TD HEIGHT="12"> </TD></TR></TABLE>>];
+  OrdenDeCompra [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR><TD BGCOLOR="#E6E6E6"><B>OrdenDeCompra</B></TD></TR><TR><TD><TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="1"><TR><TD ALIGN="LEFT">-idOc: Integer</TD></TR><TR><TD ALIGN="LEFT">-folio: String</TD></TR><TR><TD ALIGN="LEFT">-fechaEmision: Fecha</TD></TR><TR><TD ALIGN="LEFT">-fechaEntregaEstimada: Fecha</TD></TR><TR><TD ALIGN="LEFT">-estado: String{PENDIENTE,EMITIDA,RECIBIDA_PARCIAL,RECIBIDA_TOTAL,CERRADA,CANCELADA}="PENDIENTE"</TD></TR><TR><TD ALIGN="LEFT">-subtotal: Decimal=0</TD></TR><TR><TD ALIGN="LEFT">-/iva: Decimal</TD></TR><TR><TD ALIGN="LEFT">-/total: Decimal</TD></TR><TR><TD ALIGN="LEFT">-observaciones: String</TD></TR></TABLE></TD></TR><TR><TD HEIGHT="12"> </TD></TR></TABLE>>];
+  DetalleOrden [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR><TD BGCOLOR="#E6E6E6"><B>DetalleOrden</B></TD></TR><TR><TD><TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="1"><TR><TD ALIGN="LEFT">-cantidadSolicitada: Decimal</TD></TR><TR><TD ALIGN="LEFT">-cantidadRecibida: Decimal=0.0</TD></TR><TR><TD ALIGN="LEFT">-costoUnitario: Decimal</TD></TR><TR><TD ALIGN="LEFT">-/importe: Decimal</TD></TR></TABLE></TD></TR><TR><TD HEIGHT="12"> </TD></TR></TABLE>>];
+  Usuario [shape=plaintext, label=<<TABLE BORDER="1" STYLE="dashed" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#E6E6E6"><B>Usuario</B></TD></TR></TABLE>>];
+  Recepcion [shape=plaintext, label=<<TABLE BORDER="1" STYLE="dashed" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#E6E6E6"><B>Recepcion</B></TD></TR></TABLE>>];
+  Producto [shape=plaintext, label=<<TABLE BORDER="1" STYLE="dashed" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#E6E6E6"><B>Producto</B></TD></TR></TABLE>>];
+  Usuario -- OrdenDeCompra [label=" elabora ", taillabel="1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+  Proveedor -- OrdenDeCompra [label=" recibe ", taillabel="1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+  OrdenDeCompra -- Recepcion [label=" se surte con ", taillabel="1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+  p0 [shape=point, width=0.01, label=""];
+  Proveedor -- p0 [taillabel="1..*", labeldistance=1.8, labelangle=30, label=" surte "];
+  p0 -- Producto [headlabel="1..*", labeldistance=1.8, labelangle=30];
+  ProductoProveedor -- p0 [style=dashed];
+  p1 [shape=point, width=0.01, label=""];
+  OrdenDeCompra -- p1 [taillabel="0..*", labeldistance=1.8, labelangle=30, label=" solicita "];
+  p1 -- Producto [headlabel="1..*", labeldistance=1.8, labelangle=30];
+  DetalleOrden -- p1 [style=dashed];
+}

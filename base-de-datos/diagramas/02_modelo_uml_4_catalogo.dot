@@ -1,0 +1,39 @@
+graph uml {
+  graph [fontname="Liberation Sans", fontsize=13, bgcolor="white", color="black", fontcolor="black", pad=0.2];
+  node  [fontname="Liberation Sans", fontsize=11, color="black", fontcolor="black"];
+  edge  [fontname="Liberation Sans", fontsize=10, color="black", fontcolor="black"];
+
+  graph [rankdir=TB, splines=polyline, nodesep=0.3, ranksep=0.5];
+  Recepcion [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR><TD BGCOLOR="#E6E6E6"><B>Recepcion</B></TD></TR><TR><TD><TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="1"><TR><TD ALIGN="LEFT">-idRecepcion: Integer</TD></TR><TR><TD ALIGN="LEFT">-folio: String</TD></TR><TR><TD ALIGN="LEFT">-fechaRecepcion: Fecha</TD></TR><TR><TD ALIGN="LEFT">-numeroFactura: String</TD></TR><TR><TD ALIGN="LEFT">-tipoRecepcion: char{T,P}="T"</TD></TR><TR><TD ALIGN="LEFT">-observaciones: String</TD></TR></TABLE></TD></TR><TR><TD HEIGHT="12"> </TD></TR></TABLE>>];
+  InventarioFisico [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR><TD BGCOLOR="#E6E6E6"><B>InventarioFisico</B></TD></TR><TR><TD><TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="1"><TR><TD ALIGN="LEFT">-idConteo: Integer</TD></TR><TR><TD ALIGN="LEFT">-folio: String</TD></TR><TR><TD ALIGN="LEFT">-tipoConteo: char{C,T}</TD></TR><TR><TD ALIGN="LEFT">-fecha: Fecha</TD></TR><TR><TD ALIGN="LEFT">-estado: String{ABIERTO,CAPTURADO,AJUSTADO,CANCELADO}="ABIERTO"</TD></TR></TABLE></TD></TR><TR><TD HEIGHT="12"> </TD></TR></TABLE>>];
+  DetalleConteo [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR><TD BGCOLOR="#E6E6E6"><B>DetalleConteo</B></TD></TR><TR><TD><TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="1"><TR><TD ALIGN="LEFT">-existenciaSistema: Decimal</TD></TR><TR><TD ALIGN="LEFT">-cantidadContada: Decimal=0</TD></TR><TR><TD ALIGN="LEFT">-/diferencia: Decimal</TD></TR></TABLE></TD></TR><TR><TD HEIGHT="12"> </TD></TR></TABLE>>];
+  Movimiento [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR><TD BGCOLOR="#E6E6E6"><B><I>Movimiento</I></B></TD></TR><TR><TD><TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="1"><TR><TD ALIGN="LEFT">-idMovimiento: Integer</TD></TR><TR><TD ALIGN="LEFT">-folio: String</TD></TR><TR><TD ALIGN="LEFT">-tipo: char{E,S,A,D}</TD></TR><TR><TD ALIGN="LEFT">-fecha: Fecha</TD></TR><TR><TD ALIGN="LEFT">-cantidad: Decimal</TD></TR><TR><TD ALIGN="LEFT">-saldoResultante: Decimal</TD></TR><TR><TD ALIGN="LEFT">-documentoRef: String</TD></TR><TR><TD ALIGN="LEFT">-motivo: String</TD></TR></TABLE></TD></TR><TR><TD HEIGHT="12"> </TD></TR></TABLE>>];
+  Entrada [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR><TD BGCOLOR="#E6E6E6"><B>Entrada</B></TD></TR><TR><TD><TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="1"><TR><TD> </TD></TR></TABLE></TD></TR><TR><TD HEIGHT="12"> </TD></TR></TABLE>>];
+  Salida [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR><TD BGCOLOR="#E6E6E6"><B>Salida</B></TD></TR><TR><TD><TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="1"><TR><TD> </TD></TR></TABLE></TD></TR><TR><TD HEIGHT="12"> </TD></TR></TABLE>>];
+  Ajuste [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR><TD BGCOLOR="#E6E6E6"><B>Ajuste</B></TD></TR><TR><TD><TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="1"><TR><TD> </TD></TR></TABLE></TD></TR><TR><TD HEIGHT="12"> </TD></TR></TABLE>>];
+  Devolucion [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR><TD BGCOLOR="#E6E6E6"><B>Devolucion</B></TD></TR><TR><TD><TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="1"><TR><TD> </TD></TR></TABLE></TD></TR><TR><TD HEIGHT="12"> </TD></TR></TABLE>>];
+  Usuario [shape=plaintext, label=<<TABLE BORDER="1" STYLE="dashed" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#E6E6E6"><B>Usuario</B></TD></TR></TABLE>>];
+  Familia [shape=plaintext, label=<<TABLE BORDER="1" STYLE="dashed" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#E6E6E6"><B>Familia</B></TD></TR></TABLE>>];
+  Ubicacion [shape=plaintext, label=<<TABLE BORDER="1" STYLE="dashed" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#E6E6E6"><B>Ubicacion</B></TD></TR></TABLE>>];
+  Producto [shape=plaintext, label=<<TABLE BORDER="1" STYLE="dashed" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#E6E6E6"><B>Producto</B></TD></TR></TABLE>>];
+  OrdenDeCompra [shape=plaintext, label=<<TABLE BORDER="1" STYLE="dashed" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#E6E6E6"><B>OrdenDeCompra</B></TD></TR></TABLE>>];
+  Movimiento -- Entrada [dir=back, arrowtail=empty, arrowsize=1.5, sametail=gen];
+  Movimiento -- Salida [dir=back, arrowtail=empty, arrowsize=1.5, sametail=gen];
+  Movimiento -- Ajuste [dir=back, arrowtail=empty, arrowsize=1.5, sametail=gen];
+  Movimiento -- Devolucion [dir=back, arrowtail=empty, arrowsize=1.5, sametail=gen];
+  Usuario -- Movimiento [label=" registra ", taillabel="1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+  Usuario -- Recepcion [label=" captura ", taillabel="1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+  Usuario -- InventarioFisico [label=" realiza ", taillabel="1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+  Familia -- InventarioFisico [label=" abarca ", taillabel="0..1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+  Ubicacion -- Movimiento [label=" ocurre en ", taillabel="1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+  Producto -- Movimiento [label=" afecta ", taillabel="1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+  OrdenDeCompra -- Recepcion [label=" se surte con ", taillabel="1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+  Recepcion -- Entrada [label=" genera ", taillabel="0..1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+  InventarioFisico -- Ajuste [label=" origina ", taillabel="0..1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+  DetalleConteo -- Ubicacion [label=" se verifica en ", taillabel="0..*", headlabel="1", labeldistance=1.8, labelangle=30];
+  p2 [shape=point, width=0.01, label=""];
+  InventarioFisico -- p2 [taillabel="0..*", labeldistance=1.8, labelangle=30, label=" cuenta "];
+  p2 -- Producto [headlabel="1..*", labeldistance=1.8, labelangle=30];
+  DetalleConteo -- p2 [style=dashed];
+  { rank=same; Entrada; Salida; Ajuste; Devolucion; }
+}

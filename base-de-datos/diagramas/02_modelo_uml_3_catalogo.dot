@@ -1,0 +1,20 @@
+graph uml {
+  graph [fontname="Liberation Sans", fontsize=13, bgcolor="white", color="black", fontcolor="black", pad=0.2];
+  node  [fontname="Liberation Sans", fontsize=11, color="black", fontcolor="black"];
+  edge  [fontname="Liberation Sans", fontsize=10, color="black", fontcolor="black"];
+
+  graph [rankdir=TB, splines=polyline, nodesep=0.3, ranksep=0.5];
+  Rol [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR><TD BGCOLOR="#E6E6E6"><B>Rol</B></TD></TR><TR><TD><TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="1"><TR><TD ALIGN="LEFT">-idRol: Integer</TD></TR><TR><TD ALIGN="LEFT">-clave: char{E,A,C,D,X}</TD></TR><TR><TD ALIGN="LEFT">-nombre: String</TD></TR><TR><TD ALIGN="LEFT">-descripcion: String</TD></TR></TABLE></TD></TR><TR><TD HEIGHT="12"> </TD></TR></TABLE>>];
+  Usuario [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR><TD BGCOLOR="#E6E6E6"><B>Usuario</B></TD></TR><TR><TD><TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="1"><TR><TD ALIGN="LEFT">-idUsuario: Integer</TD></TR><TR><TD ALIGN="LEFT">-nombreUsuario: String</TD></TR><TR><TD ALIGN="LEFT">-passwordHash: String</TD></TR><TR><TD ALIGN="LEFT">-nombreCompleto: String</TD></TR><TR><TD ALIGN="LEFT">-correo: String</TD></TR><TR><TD ALIGN="LEFT">-activo: Boolean=1</TD></TR><TR><TD ALIGN="LEFT">-intentosFallidos: Integer=0</TD></TR><TR><TD ALIGN="LEFT">-fechaAlta: Fecha</TD></TR><TR><TD ALIGN="LEFT">-ultimoAcceso: Fecha</TD></TR></TABLE></TD></TR><TR><TD HEIGHT="12"> </TD></TR></TABLE>>];
+  BitacoraAuditoria [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR><TD BGCOLOR="#E6E6E6"><B>BitacoraAuditoria</B></TD></TR><TR><TD><TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="1"><TR><TD ALIGN="LEFT">-idRegistro: Integer</TD></TR><TR><TD ALIGN="LEFT">-fechaHora: Fecha</TD></TR><TR><TD ALIGN="LEFT">-accion: String{ALTA,MODIFICACION,BAJA,MOVIMIENTO,ACCESO,CIERRE_SESION}</TD></TR><TR><TD ALIGN="LEFT">-modulo: String{SEGURIDAD,CATALOGOS,ALMACEN,COMPRAS,DIRECCION}</TD></TR><TR><TD ALIGN="LEFT">-tablaAfectada: String</TD></TR><TR><TD ALIGN="LEFT">-idAfectado: String</TD></TR><TR><TD ALIGN="LEFT">-detalle: String</TD></TR></TABLE></TD></TR><TR><TD HEIGHT="12"> </TD></TR></TABLE>>];
+  Movimiento [shape=plaintext, label=<<TABLE BORDER="1" STYLE="dashed" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#E6E6E6"><B><I>Movimiento</I></B></TD></TR></TABLE>>];
+  OrdenDeCompra [shape=plaintext, label=<<TABLE BORDER="1" STYLE="dashed" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#E6E6E6"><B>OrdenDeCompra</B></TD></TR></TABLE>>];
+  Recepcion [shape=plaintext, label=<<TABLE BORDER="1" STYLE="dashed" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#E6E6E6"><B>Recepcion</B></TD></TR></TABLE>>];
+  InventarioFisico [shape=plaintext, label=<<TABLE BORDER="1" STYLE="dashed" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#E6E6E6"><B>InventarioFisico</B></TD></TR></TABLE>>];
+  Rol -- Usuario [label=" asigna ", taillabel="1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+  Usuario -- BitacoraAuditoria [label=" genera ", taillabel="1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+  Usuario -- Movimiento [label=" registra ", taillabel="1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+  Usuario -- OrdenDeCompra [label=" elabora ", taillabel="1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+  Usuario -- Recepcion [label=" captura ", taillabel="1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+  Usuario -- InventarioFisico [label=" realiza ", taillabel="1", headlabel="0..*", labeldistance=1.8, labelangle=30];
+}
