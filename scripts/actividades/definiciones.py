@@ -118,8 +118,9 @@ CU2 = dict(
         ("d4", "dec", 135, 780, ""),
         ("a8", "acc", 500, 824, "Genera el archivo en Excel o CSV"),
         ("m6", "dec", 135, 868, ""),
-        ("a9", "acc", 500, 912, "Registra la consulta en la bitácora de auditoría"),
-        ("fin", "fin", 500, 956, ""),
+        # Corrección: había un nodo "Registra la consulta en la bitácora de auditoría";
+        # la ERS solo exige bitácora para movimientos y cambios, no para consultas.
+        ("fin", "fin", 500, 912, ""),
     ],
     aristas=[
         ("ini", "a1", None), ("a1", "a2", None),
@@ -141,7 +142,7 @@ CU2 = dict(
         ("m5", "d4", None),
         ("d4", "a8", "[exporta]", dict(gizq=True)),
         ("d4", "m6", "[no exporta]", dict(s="l", t="l", xm=25)),
-        ("a8", "m6", None), ("m6", "a9", None), ("a9", "fin", None),
+        ("a8", "m6", None), ("m6", "fin", None),
     ],
 )
 
@@ -416,8 +417,8 @@ CU7 = dict(
         ("n5", "acc", 520, 768, "Despliega el desglose del indicador"),
         ("n6", "acc", 720, 768, "Muestra solo la\ninformación resumida"),
         ("m3", "dec", 520, 812, ""),
-        ("a6", "acc", 520, 856, "Registra la consulta en la bitácora de auditoría"),
-        ("fin", "fin", 520, 900, ""),
+        # Corrección: había un nodo "Registra la consulta en la bitácora de auditoría" (ver CU2).
+        ("fin", "fin", 520, 856, ""),
     ],
     aristas=[
         ("ini", "a1", None), ("a1", "a2", None), ("a2", "d1", None),
@@ -436,7 +437,7 @@ CU7 = dict(
         ("d4", "n5", "[con permiso]"),
         ("d4", "n6", "[sin permiso]", dict(s="r")),
         ("n5", "m3", None), ("n6", "m3", None, dict(t="r")),
-        ("m3", "a6", None), ("a6", "fin", None),
+        ("m3", "fin", None),
     ],
 )
 

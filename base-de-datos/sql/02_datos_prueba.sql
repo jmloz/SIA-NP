@@ -61,7 +61,7 @@ INSERT INTO PRODUCTO_PROVEEDOR (id_producto, id_proveedor, codigo_proveedor, pre
  (5, 2, 'C50-2HP',  5900.00,'MXN');
 
 INSERT INTO ORDEN_COMPRA (folio, id_proveedor, id_usuario, fecha_emision, fecha_entrega_estimada, estado, subtotal) VALUES
- ('OC-2026-0001', 1, 3, '2026-11-02', '2026-11-04', 'EMITIDA',   2512.50),
+ ('OC-2026-0001', 1, 3, '2026-11-02', '2026-11-04', 'EMITIDA',   2195.00),
  ('OC-2026-0002', 2, 3, '2026-11-03', '2026-11-10', 'PENDIENTE', 4600.00);
 
 INSERT INTO DETALLE_ORDEN (id_oc, id_producto, cantidad_solicitada, costo_unitario) VALUES

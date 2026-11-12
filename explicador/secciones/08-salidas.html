@@ -1,0 +1,188 @@
+<style>
+#sec-sal .sal-tabs{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}
+#sec-sal .sal-tabs button{font:inherit;font-size:13px;padding:4px 9px;border:1px solid var(--tinta);background:var(--papel);border-radius:4px;cursor:pointer}
+#sec-sal .sal-tabs button.activo{background:var(--tinta);color:var(--papel)}
+#sec-sal table.sal{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--papel)}
+#sec-sal table.sal th,#sec-sal table.sal td{border:1px solid var(--tinta);padding:4px 7px;text-align:left;vertical-align:top}
+#sec-sal table.sal th{background:var(--gris)}
+#sec-sal .maqueta{border:1px solid var(--tinta);border-radius:4px;padding:0;margin:8px 0;overflow:hidden;font-size:13px}
+#sec-sal .mq-cab{display:flex;justify-content:space-between;gap:8px;background:var(--gris);padding:6px 10px;font-weight:bold}
+#sec-sal .mq-cab .der{text-align:right}
+#sec-sal .mq-body{padding:8px 10px}
+#sec-sal table.mq{width:100%;border-collapse:collapse;font-size:12.5px;margin:4px 0}
+#sec-sal table.mq th,#sec-sal table.mq td{border:1px solid #999;padding:3px 6px;text-align:left}
+#sec-sal table.mq th{background:#f0f0f0}
+#sec-sal .pill{display:inline-block;padding:1px 8px;border:1px solid var(--tinta);border-radius:999px;font-size:12px;margin:1px 2px;background:var(--papel)}
+#sec-sal .pill.ext{border-color:var(--acento);color:var(--acento)}
+#sec-sal .pill.pan{border-color:var(--ok);color:var(--ok)}
+#sec-sal dl.sal-conc dt{font-weight:bold;margin-top:8px}
+#sec-sal dl.sal-conc dd{margin:2px 0 0 18px}
+#sec-sal .sal-ficha{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13.5px;margin:6px 0}
+#sec-sal .sal-ficha b{white-space:nowrap}
+#sec-sal .q-lista{list-style:none;padding:0;margin:0}
+#sec-sal .q-lista li{padding:5px 8px;border:1px solid var(--tinta);border-radius:4px;margin:4px 0;background:var(--papel);transition:background .3s,outline .3s}
+#sec-sal .q-lista li.resaltado{outline:2px solid var(--acento);outline-offset:-2px;background:#fff8f3}
+#sec-sal .q-lista li.atenuado{opacity:.35}
+#sec-sal .q-lista li .q{font-weight:bold}
+#sec-sal .q-lista li .r{display:block;color:#333;margin-top:1px}
+</style>
+
+<section id="sec-sal" class="sec">
+  <h1>8 · Diseño de salidas del sistema</h1>
+  <p class="lead">Cada cosa que el sistema <b>entrega</b> —una nota impresa, una pantalla, un archivo— y <b>cómo se decide en qué tecnología sacarla</b>, respondiendo las diez preguntas del libro.</p>
+
+  <h2>Qué es este entregable</h2>
+  <div class="panel">
+    <p>Una <b>salida</b> es la información que el sistema da a sus usuarios o a terceros. Kendall y Kendall (cap. 11, pp. 329–357) recuerdan que la salida suele ser <i>lo único</i> que muchos usuarios conocen del sistema, así que de ella depende buena parte del juicio sobre su utilidad. El entregable diseña las <b>10 salidas</b> del SIA-NP: para cada una se dan sus <b>documentos fuente</b>, una <b>maqueta</b>, su <b>tipo y tecnología</b>, y las <b>10 preguntas</b> del libro respondidas para elegir cómo sacarla.</p>
+    <dl class="sal-conc">
+      <dt>Seis objetivos del diseño de salida (pp. 329–330)</dt>
+      <dd>Servir al propósito · ajustarse al usuario · cantidad adecuada · estar donde se necesita · a tiempo · elegir el método correcto.</dd>
+      <dt>Tipos de salida</dt>
+      <dd><b>Externa</b> (sale de la empresa: nota al cliente, OC al proveedor) vs <b>interna</b> (se queda dentro); <b>estática</b> (impresa) vs <b>dinámica</b> (pantalla que el usuario cambia en vivo).</dd>
+    </dl>
+  </div>
+
+  <h2>Explora las 10 salidas</h2>
+  <div class="sal-tabs" id="sal-tabs"></div>
+  <div class="panel" id="sal-detalle"></div>
+
+  <h2>Las 10 preguntas para elegir la tecnología</h2>
+  <p>El libro (pp. 336–339) propone diez preguntas que se mantienen constantes aunque la tecnología cambie. Reprodúcelas aplicadas a la <b>nota de salida</b> (S1): cada paso resalta la pregunta y su respuesta.</p>
+  <div class="ejemplo"><b>Ejemplo real</b> Ricardo surte 12 racores <code>RAC-0408</code> y el sistema imprime la nota de salida <code>NS-2026-0318</code> para el cliente.
+    <div class="nota-fuente">Códigos y cifras de ejemplo; personas, familias, formato de ubicación y requerimientos son de la ERS.</div></div>
+  <ul class="q-lista" id="sal-qlista"></ul>
+  <div id="sal-repro"></div>
+
+  <h2>Cómo leer el entregable</h2>
+  <div class="panel">
+    <ul>
+      <li><b>Documento fuente</b>: de dónde salen los datos de la salida (un pedido, el catálogo, los movimientos…). No se inventa nada: cada dato ya existe en una clase entidad (sección 5).</li>
+      <li><b>Tipo</b>: externa / interna y estática / dinámica, según Kendall.</li>
+      <li><b>Tecnología</b>: impresora, pantalla (PC o móvil), PDF por correo o archivo Excel/CSV. El SIA-NP no usa audio ni microformas porque no los pide el almacén.</li>
+      <li><b>RF</b>: requerimiento del <b>Apéndice C</b> de la ERS que origina la salida.</li>
+    </ul>
+  </div>
+
+  <h2>Para la exposición</h2>
+  <div class="panel">
+    <dl class="sal-conc">
+      <dt>¿Por qué la nota de salida es impresa y el kardex es pantalla?</dt>
+      <dd>La nota es salida <b>externa</b>: el cliente se la lleva como comprobante, necesita papel con folio y firma. El kardex es <b>interno</b> y <b>dinámico</b>: se consulta en vivo y cambia con cada movimiento; imprimirlo no aporta.</dd>
+      <dt>¿De dónde salen las 10 preguntas?</dt>
+      <dd>De la sección “Factores a considerar al elegir la tecnología de salida” de Kendall y Kendall (pp. 336–339): quién, cuántos, dónde, propósito, velocidad, frecuencia, cuánto se guarda, regulaciones, costos y requerimientos ambientales.</dd>
+      <dt>¿El dashboard no es lo mismo que el entregable 7?</dt>
+      <dd>No. El diccionario (7) lista los datos que se guardan; aquí el dashboard es una <b>salida</b>: cómo se presentan esos datos a la dirección (tablero de control, pp. 346), cuidando no sesgar las gráficas (pp. 340).</dd>
+      <dt>¿Por qué el CFDI aparece como “2.ª fase”?</dt>
+      <dd>La exportación a Excel/CSV (S10) sí entra en esta versión; el timbrado CFDI 4.0 lo hace un PAC externo más adelante, como dice la ERS (§2.5).</dd>
+    </dl>
+  </div>
+</section>
+
+<script>
+(function(){
+  // Las 10 salidas del entregable (fuente: scripts/docx/08_salidas.js).
+  var SAL = [
+    {id:"S1",nom:"Nota de salida",tipo:["ext","Externa"],din:"Estática (impresa)",tec:"Impresora en mostrador",dest:"Cliente / Almacén",rf:"RF8",
+     res:"Comprobante impreso que ampara la mercancía que sale hacia el cliente. Folio, datos del cliente, productos y firmas. Sustituye el libro físico de remisiones.",
+     fuentes:["Orden de surtido confirmada (pedido del cliente)","Catálogo de productos — clase Producto (RF20)","Movimiento de salida que descuenta existencia (RF3)","Datos del cliente"],
+     mq:{cab:["NOTA DE SALIDA","Folio: NS-2026-0318"],cols:["Código","Descripción","Ubic.","Cant.","U"],rows:[["RAC-0408","Racor recto 1/4\" NPT × 8 mm","B-04-2","12","pza"]],pie:"Cliente: Taller Mecánico del Norte · Entregó / Recibió (firma y sello)"}},
+    {id:"S2",nom:"Orden de compra",tipo:["ext","Externa"],din:"Estática (PDF/impresa)",tec:"PDF por correo / impresora",dest:"Proveedor / Compras",rf:"RF12",
+     res:"Documento corporativo con folio que se envía al proveedor. Se imprime o se manda por correo en PDF. Sustituye la plantilla de Word llenada a mano.",
+     fuentes:["Sugerencia de reorden (RF14)","Catálogo de productos (RF20)","Proveedores y precios por volumen (RF11)","Clases OrdenDeCompra y DetalleOrden"],
+     mq:{cab:["ORDEN DE COMPRA","Folio: OC-2026-0147"],cols:["Código","Descripción","Cant.","Costo","Importe"],rows:[["RAC-0408","Racor recto 1/4\" NPT × 8 mm","100","$18.00","$1,800.00"],["CIL-32100","Cilindro Ø32 × 100 mm","10","$420.00","$4,200.00"]],pie:"Proveedor nacional (lead 7 d) · Total con IVA: $6,960.00"}},
+    {id:"S3",nom:"Orden de surtido",tipo:["int","Interna"],din:"Estática (impresa/tablet)",tec:"Impresora / tablet",dest:"Auxiliar de Almacén",rf:"RF8",
+     res:"Hoja legible, ordenada por recorrido del almacén, que indica qué tomar, cuánto y de qué ubicación. Sustituye las hojas manuscritas ilegibles.",
+     fuentes:["Pedido del vendedor pendiente","Ubicaciones físicas — clase Ubicacion (RF5)","Catálogo con imagen del producto (RF10, RF20)"],
+     mq:{cab:["ORDEN DE SURTIDO","Folio: OS-2026-0455"],cols:["Ubicación","Código","Descripción","Cant.","✓"],rows:[["B-04-2","RAC-0408","Racor recto 1/4\" NPT × 8 mm","12","☐"],["C-02-1","CIL-32100","Cilindro Ø32 × 100 mm","2","☐"]],pie:"Ordenada por ubicación para recorrer el almacén una sola vez"}},
+    {id:"S4",nom:"Hoja de conteo",tipo:["int","Interna"],din:"Estática (impresa)",tec:"Impresora (conteo a ciegas)",dest:"Encargado de Almacén",rf:"RF6",
+     res:"Hoja para capturar en piso el conteo de una familia (cíclico) o del almacén completo (semestral). No muestra la existencia del sistema: conteo ciego.",
+     fuentes:["Catálogo filtrado por familia (RF20)","Ubicaciones físicas (RF5)","Existencia del sistema (se usa para la diferencia, no se imprime)"],
+     mq:{cab:["HOJA DE CONTEO","Folio: IC-2026-0033"],cols:["Ubicación","Código","Descripción","Contado"],rows:[["B-04-2","RAC-0408","Racor recto 1/4\" NPT × 8 mm","______"],["B-04-3","RAC-0612","Racor recto 3/8\" NPT × 12 mm","______"]],pie:"Familia: Racores · conteo cíclico · se calcula la diferencia al capturar"}},
+    {id:"S5",nom:"Consulta de existencias",tipo:["pan","Interna · pantalla"],din:"Dinámica (interactiva)",tec:"Pantalla de tablet/teléfono",dest:"Almacén / mostrador",rf:"RF2, RF5, RF10",
+     res:"Pantalla móvil con la fotografía del producto, su existencia, ubicación y movimientos recientes. Evita confundir piezas similares.",
+     fuentes:["Producto: código, imagen, existencia (RF20)","Ubicacion: pasillo, anaquel, nivel (RF5)","Movimiento: últimos movimientos (RF2)"],
+     mq:{cab:["CONSULTA (móvil)","RAC-0408"],cols:["Fecha","Tipo","Documento","Cant.","Saldo"],rows:[["12/11 11:42","Salida","NS-2026-0318","-12","28"],["10/11 09:15","Entrada","F-A-88010","+20","40"]],pie:"[ foto ] Existencia 40 · Mín 30 · Ubicación B-04-2 · responsiva (RNF8)"}},
+    {id:"S6",nom:"Kardex del producto",tipo:["pan","Interna · pantalla"],din:"Dinámica (exportable)",tec:"Pantalla (PC/tablet)",dest:"Almacén / auditoría",rf:"RF2",
+     res:"Historial cronológico de movimientos de un producto (entradas, salidas, ajustes, devoluciones) con fecha, documento, usuario y saldo. El registro confiable que pidió Lodevar.",
+     fuentes:["Movimiento y subclases Entrada/Salida/Ajuste/Devolución (RF3)","Clase Kardex (saldo acumulado)","Usuario: quién registró (RF19)"],
+     mq:{cab:["KARDEX","RAC-0408 · Exist. 28"],cols:["Fecha","Tipo","Documento","Entra","Sale","Saldo"],rows:[["10/11","Entrada","F-A-88010","20","","40"],["12/11","Salida","NS-2026-0318","","12","28"],["12/11","Ajuste","IC-2026-0033","","2","26"]],pie:"Ningún movimiento se borra sin huella (RF19, RNF4)"}},
+    {id:"S7",nom:"Reporte de reorden",tipo:["int","Interna"],din:"Dinámica + exportable",tec:"Pantalla + Excel/CSV",dest:"Compras",rf:"RF6, RF14",
+     res:"Lista los productos bajo el punto de reorden, con la cantidad sugerida y el proveedor con su lead time. Alimenta la generación de órdenes de compra.",
+     fuentes:["Producto: existencia, mínimo, punto de reorden (RF20)","Proveedor: lead time y clasificación (RF11)","Consumo histórico de movimientos (RF14)"],
+     mq:{cab:["REPORTE DE REORDEN",""],cols:["Código","Descripción","Exist.","Reorden","Sugerido","Proveedor"],rows:[["RAC-0408","Racor recto 1/4\" × 8 mm","28","30","120","Nacional (7 d)"],["CIL-32100","Cilindro Ø32 × 100","3","5","10","Nacional (7 d)"]],pie:"Enlaza con RF12 para generar la OC"}},
+    {id:"S8",nom:"Diferencias físico vs sistema",tipo:["int","Interna"],din:"Dinámica + exportable",tec:"Pantalla + Excel/CSV",dest:"Almacén / Dirección",rf:"RF6",
+     res:"Compara lo contado contra la existencia del sistema y muestra la diferencia y el porcentaje de exactitud. Evidencia para bajar la diferencia del 5% a menos del 1%.",
+     fuentes:["InventarioFisico: cantidades contadas (RF6)","Producto: existencia del sistema (RF20)","Ajustes — clase Movimiento/Ajuste (RF3)"],
+     mq:{cab:["DIFERENCIAS FÍSICO vs SISTEMA",""],cols:["Código","Descripción","Sistema","Contado","Dif."],rows:[["RAC-0408","Racor recto 1/4\" × 8 mm","28","26","-2"],["CIL-32100","Cilindro Ø32 × 100","3","3","0"]],pie:"Exactitud de la familia: 96.8% (soporta RNF2 confiabilidad)"}},
+    {id:"S9",nom:"Dashboard de KPIs",tipo:["pan","Interna · pantalla"],din:"Dinámica (tablero)",tec:"Pantalla web (push/pull)",dest:"Dirección General",rf:"RF16",
+     res:"Tablero directivo con indicadores semanales (ventas por línea, rotación, agotados, OC abiertas) y mensuales (margen, top 20, exactitud). Salida tipo tablero de control (pp. 346).",
+     fuentes:["Agregados de movimientos, ventas y existencias (RF3, RF6)","OrdenDeCompra: abiertas y vencidas (RF12, RF15)","Clases DashboardEjecutivo y Reporte"],
+     mq:{cab:["DASHBOARD EJECUTIVO",""],cols:["Exactitud","Rotación","OC abiertas","Agotados"],rows:[["96.8%","5.2 veces","3","7"]],pie:"[ barras: ventas por línea ]  [ pastel: margen por familia ] · sin sesgo (pp. 340)"}},
+    {id:"S10",nom:"Exportación Excel/CSV",tipo:["ext","Electrónica"],din:"Archivo (XLSX/CSV)",tec:"Archivo descargable",dest:"Dirección / contador",rf:"RF17",
+     res:"Cualquier reporte o vista se descarga en Excel o CSV para procesarlo en CONTPAQi y para que el contador timbre los CFDI 4.0 desde un PAC externo (2.ª fase).",
+     fuentes:["Cualquier reporte o vista tabular (S6, S7, S8, catálogos)","Clase Reporte del diagrama de clases"],
+     mq:{cab:["reporte_reorden_2026-11-12.xlsx",".csv"],cols:["codigo","descripcion","existencia","reorden","sugerido","proveedor"],rows:[["RAC-0408","Racor recto 1/4\" × 8 mm","28","30","120","Nacional"],["CIL-32100","Cilindro Ø32 × 100","3","5","10","Nacional"]],pie:"Formatos abiertos; al salir hacia CFDI entra la normativa SAT (PAC externo)"}}
+  ];
+
+  // Las 10 preguntas del libro con la respuesta para S1 (nota de salida).
+  var PREG = [
+    ["¿Quién usará (verá) la salida? (calidad)","El cliente (externo) y el Encargado de Almacén: documento formal, legible, con folio."],
+    ["¿Cuántas personas necesitan la salida?","Pocas: una copia para el cliente y una de control (1–2 personas)."],
+    ["¿Dónde se necesita? (distribución)","En el mostrador, al entregar; una copia se la lleva el cliente."],
+    ["¿Cuál es el propósito?","Amparar la salida de mercancía y respaldar el descuento de existencia."],
+    ["¿Con qué velocidad se necesita?","Inmediata: se imprime al confirmar la venta, con el cliente esperando (RNF1)."],
+    ["¿Con qué frecuencia?","Una por venta; varias veces al día."],
+    ["¿Cuánto tiempo se almacena?","El papel lo conserva el cliente; el registro queda permanente (RF19)."],
+    ["¿Bajo qué regulaciones?","Comprobante comercial; si se factura, el CFDI lo timbra un PAC externo (2.ª fase)."],
+    ["¿Costos iniciales y recurrentes?","Bajos: impresora y papel ya existentes; consumible = tóner y hoja."],
+    ["¿Requerimientos ambientales?","Mínimos: impresora de escritorio USB/red; sin requisitos especiales."]
+  ];
+
+  SIA.registrar('sal', function(raiz){
+    function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+    var tabs = raiz.querySelector('#sal-tabs'), det = raiz.querySelector('#sal-detalle');
+
+    function maqueta(m){
+      var h = '<div class="maqueta"><div class="mq-cab"><span>'+esc(m.cab[0])+'</span><span class="der">'+esc(m.cab[1])+'</span></div><div class="mq-body"><table class="mq"><tr>';
+      m.cols.forEach(function(c){ h += '<th>'+esc(c)+'</th>'; });
+      h += '</tr>';
+      m.rows.forEach(function(r){ h += '<tr>'; r.forEach(function(v){ h += '<td>'+esc(v)+'</td>'; }); h += '</tr>'; });
+      h += '</table><div class="nota-fuente">'+esc(m.pie)+'</div></div></div>';
+      return h;
+    }
+    function detalle(s){
+      var h = '<p class="pill '+s.tipo[0]+'">'+esc(s.tipo[1])+'</p> <span class="pill">'+esc(s.din)+'</span> <span class="pill">'+esc(s.rf)+'</span>';
+      h += '<p>'+esc(s.res)+'</p>';
+      h += '<div class="sal-ficha"><b>Tecnología</b><span>'+esc(s.tec)+'</span><b>Destino</b><span>'+esc(s.dest)+'</span></div>';
+      h += '<p><b>Documentos fuente:</b></p><ul>';
+      s.fuentes.forEach(function(f){ h += '<li>'+esc(f)+'</li>'; });
+      h += '</ul>';
+      h += maqueta(s.mq);
+      return h;
+    }
+    function ver(s){
+      Array.prototype.forEach.call(tabs.children, function(b){ b.classList.toggle('activo', b.getAttribute('data-id') === s.id); });
+      det.innerHTML = detalle(s);
+    }
+    SAL.forEach(function(s){
+      var b = document.createElement('button'); b.type = 'button'; b.setAttribute('data-id', s.id);
+      b.textContent = s.id + ' ' + s.nom; b.onclick = function(){ ver(s); }; tabs.appendChild(b);
+    });
+    ver(SAL[0]);
+
+    // Lista de preguntas con reproductor.
+    var ql = raiz.querySelector('#sal-qlista'), lis = [];
+    PREG.forEach(function(q, i){
+      var li = document.createElement('li');
+      li.innerHTML = '<span class="q">'+(i+1)+'. '+esc(q[0])+'</span><span class="r">'+esc(q[1])+'</span>';
+      ql.appendChild(li); lis.push(li);
+    });
+    function reset(){ lis.forEach(function(li){ li.classList.remove('resaltado','atenuado'); }); }
+    var pasos = PREG.map(function(q, i){
+      return {titulo:'Pregunta '+(i+1)+': '+q[0], texto:'<b>Para la nota de salida:</b> '+q[1],
+        aplicar:function(){ lis.forEach(function(li, j){ li.classList.toggle('resaltado', j===i); li.classList.toggle('atenuado', j!==i); }); }};
+    });
+    SIA.reproductor(raiz.querySelector('#sal-repro'), pasos, {reiniciar: reset, intervalo: 2400});
+  });
+})();
+</script>

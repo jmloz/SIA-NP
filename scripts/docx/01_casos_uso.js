@@ -17,7 +17,8 @@ const CU = [
     actores: "Encargado de Almacén (actor principal), Auxiliar de Almacén.",
     pre: [
       "El usuario ha iniciado sesión en el sistema con un rol que tiene permiso para registrar movimientos.",
-      "El producto involucrado se encuentra dado de alta en el catálogo.",
+      // Corrección: decía "El producto involucrado se encuentra dado de alta en el catálogo",
+      // lo que contradice el alterno 4a (el producto no existe).
       "Se cuenta con el documento de referencia físico o digital (factura, remisión o nota de salida).",
     ],
     normal: [
@@ -71,7 +72,8 @@ const CU = [
     ],
     post: [
       "El usuario obtiene la información actualizada de existencias e historial del producto.",
-      "La consulta queda registrada en la bitácora de auditoría.",
+      // Corrección: decía "La consulta queda registrada en la bitácora de auditoría", pero la ERS
+      // (RNF3/RF19) solo exige bitácora para movimientos y cambios, no para consultas.
       "No se modifica ningún dato del inventario.",
     ],
   },
@@ -115,7 +117,8 @@ const CU = [
     actores: "Encargado de Almacén (actor principal), Auxiliar de Almacén.",
     pre: [
       "El usuario ha iniciado sesión con permisos para registrar devoluciones.",
-      "El cliente se encuentra dado de alta en el catálogo de clientes.",
+      // Corrección: decía "El cliente se encuentra dado de alta en el catálogo de clientes",
+      // lo que contradice el alterno 2a (el cliente no existe).
       "Existe la nota de salida o factura original que respalda la venta.",
     ],
     normal: [
@@ -149,7 +152,8 @@ const CU = [
     actores: "Encargada de Compras (actor principal).",
     pre: [
       "El usuario ha iniciado sesión con el rol de Encargada de Compras.",
-      "El proveedor está dado de alta en el catálogo de proveedores.",
+      // Corrección: decía "El proveedor está dado de alta en el catálogo de proveedores",
+      // lo que contradice el alterno 3a (el proveedor no existe).
       "Los productos a solicitar existen en el catálogo.",
     ],
     normal: [
@@ -233,7 +237,7 @@ const CU = [
     ],
     post: [
       "El usuario obtiene una visión consolidada del estado del inventario y de la operación.",
-      "La consulta queda registrada en la bitácora de auditoría.",
+      // Corrección: decía "La consulta queda registrada en la bitácora de auditoría" (ver CU2).
       "No se modifica ningún dato del sistema.",
     ],
   },

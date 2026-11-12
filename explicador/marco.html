@@ -5,96 +5,192 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SIA-NP explicado con animaciones</title>
 <style>
-:root{--tinta:#111;--papel:#fff;--gris:#E6E6E6;--acento:#d9480f;--ok:#2b8a3e;--error:#c92a2a;--borde:#111;--suave:#f6f6f4;--texto2:#555}
+:root{
+  --tinta:#111;--papel:#fff;--gris:#E6E6E6;--acento:#d9480f;--ok:#2b8a3e;--error:#c92a2a;--borde:#111;
+  --suave:#f6f6f4;--texto2:#555;--acento-suave:#fff3ec;--sombra:0 1px 2px rgba(17,17,17,.06),0 4px 14px rgba(17,17,17,.05);
+  --radio:8px;
+}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--suave);color:var(--tinta);font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.5}
-header.top{position:sticky;top:0;z-index:20;background:var(--papel);border-bottom:2px solid var(--tinta)}
+html{scroll-behavior:smooth}
+html,body{margin:0;background:var(--suave);color:var(--tinta);font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.55}
+::selection{background:#ffd9c4}
+:focus-visible{outline:2px solid var(--acento);outline-offset:2px;border-radius:3px}
+
+/* ---------- Encabezado y navegación ---------- */
+header.top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(6px);border-bottom:2px solid var(--tinta)}
 .top-in{max-width:1180px;margin:0 auto;padding:10px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
-.marca{font-weight:bold;font-size:18px;white-space:nowrap}
+.marca{font-weight:bold;font-size:18px;white-space:nowrap;letter-spacing:.2px}
 .marca small{font-weight:normal;color:var(--texto2);font-size:13px;margin-left:6px}
 nav.menu{display:flex;flex-wrap:wrap;gap:4px}
-nav.menu a{color:var(--tinta);text-decoration:none;padding:6px 10px;border:1px solid transparent;border-radius:4px;font-size:14px}
-nav.menu a:hover{border-color:var(--tinta)}
-nav.menu a.activo{background:var(--tinta);color:var(--papel)}
+nav.menu a{position:relative;color:var(--tinta);text-decoration:none;padding:6px 11px;border:1px solid transparent;border-radius:999px;font-size:14px;transition:background .18s,color .18s,border-color .18s,transform .12s}
+nav.menu a:hover{border-color:var(--tinta);transform:translateY(-1px)}
+nav.menu a:active{transform:translateY(0)}
+nav.menu a.activo{background:var(--tinta);color:var(--papel);border-color:var(--tinta)}
+nav.menu a .n{display:inline-block;min-width:17px;height:17px;line-height:17px;text-align:center;border-radius:50%;background:var(--gris);color:var(--tinta);font-size:11px;font-weight:bold;margin-right:5px;vertical-align:1px;transition:background .18s,color .18s}
+nav.menu a.activo .n{background:var(--acento);color:#fff}
+#progreso-lectura{position:absolute;left:0;bottom:-2px;height:2px;width:0;background:var(--acento);transition:width .15s linear}
+
 main{max-width:1180px;margin:0 auto;padding:20px 16px 60px}
 .sec{display:none}
-.sec.visible{display:block;animation:entrar .35s ease}
-@keyframes entrar{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-h1{font-size:28px;margin:6px 0 4px}
-h2{font-size:21px;margin:28px 0 10px;padding-bottom:4px;border-bottom:1px solid var(--tinta)}
+.sec.visible{display:block;animation:entrar .4s cubic-bezier(.2,.7,.3,1)}
+@keyframes entrar{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ---------- Tipografía ---------- */
+h1{font-size:30px;margin:6px 0 4px;letter-spacing:-.3px}
+h1::after{content:"";display:block;width:64px;height:4px;background:var(--acento);border-radius:2px;margin-top:8px}
+h2{font-size:21px;margin:30px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--tinta)}
 h3{font-size:17px;margin:18px 0 8px}
 p{margin:8px 0}
-.lead{font-size:17px;color:#333;max-width:820px}
-.panel{background:var(--papel);border:1px solid var(--tinta);border-radius:6px;padding:16px;margin:14px 0}
-.ejemplo{background:#fff8f3;border:1px solid var(--acento);border-left:6px solid var(--acento);border-radius:6px;padding:12px 16px;margin:14px 0}
+.lead{font-size:17.5px;color:#333;max-width:860px}
+code{background:var(--gris);border-radius:4px;padding:0 4px;font-size:.92em}
+
+/* ---------- Cajas ---------- */
+.panel{background:var(--papel);border:1px solid var(--tinta);border-radius:var(--radio);padding:16px;margin:14px 0;box-shadow:var(--sombra)}
+.ejemplo{background:var(--acento-suave);border:1px solid var(--acento);border-left:6px solid var(--acento);border-radius:var(--radio);padding:12px 16px;margin:14px 0;box-shadow:var(--sombra)}
 .ejemplo > b:first-child,.ejemplo .titulo-ej{display:block;color:var(--acento);margin-bottom:4px}
 .nota-fuente{font-size:12.5px;color:var(--texto2);font-style:italic;margin-top:6px}
-.chip{display:inline-block;padding:1px 8px;border:1px solid var(--tinta);border-radius:999px;font-size:12.5px;margin:1px 2px;background:var(--papel)}
+.chip{display:inline-block;padding:1px 9px;border:1px solid var(--tinta);border-radius:999px;font-size:12.5px;margin:1px 2px;background:var(--papel)}
 .chip.acento{border-color:var(--acento);color:var(--acento)}
 .chip.ok{border-color:var(--ok);color:var(--ok)}
 .chip.error{border-color:var(--error);color:var(--error)}
+
+/* ---------- Pestañas ---------- */
 .tabs{display:flex;flex-wrap:wrap;gap:4px;margin:10px 0}
-.tabs button{font:inherit;font-size:14px;padding:5px 11px;border:1px solid var(--tinta);background:var(--papel);border-radius:4px;cursor:pointer}
+.tabs button{font:inherit;font-size:14px;padding:5px 12px;border:1px solid var(--tinta);background:var(--papel);border-radius:999px;cursor:pointer;transition:background .15s,color .15s,transform .12s,box-shadow .15s}
+.tabs button:hover{transform:translateY(-1px);box-shadow:var(--sombra)}
 .tabs button.activo,.tabs button[aria-selected="true"]{background:var(--tinta);color:var(--papel)}
-.lienzo{background:var(--papel);border:1px solid var(--tinta);border-radius:6px;overflow:auto;padding:8px}
+
+/* ---------- Lienzo y SVG ---------- */
+.lienzo{background:var(--papel);border:1px solid var(--tinta);border-radius:var(--radio);overflow:auto;padding:8px;box-shadow:var(--sombra)}
+.lienzo::-webkit-scrollbar{height:10px;width:10px}
+.lienzo::-webkit-scrollbar-thumb{background:#c9c9c4;border-radius:5px;border:2px solid var(--papel)}
 .lienzo svg{display:block;max-width:100%;height:auto;margin:0 auto}
 svg text{font-family:Arial,Helvetica,sans-serif}
 svg .resaltado,svg .resaltado *{stroke:var(--acento)!important}
 svg rect.resaltado,svg ellipse.resaltado,svg circle.resaltado,svg polygon.resaltado,svg path.resaltado.relleno{fill:#ffe8d9!important}
 svg text.resaltado{fill:var(--acento)!important;stroke:none!important;font-weight:bold}
 svg .atenuado{opacity:.25}
-svg *{transition:opacity .3s,stroke .3s,fill .3s}
-.atenuado{opacity:.3;transition:opacity .3s}
-.narracion{background:var(--papel);border:1px solid var(--tinta);border-top:4px solid var(--acento);border-radius:6px;padding:12px 16px;margin:10px 0;min-height:86px}
-.narracion .n-paso{font-size:12.5px;color:var(--texto2)}
-.narracion .n-titulo{font-weight:bold;font-size:16.5px;margin:2px 0}
-.narracion .n-texto{margin:2px 0}
+svg *{transition:opacity .35s,stroke .35s,fill .35s}
+.atenuado{opacity:.3;transition:opacity .35s}
+
+/* ---------- Narración ---------- */
+.narracion{position:relative;background:var(--papel);border:1px solid var(--tinta);border-left:6px solid var(--acento);border-radius:var(--radio);padding:12px 16px 12px 18px;margin:10px 0;min-height:92px;box-shadow:var(--sombra);overflow:hidden}
+.narracion .n-paso{font-size:12px;color:var(--texto2);text-transform:uppercase;letter-spacing:.6px}
+.narracion .n-titulo{font-weight:bold;font-size:16.5px;margin:3px 0 2px}
+.narracion .n-texto{margin:2px 0;color:#222}
+.narracion.n-cambio .n-titulo,.narracion.n-cambio .n-texto{animation:narrar .35s ease}
+@keyframes narrar{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:none}}
+
+/* ---------- Reproductor ---------- */
 .repro{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0}
-.repro button{font:inherit;font-size:15px;min-width:40px;padding:5px 10px;border:1px solid var(--tinta);background:var(--papel);border-radius:4px;cursor:pointer}
-.repro button:hover{background:var(--gris)}
-.repro button.play{background:var(--tinta);color:var(--papel);min-width:84px}
-.repro .barra{flex:1 1 160px;height:8px;background:var(--gris);border-radius:4px;overflow:hidden;cursor:pointer;min-width:120px}
-.repro .barra i{display:block;height:100%;width:0;background:var(--acento);transition:width .3s}
-.repro .cont{font-size:13px;color:var(--texto2);min-width:64px;text-align:right}
-.repro select{font:inherit;font-size:13px;padding:3px}
-table.t{border-collapse:collapse;width:100%;background:var(--papel);font-size:14px;margin:10px 0}
-table.t th,table.t td{border:1px solid var(--tinta);padding:6px 8px;text-align:left;vertical-align:top}
+.repro button{font:inherit;font-size:15px;min-width:40px;padding:6px 10px;border:1px solid var(--tinta);background:var(--papel);border-radius:6px;cursor:pointer;transition:background .15s,transform .1s,box-shadow .15s}
+.repro button:hover{background:var(--gris);transform:translateY(-1px);box-shadow:var(--sombra)}
+.repro button:active{transform:translateY(0);box-shadow:none}
+.repro button.play{background:var(--tinta);color:var(--papel);min-width:110px;border-color:var(--tinta)}
+.repro button.play:hover{background:#000}
+.repro button.play.activo{background:var(--acento);border-color:var(--acento)}
+.repro .barra{position:relative;flex:1 1 170px;height:16px;cursor:pointer;min-width:130px;touch-action:none}
+.repro .barra::before{content:"";position:absolute;left:0;right:0;top:50%;height:8px;transform:translateY(-50%);background:var(--gris);border-radius:4px}
+.repro .barra i{position:absolute;left:0;top:50%;height:8px;transform:translateY(-50%);width:0;background:var(--acento);border-radius:4px;transition:width .25s ease}
+.repro .barra b{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:var(--papel);border:2px solid var(--acento);transform:translate(-50%,-50%);left:0;transition:left .25s ease;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.repro .barra:hover b{transform:translate(-50%,-50%) scale(1.2)}
+.repro .cont{font-size:13px;color:var(--texto2);min-width:64px;text-align:right;font-variant-numeric:tabular-nums}
+.repro select{font:inherit;font-size:13px;padding:4px;border:1px solid var(--tinta);border-radius:6px;background:var(--papel)}
+.repro .atajo{flex-basis:100%;font-size:11.5px;color:var(--texto2)}
+.repro .atajo kbd{font-family:inherit;border:1px solid #bbb;border-bottom-width:2px;border-radius:4px;padding:0 5px;font-size:11px;background:var(--papel)}
+
+/* ---------- Tablas y preguntas ---------- */
+table.t{border-collapse:collapse;width:100%;background:var(--papel);font-size:14px;margin:10px 0;box-shadow:var(--sombra)}
+table.t th,table.t td{border:1px solid var(--tinta);padding:6px 9px;text-align:left;vertical-align:top}
 table.t th{background:var(--gris)}
-details.pregunta{background:var(--papel);border:1px solid var(--tinta);border-radius:6px;padding:8px 14px;margin:8px 0}
-details.pregunta summary{cursor:pointer;font-weight:bold}
+table.t tbody tr:hover{background:#fbfbf9}
+details.pregunta{background:var(--papel);border:1px solid var(--tinta);border-radius:var(--radio);padding:9px 14px;margin:8px 0;box-shadow:var(--sombra);transition:border-color .15s}
+details.pregunta summary{cursor:pointer;font-weight:bold;list-style-position:inside}
+details.pregunta summary::marker{color:var(--acento)}
+details.pregunta[open]{border-left:5px solid var(--acento)}
+
+/* ---------- Inicio ---------- */
 .rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-.inicio-tarjeta{display:block;background:var(--papel);border:1px solid var(--tinta);border-radius:6px;padding:14px;color:var(--tinta);text-decoration:none;transition:transform .2s,box-shadow .2s}
+.inicio-tarjeta{display:block;background:var(--papel);border:1px solid var(--tinta);border-radius:var(--radio);padding:14px;color:var(--tinta);text-decoration:none;transition:transform .18s,box-shadow .18s;box-shadow:var(--sombra)}
 .inicio-tarjeta:hover{transform:translateY(-3px);box-shadow:4px 4px 0 var(--tinta)}
 .inicio-tarjeta b{display:block;font-size:17px;margin-bottom:4px}
 .num{display:inline-block;width:28px;height:28px;line-height:28px;text-align:center;border-radius:50%;background:var(--tinta);color:var(--papel);font-weight:bold;margin-right:6px;font-size:14px}
+.inicio-tarjeta:hover .num{background:var(--acento)}
 .cadena{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0}
-.cadena span{padding:6px 10px;border:1px solid var(--tinta);border-radius:4px;background:var(--papel);font-size:14px}
+.cadena span{padding:6px 10px;border:1px solid var(--tinta);border-radius:6px;background:var(--papel);font-size:14px;box-shadow:var(--sombra)}
 .cadena em{font-style:normal;color:var(--acento);font-weight:bold}
+
+/* ---------- Navegación entre secciones ---------- */
+.sec-nav{display:flex;justify-content:space-between;gap:10px;margin-top:34px;padding-top:14px;border-top:1px solid #ccc}
+.sec-nav a{display:inline-block;max-width:46%;color:var(--tinta);text-decoration:none;border:1px solid var(--tinta);border-radius:var(--radio);padding:9px 14px;background:var(--papel);font-size:14px;transition:transform .15s,box-shadow .15s;box-shadow:var(--sombra)}
+.sec-nav a:hover{transform:translateY(-2px);box-shadow:3px 3px 0 var(--tinta)}
+.sec-nav a small{display:block;color:var(--texto2);font-size:11.5px;text-transform:uppercase;letter-spacing:.5px}
+.sec-nav .sig{margin-left:auto;text-align:right}
+
+#subir{position:fixed;right:18px;bottom:18px;z-index:15;width:42px;height:42px;border-radius:50%;border:1px solid var(--tinta);background:var(--papel);color:var(--tinta);font-size:19px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .25s,transform .15s;box-shadow:var(--sombra)}
+#subir.ver{opacity:1;pointer-events:auto}
+#subir:hover{transform:translateY(-2px);background:var(--gris)}
+
 footer{max-width:1180px;margin:0 auto;padding:0 16px 30px;font-size:12.5px;color:var(--texto2)}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+@media (max-width:700px){
+  h1{font-size:25px}
+  nav.menu{overflow-x:auto;flex-wrap:nowrap;max-width:100%;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+  nav.menu a{white-space:nowrap}
+  .repro .atajo{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{animation:none!important;transition:none!important}
+}
 </style>
 </head>
 <body>
 <header class="top"><div class="top-in">
   <div class="marca">SIA-NP <small>explicado paso a paso</small></div>
-  <nav class="menu" id="menu">
+  <nav class="menu" id="menu" aria-label="Secciones">
     <a href="#inicio" data-id="inicio">Inicio</a>
-    <a href="#cu" data-id="cu">1 Casos de uso</a>
-    <a href="#act" data-id="act">2 Actividad</a>
-    <a href="#crc" data-id="crc">3 CRC</a>
-    <a href="#seq" data-id="seq">4 Secuencia</a>
-    <a href="#cls" data-id="cls">5 Clases</a>
-    <a href="#est" data-id="est">6 Estados</a>
-    <a href="#dic" data-id="dic">7 Diccionario</a>
+    <a href="#cu" data-id="cu"><span class="n">1</span>Casos de uso</a>
+    <a href="#act" data-id="act"><span class="n">2</span>Actividad</a>
+    <a href="#crc" data-id="crc"><span class="n">3</span>CRC</a>
+    <a href="#seq" data-id="seq"><span class="n">4</span>Secuencia</a>
+    <a href="#cls" data-id="cls"><span class="n">5</span>Clases</a>
+    <a href="#est" data-id="est"><span class="n">6</span>Estados</a>
+    <a href="#dic" data-id="dic"><span class="n">7</span>Diccionario</a>
+    <a href="#sal" data-id="sal"><span class="n">8</span>Salidas</a>
   </nav>
+  <div id="progreso-lectura" aria-hidden="true"></div>
 </div></header>
 
 <script>
 /* Marco común: registro de secciones, enrutado por hash y reproductor de pasos. */
 window.SIA = (function(){
-  var inits = {}, hechos = {};
+  var inits = {}, hechos = {}, reproductores = [], reproActivo = null;
+
   function registrar(id, init){ inits[id] = init; if (actual() === id) mostrar(id); }
   function actual(){ var h = (location.hash || '').replace('#',''); return h || 'inicio'; }
+
+  /* Orden de secciones y títulos, tomados del menú (para la navegación anterior/siguiente). */
+  function listaSecciones(){
+    var as = document.querySelectorAll('#menu a'), lista = [];
+    for (var i = 0; i < as.length; i++) lista.push({ id: as[i].getAttribute('data-id'), titulo: as[i].textContent });
+    return lista;
+  }
+  function ponerNavSec(id){
+    var sec = document.getElementById('sec-' + id);
+    if (!sec || sec.querySelector('.sec-nav')) return;
+    var lista = listaSecciones(), pos = -1;
+    for (var i = 0; i < lista.length; i++) if (lista[i].id === id) { pos = i; break; }
+    if (pos < 0) return;
+    var ant = lista[pos - 1], sig = lista[pos + 1];
+    if (!ant && !sig) return;
+    var nav = document.createElement('div'); nav.className = 'sec-nav';
+    nav.innerHTML =
+      (ant ? '<a href="#' + ant.id + '"><small>← Anterior</small>' + ant.titulo + '</a>' : '<span></span>') +
+      (sig ? '<a class="sig" href="#' + sig.id + '"><small>Siguiente →</small>' + sig.titulo + '</a>' : '');
+    sec.appendChild(nav);
+  }
+
   function mostrar(id){
     var secs = document.querySelectorAll('.sec');
     var hay = document.getElementById('sec-' + id);
@@ -102,15 +198,54 @@ window.SIA = (function(){
     for (var i = 0; i < secs.length; i++) secs[i].classList.toggle('visible', secs[i].id === 'sec-' + id);
     var as = document.querySelectorAll('#menu a');
     for (var j = 0; j < as.length; j++) as[j].classList.toggle('activo', as[j].getAttribute('data-id') === id);
+    /* Al cambiar de sección se pausan todos los reproductores (ninguno sigue corriendo oculto). */
+    for (var k = 0; k < reproductores.length; k++) reproductores[k].pausar();
     if (inits[id] && !hechos[id]) {
       hechos[id] = true;
       try { inits[id](document.getElementById('sec-' + id)); }
       catch (e) { console.error('Sección ' + id + ':', e); }
     }
+    ponerNavSec(id);
     window.scrollTo(0, 0);
   }
   window.addEventListener('hashchange', function(){ mostrar(actual()); });
-  document.addEventListener('DOMContentLoaded', function(){ mostrar(actual()); });
+  document.addEventListener('DOMContentLoaded', function(){
+    mostrar(actual());
+    ponerNavSec('inicio');
+
+    /* Barra de progreso de lectura y botón «subir». */
+    var barra = document.getElementById('progreso-lectura');
+    var subir = document.createElement('button');
+    subir.id = 'subir'; subir.type = 'button'; subir.title = 'Volver arriba'; subir.setAttribute('aria-label', 'Volver arriba');
+    subir.textContent = '↑';
+    subir.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    document.body.appendChild(subir);
+    function alDesplazar(){
+      var total = document.documentElement.scrollHeight - window.innerHeight;
+      if (barra) barra.style.width = (total > 0 ? (window.scrollY / total) * 100 : 0) + '%';
+      subir.classList.toggle('ver', window.scrollY > 600);
+    }
+    window.addEventListener('scroll', alDesplazar, { passive: true });
+    alDesplazar();
+  });
+
+  /* Atajos de teclado: controlan el último reproductor usado (o el primero visible).
+     ← → pasos · espacio reproducir/pausa · Inicio/Fin extremos. */
+  function reproDestino(){
+    if (reproActivo && reproActivo.visible()) return reproActivo;
+    for (var i = 0; i < reproductores.length; i++) if (reproductores[i].visible()) return reproductores[i];
+    return null;
+  }
+  document.addEventListener('keydown', function(ev){
+    var t = ev.target, tag = (t && t.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || tag === 'select' || (t && t.isContentEditable)) return;
+    var r = reproDestino(); if (!r) return;
+    if (ev.key === 'ArrowRight') { r.parar(); r.ir(r.indice() + 1); ev.preventDefault(); }
+    else if (ev.key === 'ArrowLeft') { r.parar(); r.ir(r.indice() - 1); ev.preventDefault(); }
+    else if (ev.key === ' ' && !ev.shiftKey) { r.play(); ev.preventDefault(); }
+    else if (ev.key === 'Home') { r.parar(); r.ir(-1); ev.preventDefault(); }
+    else if (ev.key === 'End') { r.parar(); r.ir(1e9); ev.preventDefault(); }
+  });
 
   /*
    * reproductor(contenedor, pasos, opciones) -> {ir(i), reiniciar(), destruir(), indice()}
@@ -130,27 +265,37 @@ window.SIA = (function(){
     var base = opciones.intervalo || 2600;
     contenedor.innerHTML = '';
     var narr = document.createElement('div'); narr.className = 'narracion';
+    narr.setAttribute('aria-live', 'polite');
     narr.innerHTML = '<div class="n-paso"></div><div class="n-titulo"></div><div class="n-texto"></div>';
     var ctr = document.createElement('div'); ctr.className = 'repro';
     ctr.innerHTML =
-      '<button type="button" data-a="ini" title="Inicio">⏮</button>' +
-      '<button type="button" data-a="ant" title="Paso anterior">◀</button>' +
-      '<button type="button" data-a="play" class="play">▶ Reproducir</button>' +
-      '<button type="button" data-a="sig" title="Paso siguiente">▶|</button>' +
-      '<button type="button" data-a="fin" title="Último paso">⏭</button>' +
-      '<div class="barra" title="Ir a un punto"><i></i></div>' +
+      '<button type="button" data-a="ini" title="Inicio" aria-label="Ir al inicio">⏮</button>' +
+      '<button type="button" data-a="ant" title="Paso anterior" aria-label="Paso anterior">◀</button>' +
+      '<button type="button" data-a="play" class="play" aria-label="Reproducir o pausar">▶ Reproducir</button>' +
+      '<button type="button" data-a="sig" title="Paso siguiente" aria-label="Paso siguiente">▶|</button>' +
+      '<button type="button" data-a="fin" title="Último paso" aria-label="Ir al último paso">⏭</button>' +
+      '<div class="barra" role="slider" title="Ir a un punto" aria-label="Progreso"><i></i><b></b></div>' +
       '<span class="cont"></span>' +
-      '<select title="Velocidad"><option value="0.6">Lento</option><option value="1" selected>Normal</option><option value="1.8">Rápido</option></select>';
+      '<select title="Velocidad" aria-label="Velocidad"><option value="0.6">Lento</option><option value="1" selected>Normal</option><option value="1.8">Rápido</option></select>' +
+      '<span class="atajo">Atajos: <kbd>←</kbd> <kbd>→</kbd> pasos · <kbd>espacio</kbd> reproducir/pausa</span>';
     contenedor.appendChild(narr); contenedor.appendChild(ctr);
     var bPlay = ctr.querySelector('[data-a=play]'), barra = ctr.querySelector('.barra'),
-        relleno = barra.querySelector('i'), cont = ctr.querySelector('.cont'), sel = ctr.querySelector('select');
+        relleno = barra.querySelector('i'), perilla = barra.querySelector('b'),
+        cont = ctr.querySelector('.cont'), sel = ctr.querySelector('select');
 
     function pintar(){
       var p = pasos[idx];
       narr.querySelector('.n-paso').textContent = idx < 0 ? 'Listo para empezar' : ('Paso ' + (idx + 1) + ' de ' + pasos.length);
       narr.querySelector('.n-titulo').innerHTML = p ? p.titulo : (opciones.tituloInicial || 'Pulsa ▶ para ver la animación');
-      narr.querySelector('.n-texto').innerHTML = p ? (p.texto || '') : (opciones.textoInicial || 'También puedes avanzar paso a paso con ▶|.');
-      relleno.style.width = (pasos.length ? ((idx + 1) / pasos.length) * 100 : 0) + '%';
+      narr.querySelector('.n-texto').innerHTML = p ? (p.texto || '') : (opciones.textoInicial || 'También puedes avanzar paso a paso con ▶| o con las flechas del teclado.');
+      /* Reinicia la animación de entrada del texto. */
+      narr.classList.remove('n-cambio'); void narr.offsetWidth; narr.classList.add('n-cambio');
+      var pct = pasos.length ? ((idx + 1) / pasos.length) * 100 : 0;
+      relleno.style.width = pct + '%';
+      perilla.style.left = pct + '%';
+      barra.setAttribute('aria-valuemin', '0');
+      barra.setAttribute('aria-valuemax', String(pasos.length));
+      barra.setAttribute('aria-valuenow', String(idx + 1));
       cont.textContent = (idx + 1) + ' / ' + pasos.length;
     }
     function ir(i){
@@ -163,20 +308,22 @@ window.SIA = (function(){
       pintar();
       if (opciones.alCambiar) opciones.alCambiar(idx);
     }
-    function parar(){ if (timer) { clearTimeout(timer); timer = null; } bPlay.textContent = '▶ Reproducir'; }
+    function parar(){ if (timer) { clearTimeout(timer); timer = null; } bPlay.textContent = '▶ Reproducir'; bPlay.classList.remove('activo'); }
     function tic(){
       if (idx >= pasos.length - 1) { parar(); return; }
       ir(idx + 1);
       timer = setTimeout(tic, base / vel);
     }
     function play(){
+      api.activar();
       if (timer) { parar(); return; }
       if (idx >= pasos.length - 1) ir(-1);
-      bPlay.textContent = '⏸ Pausa';
+      bPlay.textContent = '⏸ Pausa'; bPlay.classList.add('activo');
       tic();
     }
     ctr.addEventListener('click', function(ev){
       var b = ev.target.closest('button'); if (!b) return;
+      api.activar();
       var a = b.getAttribute('data-a');
       if (a === 'play') return play();
       parar();
@@ -185,14 +332,38 @@ window.SIA = (function(){
       if (a === 'sig') ir(idx + 1);
       if (a === 'fin') ir(pasos.length - 1);
     });
-    barra.addEventListener('click', function(ev){
-      parar();
+    /* La barra admite clic y arrastre. */
+    function saltarA(clienteX){
       var r = barra.getBoundingClientRect();
-      ir(Math.round(((ev.clientX - r.left) / r.width) * pasos.length) - 1);
+      var f = Math.min(1, Math.max(0, (clienteX - r.left) / r.width));
+      ir(Math.round(f * pasos.length) - 1);
+    }
+    barra.addEventListener('pointerdown', function(ev){
+      api.activar(); parar(); saltarA(ev.clientX);
+      try { barra.setPointerCapture(ev.pointerId); } catch (e) {}
+      function mover(e){ saltarA(e.clientX); }
+      function soltar(){ barra.removeEventListener('pointermove', mover); barra.removeEventListener('pointerup', soltar); }
+      barra.addEventListener('pointermove', mover);
+      barra.addEventListener('pointerup', soltar);
+      ev.preventDefault();
     });
     sel.addEventListener('change', function(){ vel = parseFloat(sel.value) || 1; });
     ir(-1);
-    return { ir: ir, reiniciar: function(){ parar(); ir(-1); }, destruir: function(){ parar(); contenedor.innerHTML = ''; }, indice: function(){ return idx; } };
+
+    var api = {
+      ir: ir,
+      reiniciar: function(){ parar(); ir(-1); },
+      destruir: function(){ parar(); var p = reproductores.indexOf(api); if (p >= 0) reproductores.splice(p, 1); contenedor.innerHTML = ''; },
+      indice: function(){ return idx; },
+      /* Internos del marco (atajos de teclado y pausa al cambiar de sección). */
+      play: play,
+      parar: parar,
+      pausar: function(){ if (timer) parar(); },
+      visible: function(){ return !!(contenedor.offsetParent); },
+      activar: function(){ reproActivo = api; }
+    };
+    reproductores.push(api);
+    return api;
   }
 
   /* Ayudas pequeñas para SVG */
@@ -225,11 +396,11 @@ window.SIA = (function(){
     <p class="nota-fuente">Fuente: ERS SIA-NP, Apéndice A (entrevistas) y Apéndice B (Excel actual: 454 registros, ubicaciones vacías, sin bitácora).</p>
   </div>
 
-  <h2>Cómo se conectan los 6 entregables</h2>
+  <h2>Cómo se conectan los 8 entregables</h2>
   <div class="cadena">
-    <span>ERS (RF1–RF20)</span><em>→</em><span>1 Casos de uso</span><em>→</em><span>2 Actividad</span><em>→</em><span>3 CRC</span><em>→</em><span>4 Secuencia</span><em>→</em><span>5 Clases</span><em>→</em><span>6 Estados</span><em>→</em><span>7 Diccionario</span>
+    <span>ERS (RF1–RF20)</span><em>→</em><span>1 Casos de uso</span><em>→</em><span>2 Actividad</span><em>→</em><span>3 CRC</span><em>→</em><span>4 Secuencia</span><em>→</em><span>5 Clases</span><em>→</em><span>6 Estados</span><em>→</em><span>7 Diccionario</span><em>→</em><span>8 Salidas</span>
   </div>
-  <p>Cada paso del proceso UML (Kendall &amp; Kendall, cap. 10) refina al anterior: los <b>casos de uso</b> dicen <i>qué</i> hace el sistema; las <b>actividades</b>, <i>en qué orden y quién</i>; las <b>CRC</b>, <i>qué clases y quién colabora con quién</i>; las <b>secuencias</b>, <i>qué mensajes se envían en el tiempo</i>; el <b>diagrama de clases</b> junta atributos, métodos y relaciones; y el de <b>estados</b> sigue la vida de un objeto (la orden de compra).</p>
+  <p>Cada paso del proceso UML (Kendall &amp; Kendall, cap. 10) refina al anterior: los <b>casos de uso</b> dicen <i>qué</i> hace el sistema; las <b>actividades</b>, <i>en qué orden y quién</i>; las <b>CRC</b>, <i>qué clases y quién colabora con quién</i>; las <b>secuencias</b>, <i>qué mensajes se envían en el tiempo</i>; el <b>diagrama de clases</b> junta atributos, métodos y relaciones; el de <b>estados</b> sigue la vida de un objeto (la orden de compra); el <b>diccionario</b> lista cada dato que se guarda; y las <b>salidas</b> (cap. 11) diseñan lo que el sistema entrega: notas, reportes, pantallas y archivos.</p>
 
   <div class="rejilla">
     <a class="inicio-tarjeta" href="#cu"><b><span class="num">1</span>Casos de uso y escenarios</b>CU1–CU8, actores, flujos normales y alternos.</a>
@@ -239,6 +410,7 @@ window.SIA = (function(){
     <a class="inicio-tarjeta" href="#cls"><b><span class="num">5</span>Diagrama de clases</b>22 clases en capas: interfaz, control y entidad.</a>
     <a class="inicio-tarjeta" href="#est"><b><span class="num">6</span>Diagrama de estados</b>La vida de una orden de compra.</a>
     <a class="inicio-tarjeta" href="#dic"><b><span class="num">7</span>Diccionario de datos</b>Los 114 datos de la base de datos, con tipo y tamaño.</a>
+    <a class="inicio-tarjeta" href="#sal"><b><span class="num">8</span>Diseño de salidas</b>Las 10 salidas del sistema y las 10 preguntas del libro.</a>
   </div>
 
   <div class="ejemplo"><b>El ejemplo que seguiremos en todas las secciones</b>
