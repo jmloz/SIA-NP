@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><title>Maquetas de interfaces de entrada — SIA-NP</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#e2e8f0;font-family:Arial,Helvetica,sans-serif;color:#1e293b;padding:24px}
+.pantalla{width:940px;background:#fff;border:1px solid #cbd5e1;border-radius:12px;overflow:hidden;margin:0 0 40px;box-shadow:0 10px 30px rgba(30,41,59,.14)}
+.barra{display:flex;align-items:center;gap:16px;background:linear-gradient(90deg,#3730a3,#4f46e5);color:#fff;padding:12px 20px}
+.logo{display:flex;align-items:center;gap:9px}
+.logo-txt{display:flex;flex-direction:column;line-height:1.05}
+.logo-txt b{font-size:17px;letter-spacing:.3px}
+.logo-txt small{font-size:10.5px;opacity:.85}
+.barra-tit{flex:1;display:flex;flex-direction:column;line-height:1.15;font-size:18px;font-weight:bold;padding-left:6px;border-left:1px solid rgba(255,255,255,.3)}
+.barra-tit .modulo{font-size:11px;font-weight:normal;text-transform:uppercase;letter-spacing:1px;opacity:.85}
+.user{display:flex;align-items:center;gap:9px}
+.avatar{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold}
+.user-txt{display:flex;flex-direction:column;line-height:1.1;text-align:right}
+.user-txt b{font-size:13px}
+.user-txt small{font-size:10.5px;opacity:.85}
+.cuerpo{padding:22px 24px 24px}
+.intro{font-size:13.5px;color:#475569;margin-bottom:16px;padding:9px 13px;background:#eef2ff;border-left:3px solid #4f46e5;border-radius:4px}
+.seccion{margin-bottom:18px}
+.seccion-tit{font-size:11.5px;font-weight:bold;text-transform:uppercase;letter-spacing:.8px;color:#4338ca;border-bottom:1px solid #e2e8f0;padding-bottom:5px;margin-bottom:12px}
+.campos{display:grid;grid-template-columns:1fr 1fr;gap:13px 20px}
+.campo{display:flex;flex-direction:column}
+.campo.full{grid-column:1 / -1}
+.campo label{font-size:13px;font-weight:bold;color:#334155;margin-bottom:5px}
+.req{color:#dc2626;margin-left:3px}
+.campo input,.campo select,.campo textarea{font-family:inherit;font-size:14px;color:#1e293b;padding:9px 11px;border:1px solid #cbd5e1;border-radius:7px;background:#fff;width:100%}
+.campo input::placeholder,.campo textarea::placeholder{color:#94a3b8}
+.control{position:relative;display:flex;align-items:center}
+.control.sel{display:block}
+.control .flecha{position:absolute;right:11px;top:9px;color:#64748b;pointer-events:none}
+.control .scan{position:absolute;right:10px;color:#4f46e5;font-size:15px;letter-spacing:-2px}
+.campo select{appearance:none;-webkit-appearance:none;padding-right:28px}
+.static{font-size:14px;padding:9px 11px;border:1px solid #e2e8f0;border-radius:7px;background:#f8fafc;color:#475569;font-weight:bold}
+.opciones{display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:3px}
+.op{display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:normal;color:#334155;cursor:default}
+.op input{width:16px;height:16px;accent-color:#4f46e5}
+.hint{font-size:12px;color:#64748b;margin-top:5px;display:flex;align-items:center;gap:5px}
+.hint .v{color:#16a34a;font-weight:bold}
+.barra-btn{display:flex;justify-content:flex-end;gap:10px;margin-top:8px;padding-top:16px;border-top:1px solid #e2e8f0}
+.btn{font-family:inherit;font-size:14px;font-weight:bold;padding:10px 20px;border-radius:7px;border:1px solid transparent;cursor:pointer}
+.btn-prim{background:#4f46e5;color:#fff}
+.btn-sec{background:#fff;color:#334155;border-color:#cbd5e1}
+.pie{display:flex;align-items:center;gap:10px;background:#f8fafc;border-top:1px solid #e2e8f0;padding:9px 20px;font-size:12.5px;color:#64748b}
+.id-chip{background:#4338ca;color:#fff;font-weight:bold;font-size:12px;padding:2px 9px;border-radius:999px;letter-spacing:.5px}
+/* Inicio de sesión */
+.pantalla.login{width:940px}
+.login-fondo{background:linear-gradient(135deg,#3730a3,#4f46e5);padding:34px;display:flex;justify-content:center}
+.login-card{background:#fff;border-radius:12px;padding:30px 34px;width:390px;box-shadow:0 12px 30px rgba(0,0,0,.25);text-align:center}
+.login-logo{display:flex;justify-content:center;margin-bottom:14px}
+.login-logo .logo-txt b{color:#312e81}
+.login-logo .logo-txt small{color:#6366f1}
+.login-logo svg rect[opacity]{fill:#4f46e5;opacity:.14}
+.login-logo svg rect[stroke],.login-logo svg path{stroke:#4f46e5}
+.login-card h2{font-size:20px;color:#1e293b;margin-bottom:3px}
+.login-sub{font-size:13px;color:#64748b;margin-bottom:20px}
+.login-card .campo{text-align:left;margin-bottom:14px}
+.login-card .recordar{justify-content:flex-start;margin-bottom:18px}
+.login-card .barra-btn{justify-content:center;border-top:none;padding-top:0}
+.login-card .btn-prim{width:100%;padding:11px}
+.login-pie{font-size:12px;color:#94a3b8;margin-top:16px}
+</style></head><body>
+
+<section class="pantalla login" id="IE-001">
+  <div class="login-fondo">
+    <div class="login-card">
+      <div class="login-logo">
+<span class="logo">
+  <svg viewBox="0 0 34 34" width="30" height="30" aria-hidden="true">
+    <rect x="1" y="1" width="32" height="32" rx="8" fill="#ffffff" opacity=".16"/>
+    <rect x="7" y="10" width="20" height="15" rx="1.5" fill="none" stroke="#fff" stroke-width="2"/>
+    <path d="M7 15 h20 M14 10 v5 M20 10 v5" stroke="#fff" stroke-width="2" fill="none"/>
+  </svg>
+  <span class="logo-txt"><b>SIA-NP</b><small>Neumática del Pacífico</small></span>
+</span></div>
+      <h2>Iniciar sesión</h2>
+      <p class="login-sub">Sistema de Inventario y Almacén</p>
+      <div class="campos"><div class="campo"><label>Usuario<span class="req">*</span></label><input type="text" value="lpablovich"><div class="hint"><span class="v">✓</span>Mínimo 4 caracteres.</div></div><div class="campo"><label>Contraseña<span class="req">*</span></label><input type="password" value="••••••••"><div class="hint"><span class="v">✓</span>Se bloquea tras 3 intentos fallidos.</div></div></div>
+      <label class="op recordar"><input type="checkbox"><span>Recordar este equipo</span></label>
+      <div class="barra-btn"><button class="btn btn-prim">Iniciar sesión</button></div>
+      <div class="login-pie">¿Olvidó su contraseña? Contacte al administrador.</div>
+    </div>
+  </div>
+  <div class="pie"><span class="id-chip">IE-001</span>Pantalla de inicio de sesión del sistema.</div>
+</section>
+
+<section class="pantalla" id="IE-002">
+  <div class="barra">
+    
+<span class="logo">
+  <svg viewBox="0 0 34 34" width="30" height="30" aria-hidden="true">
+    <rect x="1" y="1" width="32" height="32" rx="8" fill="#ffffff" opacity=".16"/>
+    <rect x="7" y="10" width="20" height="15" rx="1.5" fill="none" stroke="#fff" stroke-width="2"/>
+    <path d="M7 15 h20 M14 10 v5 M20 10 v5" stroke="#fff" stroke-width="2" fill="none"/>
+  </svg>
+  <span class="logo-txt"><b>SIA-NP</b><small>Neumática del Pacífico</small></span>
+</span>
+    <span class="barra-tit"><span class="modulo">Almacén</span>Registrar movimiento</span>
+    <span class="user"><span class="avatar">RM</span><span class="user-txt"><b>Ricardo Mendoza</b><small>Auxiliar de Almacén</small></span></span>
+  </div>
+  <div class="cuerpo">
+    <div class="intro">Registre la entrada o salida indicando el producto, la ubicación y el documento que la respalda.</div>
+    <div class="seccion"><div class="seccion-tit">Datos del movimiento</div><div class="campos"><div class="campo"><label>Tipo de movimiento<span class="req">*</span></label><div class="opciones"><label class="op"><input type="radio" name="Tipo de movimiento"><span>Entrada</span></label><label class="op"><input type="radio" name="Tipo de movimiento" checked><span>Salida</span></label><label class="op"><input type="radio" name="Tipo de movimiento"><span>Ajuste</span></label><label class="op"><input type="radio" name="Tipo de movimiento"><span>Devolución</span></label></div></div><div class="campo"><label>Fecha</label><input type="date" value="2026-11-12"></div><div class="campo full"><label>Producto (código o escáner)<span class="req">*</span></label><div class="control"><input type="text" value="RAC-0408 · Racor recto 1/4" × 8 mm"><span class="scan" title="Lector de código de barras">▐█▌</span></div><div class="hint"><span class="v">✓</span>El producto debe existir en el catálogo.</div></div><div class="campo"><label>Ubicación<span class="req">*</span></label><div class="control sel"><select><option selected>B-04-2 (pasillo B, anaquel 4, nivel 2)</option><option>C-02-1</option><option>A-01-1</option></select><span class="flecha">▾</span></div><div class="hint"><span class="v">✓</span>Se toma la ubicación asignada al producto.</div></div><div class="campo"><label>Existencia actual</label><div class="static">40 pza</div></div><div class="campo"><label>Cantidad<span class="req">*</span></label><input type="number" value="12"><div class="hint"><span class="v">✓</span>Mayor a 0; en salidas no puede exceder la existencia.</div></div><div class="campo"><label>Documento de referencia<span class="req">*</span></label><input type="text" value="NS-2026-0318" placeholder="Factura, OC o vale"><div class="hint"><span class="v">✓</span>Obligatorio en entradas y salidas.</div></div></div></div><div class="seccion"><div class="seccion-tit">Observaciones</div><div class="campos"><div class="campo full"><label>Motivo / nota</label><textarea rows="2" placeholder="Obligatorio en ajustes y devoluciones."></textarea></div></div></div>
+    <div class="barra-btn"><button class="btn btn-sec">Cancelar</button><button class="btn btn-prim">Guardar movimiento</button></div>
+  </div>
+  <div class="pie"><span class="id-chip">IE-002</span>Captura de entradas y salidas de mercancía (CU1).</div>
+</section>
+
+<section class="pantalla" id="IE-003">
+  <div class="barra">
+    
+<span class="logo">
+  <svg viewBox="0 0 34 34" width="30" height="30" aria-hidden="true">
+    <rect x="1" y="1" width="32" height="32" rx="8" fill="#ffffff" opacity=".16"/>
+    <rect x="7" y="10" width="20" height="15" rx="1.5" fill="none" stroke="#fff" stroke-width="2"/>
+    <path d="M7 15 h20 M14 10 v5 M20 10 v5" stroke="#fff" stroke-width="2" fill="none"/>
+  </svg>
+  <span class="logo-txt"><b>SIA-NP</b><small>Neumática del Pacífico</small></span>
+</span>
+    <span class="barra-tit"><span class="modulo">Catálogos</span>Alta de producto</span>
+    <span class="user"><span class="avatar">LP</span><span class="user-txt"><b>Lodevar Pablovich</b><small>Encargado de Almacén</small></span></span>
+  </div>
+  <div class="cuerpo">
+    
+    <div class="seccion"><div class="seccion-tit">Identificación</div><div class="campos"><div class="campo"><label>Código interno (SKU)<span class="req">*</span></label><input type="text" value="RAC-0408"><div class="hint"><span class="v">✓</span>Único; no puede repetirse.</div></div><div class="campo"><label>Código de barras</label><div class="control"><input type="text" value="7501000000028"><span class="scan" title="Lector de código de barras">▐█▌</span></div><div class="hint"><span class="v">✓</span>Opcional, pero no se repite.</div></div><div class="campo full"><label>Descripción<span class="req">*</span></label><input type="text" value="Racor recto 1/4" NPT × 8 mm"><div class="hint"><span class="v">✓</span>Obligatoria.</div></div><div class="campo"><label>Familia<span class="req">*</span></label><div class="control sel"><select><option selected>Racores</option><option>Mangueras</option><option>Válvulas</option><option>Cilindros</option><option>Compresores</option></select><span class="flecha">▾</span></div></div><div class="campo"><label>Unidad de medida<span class="req">*</span></label><div class="control sel"><select><option selected>PZA</option><option>M</option><option>KG</option><option>LT</option><option>JGO</option><option>ROLLO</option></select><span class="flecha">▾</span></div></div></div></div><div class="seccion"><div class="seccion-tit">Existencias y precios</div><div class="campos"><div class="campo"><label>Mínimo<span class="req">*</span></label><input type="number" value="30"><div class="hint"><span class="v">✓</span>Mayor o igual a 0.</div></div><div class="campo"><label>Máximo<span class="req">*</span></label><input type="number" value="150"><div class="hint"><span class="v">✓</span>Mayor o igual al mínimo.</div></div><div class="campo"><label>Punto de reorden<span class="req">*</span></label><input type="number" value="40"><div class="hint"><span class="v">✓</span>Entre el mínimo y el máximo.</div></div><div class="campo"><label>Costo unitario<span class="req">*</span></label><input type="number" value="18.00"><div class="hint"><span class="v">✓</span>Mayor o igual a 0.</div></div><div class="campo"><label>Precio de venta<span class="req">*</span></label><input type="number" value="32.00"><div class="hint"><span class="v">✓</span>Mayor o igual a 0.</div></div><div class="campo"><label>Ubicación</label><div class="control sel"><select><option selected>B-04-2</option><option>C-02-1</option><option>A-01-1</option><option>(sin asignar)</option></select><span class="flecha">▾</span></div></div></div></div>
+    <div class="barra-btn"><button class="btn btn-sec">Cancelar</button><button class="btn btn-prim">Guardar producto</button></div>
+  </div>
+  <div class="pie"><span class="id-chip">IE-003</span>Alta y edición de productos del catálogo (RF20).</div>
+</section>
+
+<section class="pantalla" id="IE-004">
+  <div class="barra">
+    
+<span class="logo">
+  <svg viewBox="0 0 34 34" width="30" height="30" aria-hidden="true">
+    <rect x="1" y="1" width="32" height="32" rx="8" fill="#ffffff" opacity=".16"/>
+    <rect x="7" y="10" width="20" height="15" rx="1.5" fill="none" stroke="#fff" stroke-width="2"/>
+    <path d="M7 15 h20 M14 10 v5 M20 10 v5" stroke="#fff" stroke-width="2" fill="none"/>
+  </svg>
+  <span class="logo-txt"><b>SIA-NP</b><small>Neumática del Pacífico</small></span>
+</span>
+    <span class="barra-tit"><span class="modulo">Catálogos</span>Alta de ubicación</span>
+    <span class="user"><span class="avatar">LP</span><span class="user-txt"><b>Lodevar Pablovich</b><small>Encargado de Almacén</small></span></span>
+  </div>
+  <div class="cuerpo">
+    
+    <div class="seccion"><div class="seccion-tit">Ubicación física</div><div class="campos"><div class="campo"><label>Clave<span class="req">*</span></label><input type="text" value="B-04-2"><div class="hint"><span class="v">✓</span>Única, p. ej. B-04-2.</div></div><div class="campo"><label>Pasillo<span class="req">*</span></label><div class="control sel"><select><option>A</option><option selected>B</option><option>C</option><option>P (patio techado)</option></select><span class="flecha">▾</span></div></div><div class="campo"><label>Anaquel</label><input type="number" value="4"><div class="hint"><span class="v">✓</span>De 1 a 8; vacío en el patio.</div></div><div class="campo"><label>Nivel</label><input type="number" value="2"><div class="hint"><span class="v">✓</span>De 1 a 3; vacío en el patio.</div></div><div class="campo full"><label>Descripción</label><input type="text" value="Pasillo B, anaquel 4, nivel 2"></div><div class="campo"><label>Disponible para asignar</label><div class="opciones"><label class="op"><input type="checkbox" checked><span>La ubicación está disponible</span></label></div></div></div></div>
+    <div class="barra-btn"><button class="btn btn-sec">Cancelar</button><button class="btn btn-prim">Guardar ubicación</button></div>
+  </div>
+  <div class="pie"><span class="id-chip">IE-004</span>Alta y edición de ubicaciones físicas del almacén (RF5).</div>
+</section>
+
+<section class="pantalla" id="IE-005">
+  <div class="barra">
+    
+<span class="logo">
+  <svg viewBox="0 0 34 34" width="30" height="30" aria-hidden="true">
+    <rect x="1" y="1" width="32" height="32" rx="8" fill="#ffffff" opacity=".16"/>
+    <rect x="7" y="10" width="20" height="15" rx="1.5" fill="none" stroke="#fff" stroke-width="2"/>
+    <path d="M7 15 h20 M14 10 v5 M20 10 v5" stroke="#fff" stroke-width="2" fill="none"/>
+  </svg>
+  <span class="logo-txt"><b>SIA-NP</b><small>Neumática del Pacífico</small></span>
+</span>
+    <span class="barra-tit"><span class="modulo">Compras</span>Alta de proveedor</span>
+    <span class="user"><span class="avatar">KD</span><span class="user-txt"><b>Karla Domínguez</b><small>Encargada de Compras</small></span></span>
+  </div>
+  <div class="cuerpo">
+    
+    <div class="seccion"><div class="seccion-tit">Datos fiscales</div><div class="campos"><div class="campo"><label>RFC<span class="req">*</span></label><input type="text" value="FIM990101XY2"><div class="hint"><span class="v">✓</span>12 o 13 caracteres.</div></div><div class="campo"><label>Clasificación<span class="req">*</span></label><div class="control sel"><select><option>Local</option><option selected>Nacional</option><option>Importación</option></select><span class="flecha">▾</span></div></div><div class="campo full"><label>Razón social<span class="req">*</span></label><input type="text" value="Fluidos Industriales de México"></div></div></div><div class="seccion"><div class="seccion-tit">Contacto y entrega</div><div class="campos"><div class="campo"><label>Nombre de contacto</label><input type="text" value="Ana Torres"></div><div class="campo"><label>Teléfono</label><input type="text" value="5555202020"></div><div class="campo"><label>Correo electrónico</label><input type="text" value="ana@fimsa.mx"><div class="hint"><span class="v">✓</span>Formato nombre@dominio.ext.</div></div><div class="campo"><label>Tiempo de entrega (días)<span class="req">*</span></label><input type="number" value="7"><div class="hint"><span class="v">✓</span>Entre 0 y 180 días.</div></div></div></div>
+    <div class="barra-btn"><button class="btn btn-sec">Cancelar</button><button class="btn btn-prim">Guardar proveedor</button></div>
+  </div>
+  <div class="pie"><span class="id-chip">IE-005</span>Alta y edición de proveedores (RF11).</div>
+</section>
+
+<section class="pantalla" id="IE-006">
+  <div class="barra">
+    
+<span class="logo">
+  <svg viewBox="0 0 34 34" width="30" height="30" aria-hidden="true">
+    <rect x="1" y="1" width="32" height="32" rx="8" fill="#ffffff" opacity=".16"/>
+    <rect x="7" y="10" width="20" height="15" rx="1.5" fill="none" stroke="#fff" stroke-width="2"/>
+    <path d="M7 15 h20 M14 10 v5 M20 10 v5" stroke="#fff" stroke-width="2" fill="none"/>
+  </svg>
+  <span class="logo-txt"><b>SIA-NP</b><small>Neumática del Pacífico</small></span>
+</span>
+    <span class="barra-tit"><span class="modulo">Compras</span>Generar orden de compra</span>
+    <span class="user"><span class="avatar">KD</span><span class="user-txt"><b>Karla Domínguez</b><small>Encargada de Compras</small></span></span>
+  </div>
+  <div class="cuerpo">
+    <div class="intro">Agregue los productos a solicitar; el sistema calcula el subtotal, el IVA y el total.</div>
+    <div class="seccion"><div class="seccion-tit">Encabezado</div><div class="campos"><div class="campo full"><label>Proveedor<span class="req">*</span></label><div class="control sel"><select><option selected>Fluidos Industriales de México (Nacional, 7 días)</option><option>Neumática del Noroeste (Local, 2 días)</option></select><span class="flecha">▾</span></div><div class="hint"><span class="v">✓</span>El proveedor debe estar dado de alta.</div></div><div class="campo"><label>Fecha de emisión</label><input type="date" value="2026-11-12"></div><div class="campo"><label>Fecha de entrega estimada</label><input type="date" value="2026-11-19"><div class="hint"><span class="v">✓</span>No puede ser anterior a la emisión.</div></div></div></div><div class="seccion"><div class="seccion-tit">Productos de la orden</div><div class="campos"><div class="campo full"><label>Producto<span class="req">*</span></label><div class="control"><input type="text" value="RAC-0408 · Racor recto 1/4" × 8 mm"><span class="scan" title="Lector de código de barras">▐█▌</span></div><div class="hint"><span class="v">✓</span>Cantidad mayor a 0; no se repite el producto en la orden.</div></div><div class="campo"><label>Cantidad<span class="req">*</span></label><input type="number" value="100"></div><div class="campo"><label>Costo unitario<span class="req">*</span></label><input type="number" value="18.00"></div></div></div><div class="seccion"><div class="seccion-tit">Totales</div><div class="campos"><div class="campo"><label>Subtotal</label><div class="static">$6,000.00</div></div><div class="campo"><label>IVA (16%)</label><div class="static">$960.00</div></div><div class="campo"><label>Total</label><div class="static">$6,960.00</div></div></div></div>
+    <div class="barra-btn"><button class="btn btn-sec">Guardar borrador</button><button class="btn btn-prim">Emitir orden</button></div>
+  </div>
+  <div class="pie"><span class="id-chip">IE-006</span>Captura y emisión de órdenes de compra (CU5).</div>
+</section>
+
+<section class="pantalla" id="IE-007">
+  <div class="barra">
+    
+<span class="logo">
+  <svg viewBox="0 0 34 34" width="30" height="30" aria-hidden="true">
+    <rect x="1" y="1" width="32" height="32" rx="8" fill="#ffffff" opacity=".16"/>
+    <rect x="7" y="10" width="20" height="15" rx="1.5" fill="none" stroke="#fff" stroke-width="2"/>
+    <path d="M7 15 h20 M14 10 v5 M20 10 v5" stroke="#fff" stroke-width="2" fill="none"/>
+  </svg>
+  <span class="logo-txt"><b>SIA-NP</b><small>Neumática del Pacífico</small></span>
+</span>
+    <span class="barra-tit"><span class="modulo">Compras</span>Recepción de mercancía</span>
+    <span class="user"><span class="avatar">KD</span><span class="user-txt"><b>Karla Domínguez</b><small>Encargada de Compras</small></span></span>
+  </div>
+  <div class="cuerpo">
+    <div class="intro">Busque la orden de compra y capture las cantidades recibidas; el saldo pendiente se calcula solo.</div>
+    <div class="seccion"><div class="seccion-tit">Orden y factura</div><div class="campos"><div class="campo"><label>Orden de compra<span class="req">*</span></label><div class="control sel"><select><option selected>OC-2026-0147 — Fluidos Industriales (Emitida)</option><option>OC-2026-0150 — Neumática del Noroeste</option></select><span class="flecha">▾</span></div><div class="hint"><span class="v">✓</span>Debe existir y estar abierta.</div></div><div class="campo"><label>Factura del proveedor<span class="req">*</span></label><input type="text" value="F-A-88213"><div class="hint"><span class="v">✓</span>Obligatoria.</div></div><div class="campo"><label>Tipo de recepción<span class="req">*</span></label><div class="opciones"><label class="op"><input type="radio" name="Tipo de recepción"><span>Total</span></label><label class="op"><input type="radio" name="Tipo de recepción" checked><span>Parcial</span></label></div></div><div class="campo"><label>Fecha de recepción</label><input type="date" value="2026-11-12"></div></div></div><div class="seccion"><div class="seccion-tit">Productos recibidos</div><div class="campos"><div class="campo full"><label>Producto</label><div class="static">RAC-0408 — Racor recto 1/4" NPT × 8 mm</div></div><div class="campo"><label>Solicitado</label><div class="static">100</div></div><div class="campo"><label>Recibido<span class="req">*</span></label><input type="number" value="60"><div class="hint"><span class="v">✓</span>No puede exceder el saldo pendiente.</div></div><div class="campo"><label>Ubicación de entrada<span class="req">*</span></label><div class="control sel"><select><option selected>B-04-2</option><option>C-02-1</option><option>A-01-1</option></select><span class="flecha">▾</span></div></div></div></div>
+    <div class="barra-btn"><button class="btn btn-sec">Cancelar</button><button class="btn btn-prim">Registrar recepción</button></div>
+  </div>
+  <div class="pie"><span class="id-chip">IE-007</span>Registro de recepción de mercancía contra una orden de compra (CU6).</div>
+</section>
+
+<section class="pantalla" id="IE-008">
+  <div class="barra">
+    
+<span class="logo">
+  <svg viewBox="0 0 34 34" width="30" height="30" aria-hidden="true">
+    <rect x="1" y="1" width="32" height="32" rx="8" fill="#ffffff" opacity=".16"/>
+    <rect x="7" y="10" width="20" height="15" rx="1.5" fill="none" stroke="#fff" stroke-width="2"/>
+    <path d="M7 15 h20 M14 10 v5 M20 10 v5" stroke="#fff" stroke-width="2" fill="none"/>
+  </svg>
+  <span class="logo-txt"><b>SIA-NP</b><small>Neumática del Pacífico</small></span>
+</span>
+    <span class="barra-tit"><span class="modulo">Almacén</span>Registrar devolución de cliente</span>
+    <span class="user"><span class="avatar">LP</span><span class="user-txt"><b>Lodevar Pablovich</b><small>Encargado de Almacén</small></span></span>
+  </div>
+  <div class="cuerpo">
+    
+    <div class="seccion"><div class="seccion-tit">Documento de venta</div><div class="campos"><div class="campo"><label>Cliente<span class="req">*</span></label><input type="text" value="Taller Mecánico del Norte"><div class="hint"><span class="v">✓</span>Si no existe, se puede dar de alta.</div></div><div class="campo"><label>Nota de salida / factura<span class="req">*</span></label><div class="control sel"><select><option selected>NS-2026-0318 (12/11/2026)</option><option>NS-2026-0305</option></select><span class="flecha">▾</span></div><div class="hint"><span class="v">✓</span>Respalda la venta original.</div></div></div></div><div class="seccion"><div class="seccion-tit">Mercancía devuelta</div><div class="campos"><div class="campo full"><label>Producto</label><div class="static">RAC-0408 — Racor recto 1/4" NPT × 8 mm</div></div><div class="campo"><label>Cantidad vendida</label><div class="static">12</div></div><div class="campo"><label>Cantidad devuelta<span class="req">*</span></label><input type="number" value="2"><div class="hint"><span class="v">✓</span>No puede exceder la cantidad vendida.</div></div><div class="campo"><label>Estado de la mercancía<span class="req">*</span></label><div class="opciones"><label class="op"><input type="radio" name="Estado de la mercancía" checked><span>Buen estado (reingresa)</span></label><label class="op"><input type="radio" name="Estado de la mercancía"><span>Dañada (resguardo)</span></label></div></div><div class="campo full"><label>Motivo de la devolución<span class="req">*</span></label><textarea rows="2">Pieza con rosca equivocada; en buen estado.</textarea><div class="hint"><span class="v">✓</span>Obligatorio.</div></div></div></div>
+    <div class="barra-btn"><button class="btn btn-sec">Cancelar</button><button class="btn btn-prim">Registrar devolución</button></div>
+  </div>
+  <div class="pie"><span class="id-chip">IE-008</span>Captura de devoluciones de cliente (CU4).</div>
+</section>
+
+<section class="pantalla" id="IE-009">
+  <div class="barra">
+    
+<span class="logo">
+  <svg viewBox="0 0 34 34" width="30" height="30" aria-hidden="true">
+    <rect x="1" y="1" width="32" height="32" rx="8" fill="#ffffff" opacity=".16"/>
+    <rect x="7" y="10" width="20" height="15" rx="1.5" fill="none" stroke="#fff" stroke-width="2"/>
+    <path d="M7 15 h20 M14 10 v5 M20 10 v5" stroke="#fff" stroke-width="2" fill="none"/>
+  </svg>
+  <span class="logo-txt"><b>SIA-NP</b><small>Neumática del Pacífico</small></span>
+</span>
+    <span class="barra-tit"><span class="modulo">Almacén</span>Captura de inventario físico</span>
+    <span class="user"><span class="avatar">LP</span><span class="user-txt"><b>Lodevar Pablovich</b><small>Encargado de Almacén</small></span></span>
+  </div>
+  <div class="cuerpo">
+    <div class="intro">Conteo a ciegas: no se muestra la existencia del sistema hasta cerrar el conteo.</div>
+    <div class="seccion"><div class="seccion-tit">Conteo</div><div class="campos"><div class="campo"><label>Tipo de conteo<span class="req">*</span></label><div class="opciones"><label class="op"><input type="radio" name="Tipo de conteo" checked><span>Cíclico (por familia)</span></label><label class="op"><input type="radio" name="Tipo de conteo"><span>Total (todo el almacén)</span></label></div></div><div class="campo"><label>Familia<span class="req">*</span></label><div class="control sel"><select><option selected>Racores</option><option>Mangueras</option><option>Válvulas</option><option>Cilindros</option></select><span class="flecha">▾</span></div><div class="hint"><span class="v">✓</span>Obligatoria en el conteo cíclico.</div></div></div></div><div class="seccion"><div class="seccion-tit">Productos a contar</div><div class="campos"><div class="campo full"><label>Producto</label><div class="static">RAC-0408 — Racor recto 1/4" NPT × 8 mm · B-04-2</div></div><div class="campo"><label>Cantidad contada<span class="req">*</span></label><input type="number" value="26"><div class="hint"><span class="v">✓</span>Mayor o igual a 0.</div></div><div class="campo full"><label>Producto</label><div class="static">RAC-0612 — Racor recto 3/8" NPT × 12 mm · B-04-3</div></div><div class="campo"><label>Cantidad contada<span class="req">*</span></label><input type="number" value="18"><div class="hint"><span class="v">✓</span>Mayor o igual a 0.</div></div></div></div>
+    <div class="barra-btn"><button class="btn btn-sec">Guardar avance</button><button class="btn btn-prim">Cerrar conteo</button></div>
+  </div>
+  <div class="pie"><span class="id-chip">IE-009</span>Captura de conteos de inventario físico (CU3).</div>
+</section>
+
+<section class="pantalla" id="IE-010">
+  <div class="barra">
+    
+<span class="logo">
+  <svg viewBox="0 0 34 34" width="30" height="30" aria-hidden="true">
+    <rect x="1" y="1" width="32" height="32" rx="8" fill="#ffffff" opacity=".16"/>
+    <rect x="7" y="10" width="20" height="15" rx="1.5" fill="none" stroke="#fff" stroke-width="2"/>
+    <path d="M7 15 h20 M14 10 v5 M20 10 v5" stroke="#fff" stroke-width="2" fill="none"/>
+  </svg>
+  <span class="logo-txt"><b>SIA-NP</b><small>Neumática del Pacífico</small></span>
+</span>
+    <span class="barra-tit"><span class="modulo">Seguridad</span>Alta de usuario</span>
+    <span class="user"><span class="avatar">A</span><span class="user-txt"><b>Administrador</b><small>Administrador</small></span></span>
+  </div>
+  <div class="cuerpo">
+    
+    <div class="seccion"><div class="seccion-tit">Cuenta</div><div class="campos"><div class="campo"><label>Nombre de usuario<span class="req">*</span></label><input type="text" value="rmendoza"><div class="hint"><span class="v">✓</span>Único; mínimo 4 caracteres.</div></div><div class="campo"><label>Rol<span class="req">*</span></label><div class="control sel"><select><option>Encargado de Almacén</option><option selected>Auxiliar de Almacén</option><option>Encargada de Compras</option><option>Dirección General</option><option>Administrador</option></select><span class="flecha">▾</span></div></div><div class="campo full"><label>Nombre completo<span class="req">*</span></label><input type="text" value="Ricardo Mendoza Quintero"></div><div class="campo"><label>Correo electrónico</label><input type="text" value="rmendoza@neumaticadelpacifico.mx"><div class="hint"><span class="v">✓</span>Formato nombre@dominio.ext.</div></div><div class="campo"><label>Cuenta activa</label><div class="opciones"><label class="op"><input type="checkbox" checked><span>El usuario puede iniciar sesión</span></label></div></div></div></div><div class="seccion"><div class="seccion-tit">Contraseña</div><div class="campos"><div class="campo"><label>Contraseña<span class="req">*</span></label><input type="password" value="••••••••"><div class="hint"><span class="v">✓</span>Se guarda cifrada (hash).</div></div><div class="campo"><label>Confirmar contraseña<span class="req">*</span></label><input type="password" value="••••••••"><div class="hint"><span class="v">✓</span>Debe coincidir con la anterior.</div></div></div></div>
+    <div class="barra-btn"><button class="btn btn-sec">Cancelar</button><button class="btn btn-prim">Guardar usuario</button></div>
+  </div>
+  <div class="pie"><span class="id-chip">IE-010</span>Alta y edición de usuarios del sistema (RF1).</div>
+</section>
+</body></html>

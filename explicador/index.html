@@ -158,6 +158,7 @@ footer{max-width:1180px;margin:0 auto;padding:0 16px 30px;font-size:12.5px;color
     <a href="#est" data-id="est"><span class="n">6</span>Estados</a>
     <a href="#dic" data-id="dic"><span class="n">7</span>Diccionario</a>
     <a href="#sal" data-id="sal"><span class="n">8</span>Salidas</a>
+    <a href="#ife" data-id="ife"><span class="n">9</span>Interfaces</a>
   </nav>
   <div id="progreso-lectura" aria-hidden="true"></div>
 </div></header>
@@ -396,9 +397,9 @@ window.SIA = (function(){
     <p class="nota-fuente">Fuente: ERS SIA-NP, Apéndice A (entrevistas) y Apéndice B (Excel actual: 454 registros, ubicaciones vacías, sin bitácora).</p>
   </div>
 
-  <h2>Cómo se conectan los 8 entregables</h2>
+  <h2>Cómo se conectan los 9 entregables</h2>
   <div class="cadena">
-    <span>ERS (RF1–RF20)</span><em>→</em><span>1 Casos de uso</span><em>→</em><span>2 Actividad</span><em>→</em><span>3 CRC</span><em>→</em><span>4 Secuencia</span><em>→</em><span>5 Clases</span><em>→</em><span>6 Estados</span><em>→</em><span>7 Diccionario</span><em>→</em><span>8 Salidas</span>
+    <span>ERS (RF1–RF20)</span><em>→</em><span>1 Casos de uso</span><em>→</em><span>2 Actividad</span><em>→</em><span>3 CRC</span><em>→</em><span>4 Secuencia</span><em>→</em><span>5 Clases</span><em>→</em><span>6 Estados</span><em>→</em><span>7 Diccionario</span><em>→</em><span>8 Salidas</span><em>→</em><span>9 Interfaces</span>
   </div>
   <p>Cada paso del proceso UML (Kendall &amp; Kendall, cap. 10) refina al anterior: los <b>casos de uso</b> dicen <i>qué</i> hace el sistema; las <b>actividades</b>, <i>en qué orden y quién</i>; las <b>CRC</b>, <i>qué clases y quién colabora con quién</i>; las <b>secuencias</b>, <i>qué mensajes se envían en el tiempo</i>; el <b>diagrama de clases</b> junta atributos, métodos y relaciones; el de <b>estados</b> sigue la vida de un objeto (la orden de compra); el <b>diccionario</b> lista cada dato que se guarda; y las <b>salidas</b> (cap. 11) diseñan lo que el sistema entrega: notas, reportes, pantallas y archivos.</p>
 
@@ -411,6 +412,7 @@ window.SIA = (function(){
     <a class="inicio-tarjeta" href="#est"><b><span class="num">6</span>Diagrama de estados</b>La vida de una orden de compra.</a>
     <a class="inicio-tarjeta" href="#dic"><b><span class="num">7</span>Diccionario de datos</b>Los 114 datos de la base de datos, con tipo y tamaño.</a>
     <a class="inicio-tarjeta" href="#sal"><b><span class="num">8</span>Diseño de salidas</b>Las 10 salidas del sistema y las 10 preguntas del libro.</a>
+    <a class="inicio-tarjeta" href="#ife"><b><span class="num">9</span>Diseño de interfaces</b>Las 10 pantallas de captura con su tabla y validaciones.</a>
   </div>
 
   <div class="ejemplo"><b>El ejemplo que seguiremos en todas las secciones</b>
@@ -6009,6 +6011,236 @@ BitacoraDeAuditoria:{registrarEvento:'Registrar cada operación',registrarAcceso
         aplicar:function(){ lis.forEach(function(li, j){ li.classList.toggle('resaltado', j===i); li.classList.toggle('atenuado', j!==i); }); }};
     });
     SIA.reproductor(raiz.querySelector('#sal-repro'), pasos, {reiniciar: reset, intervalo: 2400});
+  });
+})();
+</script>
+
+<!-- ===== secciones/09-interfaces.html ===== -->
+<style>
+#sec-ife .ife-tabs{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}
+#sec-ife .ife-tabs button{font:inherit;font-size:13px;padding:4px 9px;border:1px solid var(--tinta);background:var(--papel);border-radius:999px;cursor:pointer;transition:background .15s,color .15s,transform .12s}
+#sec-ife .ife-tabs button:hover{transform:translateY(-1px)}
+#sec-ife .ife-tabs button.activo{background:var(--tinta);color:var(--papel)}
+#sec-ife table.ife{width:100%;border-collapse:collapse;font-size:13px;background:var(--papel)}
+#sec-ife table.ife th,#sec-ife table.ife td{border:1px solid var(--tinta);padding:5px 8px;text-align:left;vertical-align:top}
+#sec-ife table.ife th{background:var(--gris)}
+#sec-ife table.ife tr.resaltado td{outline:2px solid var(--acento);outline-offset:-2px;background:#fff8f3}
+#sec-ife table.ife tr.atenuado{opacity:.4}
+#sec-ife .ife-id{font-weight:bold;white-space:nowrap}
+
+/* Maqueta de interfaz dibujada con HTML (acento índigo, igual que el entregable). */
+#sec-ife .mq{--ind:#4f46e5;--ind2:#3730a3;border:1px solid #cbd5e1;border-radius:10px;overflow:hidden;box-shadow:0 6px 18px rgba(30,41,59,.12);background:#fff;max-width:560px;margin:4px 0}
+#sec-ife .mq-barra{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,var(--ind2),var(--ind));color:#fff;padding:9px 14px}
+#sec-ife .mq-logo{display:flex;align-items:center;gap:7px;font-weight:bold;font-size:14px}
+#sec-ife .mq-logo .glifo{width:22px;height:22px;border:2px solid #fff;border-radius:4px;display:inline-block;position:relative;opacity:.95}
+#sec-ife .mq-logo .glifo::before{content:"";position:absolute;left:0;right:0;top:6px;border-top:2px solid #fff}
+#sec-ife .mq-tit{flex:1;font-weight:bold;font-size:14px;padding-left:8px;border-left:1px solid rgba(255,255,255,.3);line-height:1.15}
+#sec-ife .mq-tit small{display:block;font-weight:normal;font-size:10px;text-transform:uppercase;letter-spacing:.8px;opacity:.85}
+#sec-ife .mq-user{font-size:11px;opacity:.9;text-align:right;line-height:1.2}
+#sec-ife .mq-cuerpo{padding:12px 14px;display:grid;grid-template-columns:1fr 1fr;gap:9px 14px}
+#sec-ife .mq-campo{display:flex;flex-direction:column}
+#sec-ife .mq-campo.full{grid-column:1 / -1}
+#sec-ife .mq-campo label{font-size:11.5px;font-weight:bold;color:#334155;margin-bottom:3px}
+#sec-ife .mq-campo .req{color:#dc2626}
+#sec-ife .mq-campo .ctl{font-size:12px;color:#1e293b;padding:6px 8px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;min-height:30px;display:flex;align-items:center;justify-content:space-between}
+#sec-ife .mq-campo .ctl.ro{background:#f1f5f9;color:#475569;font-weight:bold;border-color:#e2e8f0}
+#sec-ife .mq-campo .ctl .sc{color:var(--ind);letter-spacing:-2px}
+#sec-ife .mq-campo .ctl .fl{color:#64748b}
+#sec-ife .mq-campo .val{font-size:10.5px;color:#64748b;margin-top:3px}
+#sec-ife .mq-campo .val::before{content:"✓ ";color:#16a34a;font-weight:bold}
+#sec-ife .mq-campo.resaltar .ctl{border-color:var(--acento);box-shadow:0 0 0 2px #ffe8d9}
+#sec-ife .mq-campo.resaltar .val{color:var(--acento)}
+#sec-ife .mq-btns{grid-column:1 / -1;display:flex;justify-content:flex-end;gap:8px;border-top:1px solid #e2e8f0;padding-top:9px;margin-top:2px}
+#sec-ife .mq-btns .b{font-size:12px;font-weight:bold;padding:7px 15px;border-radius:6px;border:1px solid transparent}
+#sec-ife .mq-btns .prim{background:var(--ind);color:#fff}
+#sec-ife .mq-btns .sec{background:#fff;color:#334155;border-color:#cbd5e1}
+#sec-ife .mq-pie{display:flex;align-items:center;gap:8px;background:#f8fafc;border-top:1px solid #e2e8f0;padding:6px 14px;font-size:11px;color:#64748b}
+#sec-ife .mq-pie .chip{background:var(--ind2);color:#fff;font-weight:bold;padding:1px 8px;border-radius:999px}
+#sec-ife dl.ife-conc dt{font-weight:bold;margin-top:8px}
+#sec-ife dl.ife-conc dd{margin:2px 0 0 18px}
+</style>
+
+<section id="sec-ife" class="sec">
+  <h1>9 · Diseño de interfaces de entrada</h1>
+  <p class="lead">Las <b>pantallas de captura</b> del sistema, dato por dato: qué campos tiene cada una, qué valida y quién la usa. Si el entregable 8 fue lo que el sistema <i>entrega</i>, este es lo que el sistema <i>recibe</i>.</p>
+
+  <h2>Qué es este entregable</h2>
+  <div class="panel">
+    <p>El diseño de las <b>10 interfaces de entrada</b> del SIA-NP según el capítulo 12 de Kendall y Kendall, «Diseño de una entrada eficaz». Incluye una <b>tabla de relación</b> (Id, descripción, requerimientos, validaciones y usuarios) y la <b>maqueta de cada pantalla</b>, todas con el mismo diseño: barra con logo, campos agrupados en secciones, marca de obligatorio y la validación debajo de cada campo.</p>
+    <dl class="ife-conc">
+      <dt>¿Por qué la captura importa tanto?</dt>
+      <dd>Es la principal fuente de errores: si el dato entra mal, la existencia, el kardex y los reportes quedan mal. Por eso cada campo valida (cantidad &gt; 0, salida ≤ existencia, RFC de 12–13, etc.).</dd>
+      <dt>Seis objetivos del libro</dt>
+      <dd>Efectividad · precisión · facilidad de uso · consistencia · sencillez · atractivo.</dd>
+      <dt>Convenciones de la maqueta</dt>
+      <dd><span class="chip acento">* obligatorio</span> <span class="chip ok">✓ validación</span> <span class="chip">campo de solo lectura = dato que el sistema calcula</span> <span class="chip">▐█▌ lector de código de barras (RF9)</span></dd>
+    </dl>
+  </div>
+
+  <h2>Relación de interfaces</h2>
+  <p>Haz clic en una fila (o en una pestaña abajo) para ver su maqueta.</p>
+  <div class="panel" style="overflow:auto"><div id="ife-tabla"></div></div>
+
+  <h2>Explora cada pantalla</h2>
+  <div class="ife-tabs" id="ife-tabs"></div>
+  <div class="panel" id="ife-maqueta"></div>
+
+  <h2>Mira validarse la captura</h2>
+  <p>Ricardo registra la salida de 12 racores en la pantalla <b>IE-002</b>. Sigue cómo cada campo se valida antes de guardar.</p>
+  <div class="ejemplo"><b>Ejemplo real</b> Salida de 12 <code>RAC-0408</code> con la nota <code>NS-2026-0318</code>; existencia 40 → 28.
+    <div class="nota-fuente">Códigos y cifras de ejemplo; personas, familias, formato de ubicación y requerimientos son de la ERS y la base de datos del Taller.</div></div>
+  <div class="panel" id="ife-demo"></div>
+  <div id="ife-repro"></div>
+
+  <h2>Para la exposición</h2>
+  <div class="panel">
+    <dl class="ife-conc">
+      <dt>¿De dónde salen las validaciones?</dt>
+      <dd>De las restricciones CHECK de la base de datos del Taller (cantidad &gt; 0, máximo ≥ mínimo, RFC 12–13, lead time 0–180…) y de las reglas de los casos de uso (salida ≤ existencia, recibido ≤ saldo pendiente).</dd>
+      <dt>¿Por qué el acento es azul si la regla del proyecto es «todo en negro»?</dt>
+      <dd>La regla del negro aplica a los diagramas y documentos UML. Aquí la consigna del profesor pide «colores recomendados y logos» para las pantallas; el texto del documento y la tabla siguen en negro, solo las maquetas usan el índigo corporativo.</dd>
+      <dt>¿Por qué hay campos de solo lectura?</dt>
+      <dd>Los datos que el sistema calcula o recupera (existencia actual, subtotal, IVA, total, saldo pendiente) se muestran pero no se capturan, para que no se puedan teclear mal.</dd>
+      <dt>¿Cómo se conecta con los otros entregables?</dt>
+      <dd>Cada pantalla realiza un caso de uso (IE-002 = CU1, IE-007 = CU6…) y captura los datos de una clase entidad del diagrama de clases, que a su vez son los campos del diccionario de datos (entregable 7).</dd>
+    </dl>
+  </div>
+</section>
+
+<script>
+(function(){
+  // Relación de interfaces (misma fuente que scripts/interfaces/relacion.json).
+  var REL = [
+    ["IE-001","Inicio de sesión","Pantalla de inicio de sesión del sistema.","RF1 (autenticación y permisos por rol)","Usuario de 4+ caracteres; bloqueo tras 3 intentos fallidos; cuenta activa.","Todos los usuarios"],
+    ["IE-002","Registrar movimiento","Captura de entradas y salidas de mercancía.","RF3 Registro de movimientos; RF8 Nota de salida; RF9 Código de barras","Cantidad > 0; en salidas no excede la existencia; documento obligatorio; producto existente.","Encargado y Auxiliar de Almacén"],
+    ["IE-003","Alta de producto","Alta y edición de productos del catálogo.","RF20 Catálogo; RF5 Ubicaciones","Código interno único; máximo ≥ mínimo; reorden entre mínimo y máximo; precios ≥ 0.","Encargado de Almacén; Administrador"],
+    ["IE-004","Alta de ubicación","Alta y edición de ubicaciones físicas.","RF5 Ubicaciones físicas","Clave única; pasillo A/B/C/P; anaquel 1–8 y nivel 1–3 (salvo patio).","Encargado de Almacén; Administrador"],
+    ["IE-005","Alta de proveedor","Alta y edición de proveedores.","RF11 Gestión de proveedores","RFC de 12–13 caracteres; clasificación de la lista; correo válido; lead time 0–180.","Encargada de Compras"],
+    ["IE-006","Generar orden de compra","Captura y emisión de órdenes de compra.","RF12 Órdenes de compra; RF14 Reorden","Cantidad > 0; producto no repetido; fecha de entrega ≥ emisión; proveedor existente.","Encargada de Compras"],
+    ["IE-007","Recepción de mercancía","Recepción de mercancía contra una OC.","RF13 Recepción contra OC","Recibido ≤ saldo pendiente; factura obligatoria; la OC debe existir y estar abierta.","Encargada de Compras; Encargado de Almacén"],
+    ["IE-008","Registrar devolución","Captura de devoluciones de cliente.","RF7 Devoluciones de cliente","Devuelto ≤ vendido; motivo obligatorio; documento de venta válido.","Encargado y Auxiliar de Almacén"],
+    ["IE-009","Inventario físico","Captura de conteos de inventario físico.","RF6 Inventario físico","Cantidad contada ≥ 0; el conteo cíclico exige familia; conteo a ciegas.","Encargado de Almacén"],
+    ["IE-010","Alta de usuario","Alta y edición de usuarios del sistema.","RF1 Autenticación y permisos","Usuario único de 4+ caracteres; correo válido; rol de la lista; contraseña confirmada.","Administrador"]
+  ];
+
+  // Definición de campos por pantalla para dibujar la maqueta en HTML.
+  // c(label, valor, {req, ro(read-only), scan, sel, val(validación), full})
+  function c(l, v, o){ o = o || {}; o.l = l; o.v = v; return o; }
+  var BARRA = { "IE-001":["Seguridad",null], "IE-002":["Almacén","Ricardo Mendoza · Auxiliar"],
+    "IE-003":["Catálogos","Lodevar Pablovich · Almacén"], "IE-004":["Catálogos","Lodevar Pablovich · Almacén"],
+    "IE-005":["Compras","Karla Domínguez · Compras"], "IE-006":["Compras","Karla Domínguez · Compras"],
+    "IE-007":["Compras","Karla Domínguez · Compras"], "IE-008":["Almacén","Lodevar Pablovich · Almacén"],
+    "IE-009":["Almacén","Lodevar Pablovich · Almacén"], "IE-010":["Seguridad","Administrador"] };
+  var CAMPOS = {
+    "IE-001":[ c("Usuario","lpablovich",{req:1,val:"Mínimo 4 caracteres"}), c("Contraseña","••••••••",{req:1,val:"Se bloquea tras 3 intentos"}) ],
+    "IE-002":[ c("Tipo","◉ Salida   ○ Entrada   ○ Ajuste",{req:1,full:1}), c("Producto","RAC-0408 · Racor recto 1/4\" × 8 mm",{req:1,scan:1,full:1,val:"El producto debe existir"}),
+      c("Ubicación","B-04-2",{req:1,sel:1,val:"Ubicación asignada al producto"}), c("Existencia actual","40 pza",{ro:1}),
+      c("Cantidad","12",{req:1,val:"> 0; en salidas no excede la existencia"}), c("Documento","NS-2026-0318",{req:1,val:"Obligatorio en entradas y salidas"}) ],
+    "IE-003":[ c("Código interno","RAC-0408",{req:1,val:"Único; no se repite"}), c("Código de barras","7501000000028",{scan:1,val:"Opcional, no se repite"}),
+      c("Descripción","Racor recto 1/4\" × 8 mm",{req:1,full:1}), c("Familia","Racores",{req:1,sel:1}), c("Unidad","PZA",{req:1,sel:1}),
+      c("Mínimo","30",{req:1}), c("Máximo","150",{req:1,val:"≥ mínimo"}), c("Punto de reorden","40",{req:1,val:"Entre mínimo y máximo"}) ],
+    "IE-004":[ c("Clave","B-04-2",{req:1,val:"Única"}), c("Pasillo","B",{req:1,sel:1}),
+      c("Anaquel","4",{val:"1–8; vacío en el patio"}), c("Nivel","2",{val:"1–3; vacío en el patio"}),
+      c("Descripción","Pasillo B, anaquel 4, nivel 2",{full:1}), c("Disponible","☑ La ubicación está disponible",{full:1}) ],
+    "IE-005":[ c("RFC","FIM990101XY2",{req:1,val:"12 o 13 caracteres"}), c("Clasificación","Nacional",{req:1,sel:1}),
+      c("Razón social","Fluidos Industriales de México",{req:1,full:1}), c("Correo","ana@fimsa.mx",{val:"Formato nombre@dominio.ext"}),
+      c("Tiempo de entrega (días)","7",{req:1,val:"Entre 0 y 180"}) ],
+    "IE-006":[ c("Proveedor","Fluidos Industriales (Nacional, 7 d)",{req:1,sel:1,full:1,val:"El proveedor debe existir"}),
+      c("Fecha de emisión","2026-11-12",{}), c("Entrega estimada","2026-11-19",{val:"No anterior a la emisión"}),
+      c("Producto","RAC-0408 · Racor recto 1/4\" × 8 mm",{req:1,scan:1,full:1,val:"No se repite en la orden"}),
+      c("Cantidad","100",{req:1}), c("Costo unitario","18.00",{req:1}),
+      c("Subtotal","$6,000.00",{ro:1}), c("IVA (16%)","$960.00",{ro:1}), c("Total","$6,960.00",{ro:1}) ],
+    "IE-007":[ c("Orden de compra","OC-2026-0147 — Fluidos (Emitida)",{req:1,sel:1,full:1,val:"Debe existir y estar abierta"}),
+      c("Factura del proveedor","F-A-88213",{req:1,val:"Obligatoria"}), c("Tipo","○ Total   ◉ Parcial",{req:1}),
+      c("Producto","RAC-0408 · Racor recto 1/4\" × 8 mm",{ro:1,full:1}), c("Solicitado","100",{ro:1}),
+      c("Recibido","60",{req:1,val:"No excede el saldo pendiente"}), c("Ubicación de entrada","B-04-2",{req:1,sel:1}) ],
+    "IE-008":[ c("Cliente","Taller Mecánico del Norte",{req:1,val:"Si no existe, se da de alta"}),
+      c("Nota de salida","NS-2026-0318 (12/11/2026)",{req:1,sel:1,val:"Respalda la venta"}),
+      c("Producto","RAC-0408 · Racor recto 1/4\" × 8 mm",{ro:1,full:1}), c("Cantidad vendida","12",{ro:1}),
+      c("Cantidad devuelta","2",{req:1,val:"No excede la vendida"}),
+      c("Estado","◉ Buen estado (reingresa)   ○ Dañada",{req:1,full:1}),
+      c("Motivo","Pieza con rosca equivocada; en buen estado.",{req:1,full:1,val:"Obligatorio"}) ],
+    "IE-009":[ c("Tipo de conteo","◉ Cíclico (familia)   ○ Total",{req:1,full:1}), c("Familia","Racores",{req:1,sel:1,val:"Obligatoria en el cíclico"}),
+      c("RAC-0408 · B-04-2","26 contadas",{req:1,full:1,val:"≥ 0 (conteo a ciegas)"}),
+      c("RAC-0612 · B-04-3","18 contadas",{req:1,full:1,val:"≥ 0 (conteo a ciegas)"}) ],
+    "IE-010":[ c("Nombre de usuario","rmendoza",{req:1,val:"Único; mínimo 4 caracteres"}), c("Rol","Auxiliar de Almacén",{req:1,sel:1}),
+      c("Nombre completo","Ricardo Mendoza Quintero",{req:1,full:1}), c("Correo","rmendoza@neumaticadelpacifico.mx",{val:"Formato nombre@dominio.ext"}),
+      c("Contraseña","••••••••",{req:1,val:"Se guarda cifrada (hash)"}), c("Confirmar","••••••••",{req:1,val:"Debe coincidir"}) ],
+  };
+  var BOTONES = {
+    "IE-001":[["prim","Iniciar sesión"]], "IE-002":[["sec","Cancelar"],["prim","Guardar movimiento"]],
+    "IE-003":[["sec","Cancelar"],["prim","Guardar producto"]], "IE-004":[["sec","Cancelar"],["prim","Guardar ubicación"]],
+    "IE-005":[["sec","Cancelar"],["prim","Guardar proveedor"]], "IE-006":[["sec","Guardar borrador"],["prim","Emitir orden"]],
+    "IE-007":[["sec","Cancelar"],["prim","Registrar recepción"]], "IE-008":[["sec","Cancelar"],["prim","Registrar devolución"]],
+    "IE-009":[["sec","Guardar avance"],["prim","Cerrar conteo"]], "IE-010":[["sec","Cancelar"],["prim","Guardar usuario"]],
+  };
+
+  SIA.registrar('ife', function(raiz){
+    function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+    var tablaCont = raiz.querySelector('#ife-tabla'), tabs = raiz.querySelector('#ife-tabs'), maq = raiz.querySelector('#ife-maqueta');
+
+    // Dibuja una maqueta HTML. resaltar: índice de campo a destacar (o -1).
+    function maqueta(id, resaltar){
+      if (resaltar == null) resaltar = -1;
+      var b = BARRA[id], campos = CAMPOS[id], rel = REL.filter(function(r){ return r[0] === id; })[0];
+      var logo = '<span class="mq-logo"><span class="glifo"></span>SIA-NP</span>';
+      var tit = '<span class="mq-tit"><small>' + esc(b[0]) + '</small>' + esc(rel[1]) + '</span>';
+      var user = b[1] ? '<span class="mq-user">' + esc(b[1]) + '</span>' : '';
+      var h = '<div class="mq"><div class="mq-barra">' + logo + tit + user + '</div><div class="mq-cuerpo">';
+      campos.forEach(function(f, i){
+        var cls = 'mq-campo' + (f.full ? ' full' : '') + (i === resaltar ? ' resaltar' : '');
+        var extra = f.scan ? '<span class="sc">▐█▌</span>' : (f.sel ? '<span class="fl">▾</span>' : '');
+        h += '<div class="' + cls + '"><label>' + esc(f.l) + (f.req ? '<span class="req"> *</span>' : '') + '</label>' +
+             '<div class="ctl' + (f.ro ? ' ro' : '') + '"><span>' + esc(f.v) + '</span>' + extra + '</div>' +
+             (f.val ? '<div class="val">' + esc(f.val) + '</div>' : '') + '</div>';
+      });
+      h += '<div class="mq-btns">' + BOTONES[id].map(function(x){ return '<span class="b ' + x[0] + '">' + esc(x[1]) + '</span>'; }).join('') + '</div>';
+      h += '</div><div class="mq-pie"><span class="chip">' + id + '</span>' + esc(rel[2]) + '</div></div>';
+      return h;
+    }
+
+    // Tabla de relación.
+    function pintarTabla(activo){
+      var h = '<table class="ife"><tr><th>Id_interfaz</th><th>Descripción</th><th>Requerimientos</th><th>Validaciones</th><th>Usuarios</th></tr>';
+      REL.forEach(function(r){
+        var cl = activo ? (r[0] === activo ? ' class="resaltado"' : ' class="atenuado"') : '';
+        h += '<tr data-id="' + r[0] + '"' + cl + ' style="cursor:pointer"><td class="ife-id">' + r[0] + '</td><td>' + esc(r[2]) +
+             '</td><td>' + esc(r[3]) + '</td><td>' + esc(r[4]) + '</td><td>' + esc(r[5]) + '</td></tr>';
+      });
+      tablaCont.innerHTML = h + '</table>';
+      Array.prototype.forEach.call(tablaCont.querySelectorAll('tr[data-id]'), function(tr){
+        tr.onclick = function(){ ver(tr.getAttribute('data-id')); };
+      });
+    }
+
+    function ver(id){
+      Array.prototype.forEach.call(tabs.children, function(bt){ bt.classList.toggle('activo', bt.getAttribute('data-id') === id); });
+      maq.innerHTML = maqueta(id);
+      pintarTabla(id);
+    }
+
+    // Pestañas.
+    REL.forEach(function(r){
+      var bt = document.createElement('button'); bt.type = 'button'; bt.setAttribute('data-id', r[0]);
+      bt.textContent = r[0] + ' ' + r[1]; bt.onclick = function(){ ver(r[0]); }; tabs.appendChild(bt);
+    });
+    pintarTabla(null);
+    ver('IE-001');
+
+    // Demo de validación sobre IE-002.
+    var demo = raiz.querySelector('#ife-demo');
+    function verDemo(i){ demo.innerHTML = maqueta('IE-002', i); }
+    verDemo(-1);
+    var pasos = [
+      {titulo:'Tipo de movimiento', texto:'Ricardo elige <b>Salida</b>. El tipo es obligatorio y fija las reglas que siguen (una salida descuenta existencia).', aplicar:function(){ verDemo(0); }},
+      {titulo:'Producto por código de barras', texto:'Escanea <code>RAC-0408</code> (▐█▌). El sistema valida que <b>el producto exista</b> en el catálogo y trae su descripción.', aplicar:function(){ verDemo(1); }},
+      {titulo:'Ubicación', texto:'Se toma la ubicación asignada al producto: <code>B-04-2</code>. Es una lista, no texto libre, para no equivocarse.', aplicar:function(){ verDemo(2); }},
+      {titulo:'Existencia (solo lectura)', texto:'Muestra <b>40 pza</b>. Es un dato que el sistema recupera: no se puede teclear, así que no se corrompe.', aplicar:function(){ verDemo(3); }},
+      {titulo:'Cantidad', texto:'Captura <b>12</b>. La validación exige <b>&gt; 0</b> y que en una salida <b>no exceda la existencia</b> (12 ≤ 40 ✓).', aplicar:function(){ verDemo(4); }},
+      {titulo:'Documento de referencia', texto:'Escribe <code>NS-2026-0318</code>. Es <b>obligatorio</b> en entradas y salidas (respalda el movimiento).', aplicar:function(){ verDemo(5); }},
+      {titulo:'Guardar', texto:'Con todo válido, pulsa <b>Guardar movimiento</b>: la existencia baja 40 → 28 y se asienta en el kardex y la bitácora.', aplicar:function(){ verDemo(-1); }}
+    ];
+    SIA.reproductor(raiz.querySelector('#ife-repro'), pasos, {reiniciar:function(){ verDemo(-1); }, intervalo:2600});
   });
 })();
 </script>

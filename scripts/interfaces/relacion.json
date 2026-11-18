@@ -1,0 +1,72 @@
+[
+  [
+    "IE-001",
+    "Pantalla de inicio de sesión del sistema.",
+    "RF1 (autenticación y permisos por rol)",
+    "Usuario de 4+ caracteres; bloqueo tras 3 intentos fallidos; cuenta activa.",
+    "Todos los usuarios del sistema"
+  ],
+  [
+    "IE-002",
+    "Captura de entradas y salidas de mercancía.",
+    "RF3 Registro de movimientos; RF8 Nota de salida; RF9 Código de barras",
+    "Cantidad mayor a 0; en salidas no excede la existencia; documento obligatorio; producto existente.",
+    "Encargado y Auxiliar de Almacén"
+  ],
+  [
+    "IE-003",
+    "Alta y edición de productos del catálogo.",
+    "RF20 Catálogo de productos; RF5 Ubicaciones",
+    "Código interno único; máximo ≥ mínimo; reorden entre mínimo y máximo; precios ≥ 0; unidad de la lista.",
+    "Encargado de Almacén; Administrador"
+  ],
+  [
+    "IE-004",
+    "Alta y edición de ubicaciones físicas.",
+    "RF5 Ubicaciones físicas del almacén",
+    "Clave única; pasillo A/B/C/P; anaquel 1–8 y nivel 1–3 (salvo patio).",
+    "Encargado de Almacén; Administrador"
+  ],
+  [
+    "IE-005",
+    "Alta y edición de proveedores.",
+    "RF11 Gestión de proveedores y precios",
+    "RFC de 12–13 caracteres; clasificación de la lista; correo con formato válido; lead time 0–180 días.",
+    "Encargada de Compras"
+  ],
+  [
+    "IE-006",
+    "Captura y emisión de órdenes de compra.",
+    "RF12 Generación de órdenes de compra; RF14 Reorden",
+    "Cantidad mayor a 0; producto no repetido; fecha de entrega ≥ emisión; proveedor existente.",
+    "Encargada de Compras"
+  ],
+  [
+    "IE-007",
+    "Registro de recepción de mercancía contra OC.",
+    "RF13 Recepción de mercancía contra OC",
+    "Cantidad recibida ≤ saldo pendiente; factura obligatoria; la OC debe existir y estar abierta.",
+    "Encargada de Compras; Encargado de Almacén"
+  ],
+  [
+    "IE-008",
+    "Captura de devoluciones de cliente.",
+    "RF7 Devoluciones de cliente",
+    "Cantidad devuelta ≤ cantidad vendida; motivo obligatorio; documento de venta válido.",
+    "Encargado y Auxiliar de Almacén"
+  ],
+  [
+    "IE-009",
+    "Captura de conteos de inventario físico.",
+    "RF6 Inventario físico cíclico y completo",
+    "Cantidad contada ≥ 0; el conteo cíclico exige familia; conteo a ciegas.",
+    "Encargado de Almacén"
+  ],
+  [
+    "IE-010",
+    "Alta y edición de usuarios del sistema.",
+    "RF1 Autenticación y permisos por rol",
+    "Usuario único de 4+ caracteres; correo con formato; rol de la lista; contraseña confirmada.",
+    "Administrador"
+  ]
+]
