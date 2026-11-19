@@ -169,6 +169,48 @@ function contenido() {
   ];
 }
 
+// ---------- 2. Documentos fuente (punto 1 de la consigna) ----------
+function documentosFuente() {
+  return [
+    h1('2. Relación de documentos fuente del sistema'),
+    p('Los documentos fuente son los documentos reales con los que hoy opera Neumática del Pacífico y de los que el sistema toma sus datos de entrada. Esta relación, junto con las salidas de la sección 3, es el punto de partida para depurar los datos y construir el diccionario. Los documentos se identificaron en las entrevistas (Apéndice A de la ERS) y en la revisión del Excel actual (Apéndice B).'),
+    pieTabla('Documentos fuente del sistema y los datos que contiene cada uno'),
+    tabla(['Documento fuente', 'Datos que contiene', 'Tabla(s) donde se guarda'], [
+      ['Libro físico de remisiones', 'Fecha, cliente, productos surtidos, cantidad, número de remisión, firma de recibido.', 'MOVIMIENTO (salidas)'],
+      ['Excel "INV ALMACÉN" (454 registros)', 'Código interno, descripción, familia, existencia, mínimo, máximo, costo, precio.', 'PRODUCTO, FAMILIA'],
+      ['Excel "Hoja3" (ubicaciones)', 'Código de producto, rack/pasillo, anaquel, caja/nivel.', 'UBICACION, PRODUCTO'],
+      ['Excel "Hoja4" (precios con IVA)', 'Código, costo sin IVA, IVA, precio con IVA, margen.', 'PRODUCTO, PRODUCTO_PROVEEDOR'],
+      ['Factura / remisión del proveedor', 'Proveedor, RFC, número de factura, productos, cantidad recibida, costo unitario, fecha.', 'PROVEEDOR, RECEPCION, DETALLE_ORDEN, MOVIMIENTO (entradas)'],
+      ['Orden de compra en Word', 'Folio, proveedor, fecha, productos, cantidad solicitada, costo, condiciones.', 'ORDEN_COMPRA, DETALLE_ORDEN'],
+      ['Vale interno de salida', 'Producto, cantidad, área que solicita, motivo, fecha.', 'MOVIMIENTO (salidas)'],
+      ['Hoja de conteo de inventario físico', 'Familia, producto, ubicación, cantidad contada, responsable, fecha.', 'INVENTARIO_FISICO, DETALLE_CONTEO'],
+      ['Nota de devolución de cliente', 'Documento de venta original, cliente, producto, cantidad, motivo, estado de la mercancía.', 'MOVIMIENTO (devoluciones)'],
+      ['Lista de proveedores', 'Razón social, RFC, clasificación, contacto, teléfono, correo, tiempo de entrega.', 'PROVEEDOR'],
+    ], [2600, 4360, 2400], { size: 16 }),
+    p('De esta relación se observa que varios documentos repiten los mismos datos (el código y la descripción del producto aparecen en los tres Excel, en la factura, en la orden de compra y en el vale). Esa duplicación es justamente la que se depura al pasar a la base de datos: cada dato queda una sola vez en su tabla y los demás documentos lo referencian por su llave.', { before: 120 }),
+  ];
+}
+
+// ---------- 3. Salidas del sistema (punto 2 de la consigna) ----------
+function salidas() {
+  return [
+    h1('3. Relación de salidas del sistema'),
+    p('Las salidas son la información que el sistema entrega a sus usuarios (consultas en pantalla, reportes impresos y archivos de exportación). Se tomaron del entregable de diseño de salidas del análisis del SIA-NP. Interesan aquí porque los datos que una salida necesita deben existir en alguna tabla: si una salida pide un dato que ningún documento fuente aporta, falta una columna o una tabla.'),
+    pieTabla('Salidas del sistema y los datos que presenta cada una'),
+    tabla(['Salida', 'Tipo', 'Datos que presenta', 'Origen en la base de datos'], [
+      ['Nota de salida', 'Reporte impreso', 'Folio, fecha, cliente, productos, cantidad, ubicación.', 'MOVIMIENTO, PRODUCTO, UBICACION'],
+      ['Orden de compra', 'Reporte / archivo', 'Folio, proveedor, productos, cantidad, costo, subtotal, IVA, total.', 'ORDEN_COMPRA, DETALLE_ORDEN, PROVEEDOR'],
+      ['Kardex del producto', 'Consulta en pantalla', 'Fecha, tipo, documento, entrada, salida, saldo, usuario.', 'vw_KARDEX (MOVIMIENTO, PRODUCTO, USUARIO)'],
+      ['Reporte de productos bajo reorden', 'Reporte', 'Código, descripción, existencia, punto de reorden, sugerido.', 'vw_PRODUCTOS_BAJO_REORDEN'],
+      ['Diferencias físico vs sistema', 'Reporte', 'Producto, existencia del sistema, cantidad contada, diferencia.', 'DETALLE_CONTEO, INVENTARIO_FISICO'],
+      ['Valor del inventario por familia', 'Consulta / dashboard', 'Familia, número de productos, unidades, valor del inventario.', 'vw_VALOR_INVENTARIO'],
+      ['Dashboard de KPIs', 'Pantalla', 'Exactitud, rotación, OC abiertas, productos agotados.', 'Agregados de MOVIMIENTO, ORDEN_COMPRA, PRODUCTO'],
+      ['Exportación a Excel / CSV', 'Archivo', 'Las columnas de cualquier reporte o vista.', 'Cualquier tabla o vista'],
+    ], [2300, 1600, 3360, 2100], { size: 16 }),
+    p('Tres de estas salidas se resolvieron creando vistas (VIEW) en la propia base de datos, que se incluyen en el script de creación (sección 7): vw_KARDEX arma el historial de cada producto a partir de MOVIMIENTO; vw_PRODUCTOS_BAJO_REORDEN lista los productos cuya existencia cayó bajo el punto de reorden; y vw_VALOR_INVENTARIO suma el valor del inventario por familia. Las demás salidas se obtienen con consultas sobre las tablas.', { before: 120 }),
+  ];
+}
+
 // ---------- 1. Introducción ----------
 function introduccion() {
   return [
@@ -213,7 +255,7 @@ function defDe(r) {
 }
 function diccionario() {
   const out = [
-    h1('2. Diccionario de datos'),
+    h1('4. Diccionario de datos'),
     p('El diccionario de datos describe cada tabla y cada uno de sus campos. Los tipos, la obligatoriedad, las llaves y los valores por defecto se extrajeron directamente del catálogo de SQL Server (sys.columns) después de ejecutar el script de creación, por lo que coinciden exactamente con la base de datos creada.'),
     p('Abreviaturas usadas en las tablas:'),
     bullet('**PK**: llave primaria. **FK → TABLA**: llave foránea que apunta a esa tabla. **UQ**: valor único (no se repite).'),
@@ -222,7 +264,7 @@ function diccionario() {
     bullet('Tipos usados: INT, BIGINT, SMALLINT y TINYINT (enteros); DECIMAL(p,s) (numéricos con decimales); VARCHAR(n) y CHAR(n) (texto); DATE y DATETIME2 (fechas); BIT (verdadero/falso).'),
   ];
   for (const c of catalogos) {
-    out.push(h2(`2.${c.num} Catálogo ${c.num}: ${c.nombre}`));
+    out.push(h2(`4.${c.num} Catálogo ${c.num}: ${c.nombre}`));
     out.push(p([run('Responsable: ', { bold: true }), run(c.responsable)], { after: 60 }));
     for (const t of c.tablas) {
       const filas = meta.filter((m) => m.tabla === t).sort((a, b) => a.orden - b.orden);
@@ -268,7 +310,7 @@ function figuraHorizontal(base, titulo) {
 
 function mer() {
   return [
-    h1('3. Modelo Entidad-Relación'),
+    h1('5. Modelo Entidad-Relación'),
     p('El modelo entidad-relación (MER) representa los datos que el SIA-NP debe guardar, sin pensar todavía en tablas. Se obtuvo de las clases de entidad del diagrama de clases del sistema y de la descripción lógica de datos de la ERS (sección 4.1). Se usó la notación de Chen extendida:'),
     bullet('**Rectángulo**: entidad. **Doble rectángulo**: entidad débil (DETALLE_CONTEO).'),
     bullet('**Rombo**: relación, nombrada con un verbo. **Doble rombo**: relación identificadora de la entidad débil.'),
@@ -296,7 +338,7 @@ function uml() {
     ['Llave foránea', 'No se escribe como atributo; la reemplaza la asociación', 'id_familia → asociación «clasifica»'],
   ];
   return [
-    h1('4. Pase del Modelo Entidad-Relación a UML', false),
+    h1('6. Pase del Modelo Entidad-Relación a UML', false),
     p('El modelo entidad-relación se transformó a un diagrama de clases UML de persistencia, usando la misma notación del libro de Kendall & Kendall que el equipo utilizó en el diagrama de clases del SIA-NP: rectángulo con el nombre de la clase, sus atributos y un compartimento de métodos vacío, ya que aquí solo interesa la estructura de los datos. Las reglas aplicadas fueron las siguientes:'),
     pieTabla('Reglas de transformación del MER a UML'),
     tabla(['Elemento del MER', 'Elemento en UML', 'Ejemplo en el SIA-NP'], reglasPase, [2700, 3260, 3400], { size: 17 }),
@@ -307,7 +349,7 @@ function uml() {
 // ---------- 5. Modelo lógico ----------
 function logico() {
   return [
-    h1('5. Base de datos lógica del sistema', false),
+    h1('7. Base de datos lógica del sistema', false),
     p('El modelo lógico es el paso del modelo conceptual al modelo relacional: cada entidad y cada relación muchos a muchos se convierte en una tabla, cada atributo en una columna con su tipo de dato de SQL Server, y cada relación uno a muchos en una llave foránea del lado «muchos». Las figuras de las páginas siguientes muestran el diagrama de la base de datos en notación de pata de gallo, uno por catálogo, con las columnas, tipos y llaves de cada tabla (las tablas de otros catálogos aparecen con borde punteado y solo con su llave primaria; la etiqueta de cada línea es la columna que funciona como llave foránea).'),
     h2('Reglas de transformación aplicadas'),
     bullet('**Entidad fuerte → tabla** con llave primaria sustituta autoincremental (IDENTITY). Los datos que el usuario ve, como el código interno, el folio o el RFC, se protegen con UNIQUE.'),
@@ -336,13 +378,13 @@ function creacion() {
   ];
   const resp = { 'Catálogo 1': catalogos[0].responsable, 'Catálogo 2': catalogos[1].responsable, 'Catálogo 3': catalogos[2].responsable, 'Catálogo 4': catalogos[3].responsable };
   const out = [
-    h1('6. Creación de la base de datos', false),
+    h1('8. Creación de la base de datos', false),
     p('La base de datos se creó en Microsoft SQL Server con el lenguaje T-SQL. El script se probó en SQL Server 2022 y es compatible con SQL Server 2019 y con SQL Server Express; puede ejecutarse desde SQL Server Management Studio en Windows o con la herramienta sqlcmd en Ubuntu. El script completo se entrega junto con este documento en el archivo 01_creacion_SIA_NP.sql.'),
     p('Las tablas se crean en el orden de sus dependencias (primero las tablas padre y después las que tienen llaves foráneas hacia ellas), por eso el catálogo de usuarios va primero: casi todas las tablas de operación registran qué usuario hizo cada cosa.'),
-    h2('6.1 Creación de la base de datos'),
+    h2('8.1 Creación de la base de datos'),
     p('Se usa la intercalación Modern_Spanish_CI_AS para que las comparaciones y los ordenamientos respeten el español (ñ y acentos) y no distingan mayúsculas de minúsculas. Si la base de datos ya existe, el script la elimina para poder ejecutarse de nuevo desde cero.'),
     ...codigo(bloque('SET ANSI_NULLS ON;', '/* ====')),
-    h2('6.2 Restricciones utilizadas'),
+    h2('8.2 Restricciones utilizadas'),
     p('Las reglas de integridad se agregaron como restricciones con nombre (CONSTRAINT), para que el mensaje de error indique exactamente qué regla se violó. Se siguió la convención PK_Tabla, FK_Hija_Padre, UQ_Tabla_campo, CK_Tabla_campo y DF_Tabla_campo.'),
     pieTabla('Restricciones creadas en la base de datos'),
     tabla(['Tipo de restricción', 'Cantidad', 'Para qué se usa en el SIA-NP'], [
@@ -353,7 +395,7 @@ function creacion() {
       ['DEFAULT', String(conteo.DEFAULT), 'Valores iniciales: fecha actual, existencia 0.0, activo 1, estado PENDIENTE, moneda MXN, etc.'],
       ['Columnas calculadas', '4', 'iva y total de la orden, importe de la partida y diferencia del conteo (PERSISTED).'],
     ], [2100, 1300, 5960], { size: 17 }),
-    h2('6.3 Creación de las tablas por catálogo'),
+    h2('8.3 Creación de las tablas por catálogo'),
     p('A continuación se muestra el script de cada catálogo, con el integrante que lo realizó.'),
   ];
   for (const [titulo, desde, hasta] of secciones) {
@@ -363,19 +405,55 @@ function creacion() {
   return out;
 }
 
+// ---------- Normalización a 3FN (punto 7 de la consigna) ----------
+function normalizacion() {
+  return [
+    h1('9. Normalización a la tercera forma normal'),
+    p('El diseño de la base de datos se verificó contra las tres primeras formas normales (1FN, 2FN y 3FN). La normalización evita las anomalías de inserción, actualización y borrado que tenía el Excel actual, donde el mismo dato (por ejemplo, la descripción de un producto) se repetía en varias hojas y podía quedar contradictorio.'),
+    h2('9.1 Primera forma normal (1FN)'),
+    p('Una tabla está en 1FN si todos sus campos son atómicos (un solo valor por celda) y no hay grupos repetidos. En el SIA-NP ninguna tabla guarda listas dentro de una celda: una orden de compra no lleva sus productos en un campo, sino que cada producto es una fila de DETALLE_ORDEN; un conteo no lleva sus renglones en un campo, sino en DETALLE_CONTEO. Toda tabla tiene además una llave primaria que identifica cada fila. Por lo tanto, todas las tablas cumplen la 1FN.'),
+    h2('9.2 Segunda forma normal (2FN)'),
+    p('Una tabla está en 2FN si está en 1FN y ningún atributo no clave depende solo de una parte de una llave primaria compuesta (no hay dependencias parciales). Esto solo puede fallar en las tablas con llave compuesta. En el SIA-NP son tres:'),
+    bullet('**PRODUCTO_PROVEEDOR** (id_producto, id_proveedor): el precio de compra, la moneda y el código del proveedor dependen de la pareja producto-proveedor completa, no de uno solo de los dos.'),
+    bullet('**DETALLE_ORDEN** (id_oc, id_producto): la cantidad solicitada, la recibida y el costo dependen de la pareja orden-producto completa.'),
+    bullet('**DETALLE_CONTEO** (id_conteo, id_producto): la existencia del sistema, la cantidad contada y la diferencia dependen de la pareja conteo-producto completa.'),
+    p('Los datos que dependían solo de una parte de la llave se sacaron a su propia tabla: la descripción del producto no está en DETALLE_ORDEN, sino en PRODUCTO, y se referencia por id_producto. Por lo tanto, todas las tablas cumplen la 2FN.', { before: 80 }),
+    h2('9.3 Tercera forma normal (3FN)'),
+    p('Una tabla está en 3FN si está en 2FN y ningún atributo no clave depende de otro atributo no clave (no hay dependencias transitivas). Se revisó cada tabla y se eliminaron las dependencias transitivas sacando a tablas de catálogo los datos que dependían de otro campo y no de la llave:'),
+    pieTabla('Dependencias transitivas eliminadas para alcanzar la 3FN'),
+    tabla(['Dato que dependía de otro no clave', 'Se movió a', 'Se referencia con'], [
+      ['Nombre de la familia del producto', 'Tabla FAMILIA', 'PRODUCTO.id_familia (FK)'],
+      ['Nombre y datos del rol del usuario', 'Tabla ROL', 'USUARIO.id_rol (FK)'],
+      ['Razón social y lead time del proveedor', 'Tabla PROVEEDOR', 'ORDEN_COMPRA.id_proveedor (FK)'],
+      ['Datos de la ubicación (pasillo, anaquel, nivel)', 'Tabla UBICACION', 'PRODUCTO.id_ubicacion (FK)'],
+    ], [3900, 2760, 2700], { size: 16 }),
+    p('Un caso que podría parecer una violación es el campo saldo_resultante de MOVIMIENTO: no es una dependencia transitiva, sino un dato histórico que registra la existencia en el momento exacto del movimiento (el kardex), por lo que se conserva a propósito. Los únicos datos calculados a partir de otras columnas (iva, total, importe, diferencia) no se guardan como datos independientes, sino como columnas calculadas (PERSISTED), que SQL Server recalcula solo y no pueden quedar inconsistentes. Con esto, todas las tablas del SIA-NP están en tercera forma normal.', { before: 80 }),
+  ];
+}
+
+// ---------- BD creada: captura del Explorador de objetos (punto 8) ----------
+function bdCreada() {
+  return [
+    h1('10. Base de datos creada en el gestor'),
+    p('El script de la sección 8 se ejecutó en Microsoft SQL Server. La siguiente figura muestra el Explorador de objetos de SQL Server Management Studio con la base de datos SIA_NP ya creada: sus 14 tablas organizadas en los cuatro catálogos, la tabla PRODUCTO con sus columnas, llave primaria y llaves foráneas, y las tres vistas (vw_KARDEX, vw_PRODUCTOS_BAJO_REORDEN y vw_VALOR_INVENTARIO) que resuelven las salidas de la sección 3.'),
+    imagen(path.join(BASE, 'diagramas', '04_bd_creada_object_explorer.png'), 620, 760),
+    pie(`Figura ${++nFig}`, 'Base de datos SIA_NP creada en SQL Server: Explorador de objetos con las 14 tablas y las 3 vistas'),
+  ];
+}
+
 // ---------- documento ----------
 const vertical = { page: { size: { width: 12240, height: 15840 }, margin: { top: 1440, bottom: 1440, left: 1440, right: 1440 } } };
 const horizontal = { page: { size: { width: 12240, height: 15840, orientation: PageOrientation.LANDSCAPE }, margin: { top: 1080, bottom: 1080, left: 1080, right: 1080 } } };
 
 // numeración de tablas/figuras en orden de aparición
 const secPortada = portada();
-const secIntro = [...contenido(), ...introduccion(), ...diccionario(), ...mer()];
+const secIntro = [...contenido(), ...introduccion(), ...documentosFuente(), ...salidas(), ...diccionario(), ...mer()];
 const figMER = figuraHorizontal('01_modelo_entidad_relacion', 'Modelo entidad-relación del SIA-NP (notación de Chen extendida)');
 const secUML = uml();
 const figUML = figuraHorizontal('02_modelo_uml', 'Diagrama de clases UML obtenido del modelo entidad-relación');
 const secLog = logico();
 const figLog = figuraHorizontal('03_diagrama_logico', 'Diagrama de la base de datos lógica del SIA-NP (notación pata de gallo; en negritas los campos NOT NULL)');
-const secFin = [...creacion()];
+const secFin = [...creacion(), ...normalizacion(), ...bdCreada()];
 
 const doc = new Document({
   creator: 'Equipo SIA-NP',

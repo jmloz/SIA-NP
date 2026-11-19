@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><title>SIA_NP — Object Explorer</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#f3f3f3;font-family:"Segoe UI",Arial,sans-serif;padding:16px;color:#1e1e1e}
+  .ssms{display:inline-flex;gap:0;border:1px solid #a0a0a0;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+  .panel{width:360px}
+  .panel.der{width:340px;border-left:1px solid #cfcfcf}
+  .cab{background:linear-gradient(#f0f0f0,#e1e1e1);border-bottom:1px solid #c6c6c6;padding:6px 10px;font-size:12.5px;font-weight:600;color:#333;display:flex;align-items:center;gap:7px}
+  .cab .dot{width:10px;height:10px;border-radius:2px;background:#3b78c3;display:inline-block}
+  .barra{display:flex;gap:6px;padding:4px 8px;border-bottom:1px solid #e3e3e3;background:#fafafa;font-size:12px;color:#777}
+  .barra span{padding:1px 4px}
+  .arbol{padding:6px 4px;font-size:13px;line-height:1.9}
+  .n{display:flex;align-items:center;gap:5px;white-space:nowrap;padding-left:var(--i,0)}
+  .n:hover{background:#eaf3fb}
+  .tw{color:#808080;width:12px;display:inline-block;text-align:center;font-size:10px}
+  .ic{width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+  .db{color:#c8a000}
+  .folder{color:#d9a637}
+  .tbl{color:#5a8db8}
+  .view{color:#8a6fb0}
+  .col{color:#6b6b6b;font-size:12.5px}
+  .key{color:#d4a017;font-weight:bold}
+  .fk{color:#3b78c3;font-weight:bold}
+  .muted{color:#9a9a9a}
+  .sel{background:#cde3f7;outline:1px solid #a9cef0}
+  .tipo{color:#9a9a9a;font-size:11.5px;margin-left:4px}
+</style></head>
+<body>
+<div class="ssms" id="cap">
+  <div class="panel">
+    <div class="cab"><span class="dot"></span>Explorador de objetos</div>
+    <div class="barra"><span>⟳</span><span>▾</span><span style="margin-left:auto">Conectado: SQL Server 16.0</span></div>
+    <div class="arbol">
+      <div class="n" style="--i:2px"><span class="tw">▾</span><span class="ic">🖥️</span>DESKTOP\SQLEXPRESS (SQL Server 16.0.1000 - sa)</div>
+      <div class="n" style="--i:20px"><span class="tw">▾</span><span class="ic folder">📁</span>Bases de datos</div>
+      <div class="n sel" style="--i:38px"><span class="tw">▾</span><span class="ic db">🛢️</span><b>SIA_NP</b></div>
+      <div class="n" style="--i:56px"><span class="tw">▸</span><span class="ic folder">📁</span>Diagramas de base de datos</div>
+      <div class="n" style="--i:56px"><span class="tw">▾</span><span class="ic folder">📁</span>Tablas <span class="muted">(14)</span></div>
+      <!-- Catálogo 3 -->
+      <div class="n" style="--i:74px"><span class="tw">▸</span><span class="ic tbl">▦</span>dbo.ROL</div>
+      <div class="n" style="--i:74px"><span class="tw">▸</span><span class="ic tbl">▦</span>dbo.USUARIO</div>
+      <div class="n" style="--i:74px"><span class="tw">▸</span><span class="ic tbl">▦</span>dbo.BITACORA_AUDITORIA</div>
+      <!-- Catálogo 1 -->
+      <div class="n" style="--i:74px"><span class="tw">▸</span><span class="ic tbl">▦</span>dbo.FAMILIA</div>
+      <div class="n" style="--i:74px"><span class="tw">▸</span><span class="ic tbl">▦</span>dbo.UBICACION</div>
+      <div class="n" style="--i:74px"><span class="tw">▾</span><span class="ic tbl">▦</span><b>dbo.PRODUCTO</b></div>
+      <div class="n" style="--i:92px"><span class="tw">▾</span><span class="ic folder">📁</span>Columnas</div>
+      <div class="n" style="--i:112px"><span class="tw"></span><span class="ic key">🔑</span><span class="col">id_producto (PK, int, no NULL)</span></div>
+      <div class="n" style="--i:112px"><span class="tw"></span><span class="ic muted">▪</span><span class="col">codigo_interno (UQ, varchar(20), no NULL)</span></div>
+      <div class="n" style="--i:112px"><span class="tw"></span><span class="ic muted">▪</span><span class="col">codigo_barras (varchar(30), NULL)</span></div>
+      <div class="n" style="--i:112px"><span class="tw"></span><span class="ic muted">▪</span><span class="col">descripcion (varchar(150), no NULL)</span></div>
+      <div class="n" style="--i:112px"><span class="tw"></span><span class="ic fk">🔑</span><span class="col">id_familia (FK, smallint, no NULL)</span></div>
+      <div class="n" style="--i:112px"><span class="tw"></span><span class="ic muted">▪</span><span class="col">existencia (decimal(10,2), no NULL)</span></div>
+      <div class="n" style="--i:112px"><span class="tw"></span><span class="ic fk">🔑</span><span class="col">id_ubicacion (FK, int, NULL)</span></div>
+      <div class="n" style="--i:92px"><span class="tw">▸</span><span class="ic folder">📁</span>Claves</div>
+      <div class="n" style="--i:92px"><span class="tw">▸</span><span class="ic folder">📁</span>Restricciones</div>
+      <div class="n" style="--i:92px"><span class="tw">▸</span><span class="ic folder">📁</span>Índices</div>
+      <!-- Catálogo 2 -->
+      <div class="n" style="--i:74px"><span class="tw">▸</span><span class="ic tbl">▦</span>dbo.PROVEEDOR</div>
+      <div class="n" style="--i:74px"><span class="tw">▸</span><span class="ic tbl">▦</span>dbo.PRODUCTO_PROVEEDOR</div>
+      <div class="n" style="--i:74px"><span class="tw">▸</span><span class="ic tbl">▦</span>dbo.ORDEN_COMPRA</div>
+      <div class="n" style="--i:74px"><span class="tw">▸</span><span class="ic tbl">▦</span>dbo.DETALLE_ORDEN</div>
+      <!-- Catálogo 4 -->
+      <div class="n" style="--i:74px"><span class="tw">▸</span><span class="ic tbl">▦</span>dbo.RECEPCION</div>
+      <div class="n" style="--i:74px"><span class="tw">▸</span><span class="ic tbl">▦</span>dbo.INVENTARIO_FISICO</div>
+      <div class="n" style="--i:74px"><span class="tw">▸</span><span class="ic tbl">▦</span>dbo.DETALLE_CONTEO</div>
+      <div class="n" style="--i:74px"><span class="tw">▸</span><span class="ic tbl">▦</span>dbo.MOVIMIENTO</div>
+      <div class="n" style="--i:56px"><span class="tw">▾</span><span class="ic folder">📁</span>Vistas <span class="muted">(3)</span></div>
+      <div class="n" style="--i:74px"><span class="tw">▸</span><span class="ic view">◫</span>dbo.vw_KARDEX</div>
+      <div class="n" style="--i:74px"><span class="tw">▸</span><span class="ic view">◫</span>dbo.vw_PRODUCTOS_BAJO_REORDEN</div>
+      <div class="n" style="--i:74px"><span class="tw">▸</span><span class="ic view">◫</span>dbo.vw_VALOR_INVENTARIO</div>
+      <div class="n" style="--i:56px"><span class="tw">▸</span><span class="ic folder">📁</span>Programación</div>
+      <div class="n" style="--i:56px"><span class="tw">▸</span><span class="ic folder">📁</span>Seguridad</div>
+    </div>
+  </div>
+  <div class="panel der">
+    <div class="cab"><span class="dot" style="background:#5a8db8"></span>14 tablas en 4 catálogos</div>
+    <div class="arbol" style="line-height:1.95">
+      <div class="n" style="--i:6px"><span class="ic folder">📁</span><b>Catálogo 1 — Productos y ubicaciones</b></div>
+      <div class="n" style="--i:24px"><span class="ic tbl">▦</span>FAMILIA <span class="tipo">· catálogo</span></div>
+      <div class="n" style="--i:24px"><span class="ic tbl">▦</span>UBICACION <span class="tipo">· pasillo/anaquel/nivel</span></div>
+      <div class="n" style="--i:24px"><span class="ic tbl">▦</span>PRODUCTO <span class="tipo">· 1,200 SKU</span></div>
+      <div class="n" style="--i:6px"><span class="ic folder">📁</span><b>Catálogo 2 — Proveedores y compras</b></div>
+      <div class="n" style="--i:24px"><span class="ic tbl">▦</span>PROVEEDOR</div>
+      <div class="n" style="--i:24px"><span class="ic tbl">▦</span>PRODUCTO_PROVEEDOR <span class="tipo">· M:N</span></div>
+      <div class="n" style="--i:24px"><span class="ic tbl">▦</span>ORDEN_COMPRA</div>
+      <div class="n" style="--i:24px"><span class="ic tbl">▦</span>DETALLE_ORDEN <span class="tipo">· M:N</span></div>
+      <div class="n" style="--i:6px"><span class="ic folder">📁</span><b>Catálogo 3 — Usuarios y seguridad</b></div>
+      <div class="n" style="--i:24px"><span class="ic tbl">▦</span>ROL</div>
+      <div class="n" style="--i:24px"><span class="ic tbl">▦</span>USUARIO</div>
+      <div class="n" style="--i:24px"><span class="ic tbl">▦</span>BITACORA_AUDITORIA</div>
+      <div class="n" style="--i:6px"><span class="ic folder">📁</span><b>Catálogo 4 — Movimientos de almacén</b></div>
+      <div class="n" style="--i:24px"><span class="ic tbl">▦</span>RECEPCION</div>
+      <div class="n" style="--i:24px"><span class="ic tbl">▦</span>INVENTARIO_FISICO</div>
+      <div class="n" style="--i:24px"><span class="ic tbl">▦</span>DETALLE_CONTEO <span class="tipo">· débil</span></div>
+      <div class="n" style="--i:24px"><span class="ic tbl">▦</span>MOVIMIENTO <span class="tipo">· E/S/A/D</span></div>
+      <div class="n" style="--i:6px;margin-top:6px"><span class="ic view">◫</span><b>Vistas (salidas)</b></div>
+      <div class="n" style="--i:24px"><span class="ic view">◫</span>vw_KARDEX</div>
+      <div class="n" style="--i:24px"><span class="ic view">◫</span>vw_PRODUCTOS_BAJO_REORDEN</div>
+      <div class="n" style="--i:24px"><span class="ic view">◫</span>vw_VALOR_INVENTARIO</div>
+    </div>
+  </div>
+</div>
+</body></html>
