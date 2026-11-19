@@ -113,6 +113,7 @@ table.tabla{width:100%;border-collapse:collapse;font-size:13px}
 .login-card .btn-prim{width:100%;padding:11px;margin-top:4px}
 .login-pie{font-size:12px;color:#94a3b8;margin-top:16px}
 .login-chip{margin-top:16px;color:#e0e7ff;font-size:12.5px;display:flex;gap:8px;align-items:center}
+.login-chip .id-chip{background:#fff;color:#3730a3}
 
 /* ---- Responsivo (tablet y teléfono, RNF8) ---- */
 @media (max-width:820px){

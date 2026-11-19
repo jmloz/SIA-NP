@@ -50,7 +50,11 @@ Los 7 tienen .docx y .pdf. Cada .docx sale de su generador `scripts/docx/0N_*.js
 
 Las CRC ya están entregadas: si algo no cuadra, se corrige en el diagrama, no en las tarjetas.
 
+## Sistema funcional (`app/`)
+Prototipo para entregar en clase (lunes 23 nov 2026), no implantación real. SQL Server 2022 en Docker (`app/docker-compose.yml`, `TZ=America/Hermosillo`) con la BD del Taller + `base-de-datos/sql/04_ajustes_app.sql` (CLIENTE, NOTA_SALIDA, folios, `sp_registrar_movimiento`, `sp_registrar_recepcion`); Node/Express + `mssql` en `app/server` (rutas → controladores → entidades, como el diagrama de clases); React + Vite en `app/web` con el estilo de las maquetas IE. Arranque y usuarios: `app/README.md`; reglas para programar: `app/CONVENCIONES.md`. `bash app/db/init-docker.sh` recrea la BD limpia (ejecutar con el usuario en el grupo docker; en esta laptop vía `newgrp docker`). `npm test` en `app/server` modifica datos: recrear la BD después. Plan en `docs/PLAN_SISTEMA_REAL.md`. Fuera: CU3, CU4 completo, RF15, modo sin conexión.
+
 Pendientes:
+- Los entregables 8 (salidas) y 9 (interfaces) citan RF con otra numeración, no la del Apéndice C: kardex RF2 (es RF4), dashboard RF16 (es RF17), exportación RF17 (es RF18), catálogo de productos RF20 (es RF2), "RF6 reportes operativos" (es RF20). La app ya usa el Apéndice C; los entregables no se han corregido.
 - Ningún `.drawio` (actividades, clases, estados) se ha abierto en draw.io: hay que abrirlos una vez para confirmar que se ven igual que los PNG/PDF.
 - Diagrama de estados ya entregado; notas por si se pregunta: T4 (cancelar una orden Emitida) y T9 (cerrar) no tienen CU propio; el diccionario de datos de la ERS usa otros estatus (Abierta/Parcial/Cerrada/Cancelada).
 - Sin corregir (menores): en CU1, CU4 y CU5 la precondición dice que el producto, cliente o proveedor existe, pero un alterno trata el caso de que no exista; CU2 y CU7 registran la consulta en la bitácora, cosa que la ERS no pide; en SD1/SD2, `validarUbicacion(clave)` recibe "clave" aunque los mensajes anteriores pasan `ubicacion`; en la tabla de clases, el origen de `actualizarGraficas()` (CU7) no se comparó con el Apéndice C.
@@ -101,5 +105,8 @@ sia-np/
     docx/              generadores .docx (01..06_*.js), comun.js, a_pdf.py, NOTAS_01.md (node_modules ignorado en .git/info/exclude)
     actividades/       definiciones.py + diagramas_actividad.py
     estados/           diagrama_estados.py
+  base-de-datos/       BD del Taller de BD (SQL Server): sql/01–04, diagramas, documento
+  app/                 sistema funcional: docker-compose.yml, db/, server/ (Express), web/ (React)
+  docs/                PLAN_SISTEMA_REAL.md
 ```
 Las entrevistas y las capturas del Excel del cliente solo están resumidas en los apéndices A y B de la ERS.

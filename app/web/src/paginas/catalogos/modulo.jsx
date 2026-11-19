@@ -1,5 +1,9 @@
 // Módulo Catálogos: productos (IE-003), ubicaciones (IE-004), proveedores (IE-005), clientes, usuarios (IE-010).
-import Pendiente from '../Pendiente.jsx';
+import Productos from './Productos.jsx';
+import Ubicaciones from './Ubicaciones.jsx';
+import Proveedores from './Proveedores.jsx';
+import Clientes from './Clientes.jsx';
+import Usuarios from './Usuarios.jsx';
 
 export default {
   grupo: 'Catálogos',
@@ -11,10 +15,10 @@ export default {
     { texto: 'Usuarios', ruta: '/catalogos/usuarios', roles: ['X'] },
   ],
   rutas: [
-    { ruta: '/catalogos/productos', titulo: 'Productos', roles: ['E', 'A', 'C', 'D', 'X'], elemento: <Pendiente titulo="Productos" /> },
-    { ruta: '/catalogos/ubicaciones', titulo: 'Ubicaciones', roles: ['E', 'X'], elemento: <Pendiente titulo="Ubicaciones" /> },
-    { ruta: '/catalogos/proveedores', titulo: 'Proveedores', roles: ['C', 'X'], elemento: <Pendiente titulo="Proveedores" /> },
-    { ruta: '/catalogos/clientes', titulo: 'Clientes', roles: ['E', 'A', 'X'], elemento: <Pendiente titulo="Clientes" /> },
-    { ruta: '/catalogos/usuarios', titulo: 'Usuarios', roles: ['X'], elemento: <Pendiente titulo="Usuarios" /> },
+    { ruta: '/catalogos/productos', titulo: 'Productos', roles: ['E', 'A', 'C', 'D', 'X'], elemento: <Productos /> },
+    { ruta: '/catalogos/ubicaciones', titulo: 'Ubicaciones', roles: ['E', 'X'], elemento: <Ubicaciones /> },
+    { ruta: '/catalogos/proveedores', titulo: 'Proveedores', roles: ['C', 'X'], elemento: <Proveedores /> },
+    { ruta: '/catalogos/clientes', titulo: 'Clientes', roles: ['E', 'A', 'X'], elemento: <Clientes /> },
+    { ruta: '/catalogos/usuarios', titulo: 'Usuarios', roles: ['X'], elemento: <Usuarios /> },
   ],
 };

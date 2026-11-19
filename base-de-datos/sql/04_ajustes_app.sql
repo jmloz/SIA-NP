@@ -136,7 +136,8 @@ BEGIN
     IF @existencia + @delta < 0
     BEGIN
         IF @propia = 1 ROLLBACK;
-        SET @msg = CONCAT(N'La salida (', @cantidad, N') excede la existencia actual (', @existencia, N'). No se guardó el movimiento.');
+        SET @msg = CONCAT(CASE @tipo WHEN 'A' THEN N'El ajuste (' ELSE N'La salida (' END,
+                          ABS(@cantidad), N') excede la existencia actual (', @existencia, N'). No se guardó el movimiento.');
         THROW 50003, @msg, 1;
     END
 

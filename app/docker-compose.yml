@@ -8,6 +8,7 @@ services:
       MSSQL_PID: "Developer"
       MSSQL_SA_PASSWORD: "${DB_PASSWORD:-SiaNp_2026!}"
       MSSQL_COLLATION: "Modern_Spanish_CI_AS"
+      TZ: "America/Hermosillo"   # GETDATE()/SYSDATETIME() en hora local
     ports:
       - "1433:1433"
     volumes:

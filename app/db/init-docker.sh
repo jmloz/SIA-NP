@@ -5,6 +5,10 @@ set -euo pipefail
 PASS="${DB_PASSWORD:-SiaNp_2026!}"
 SQLCMD=(docker exec sianp-sql /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$PASS" -C -f 65001 -b)
 until "${SQLCMD[@]}" -Q "SELECT 1" >/dev/null 2>&1; do echo "Esperando a SQL Server..."; sleep 3; done
+# Si quedaron archivos de una BD que ya no está registrada (p. ej. tras recrear el contenedor), se borran
+if [ -z "$("${SQLCMD[@]}" -h -1 -W -Q "SET NOCOUNT ON; SELECT name FROM sys.databases WHERE name='SIA_NP'" | tr -d '[:space:]')" ]; then
+  docker exec -u 0 sianp-sql rm -f /var/opt/mssql/data/SIA_NP.mdf /var/opt/mssql/data/SIA_NP_log.ldf
+fi
 for s in 01_creacion_SIA_NP 02_datos_prueba 04_ajustes_app; do
   echo "== $s"; "${SQLCMD[@]}" -i "/sql/$s.sql" >/dev/null
 done
