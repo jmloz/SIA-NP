@@ -3,6 +3,7 @@ services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sianp-sql
+    restart: unless-stopped        # arranca solo al encender la laptop
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Developer"
