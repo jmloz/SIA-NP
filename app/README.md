@@ -37,8 +37,8 @@ Contraseña de todos: `sianp2026`
 
 | Usuario | Rol | Puede |
 |---|---|---|
-| `lpablovich` | Encargado de Almacén | Movimientos, notas de salida, kardex, recepción, productos, ubicaciones, clientes, dashboard (resumen) |
-| `rmendoza` | Auxiliar de Almacén | Movimientos, notas de salida, kardex, clientes |
+| `lpablovich` | Encargado de Almacén | Movimientos, notas de salida, kardex, devoluciones (incluida la manual sin nota), inventario físico (cierre y ajustes), recepción, productos, ubicaciones, clientes, dashboard (resumen) |
+| `rmendoza` | Auxiliar de Almacén | Movimientos, notas de salida, kardex, devoluciones con nota, captura de conteos, clientes |
 | `kdominguez` | Encargada de Compras | Órdenes de compra, recepción, reorden, proveedores, dashboard (resumen) |
 | `pperez` | Dirección General | Dashboard con detalle, kardex, bitácora |
 | `admin` | Administrador | Usuarios, catálogos, bitácora |
@@ -53,6 +53,8 @@ Tres intentos fallidos bloquean la cuenta; la desbloquea el administrador en Cat
 | CU1 Registrar movimientos (RF3, RF9) | Almacén → Registrar movimiento (IE-002) |
 | RF8 Nota de salida y orden de surtido | Almacén → Nota de salida (S1, S3 en PDF) |
 | CU2 Consultar kardex (RF4) | Almacén → Existencias y kardex (S5, S6) |
+| CU3 Realizar inventario físico (RF6) | Almacén → Inventario físico (IE-009, hoja de conteo S4, diferencias S8) |
+| CU4 Registrar devolución de cliente (RF7) | Almacén → Devolución de cliente (IE-008) |
 | CU5 Generar orden de compra (RF12) | Compras → Órdenes de compra (IE-006, PDF S2) |
 | CU6 Recibir mercancía contra OC (RF13) | Compras → Recibir mercancía (IE-007) |
 | RF14 Sugerencias de reorden | Compras → Sugerencias de reorden (S7) |
@@ -60,7 +62,7 @@ Tres intentos fallidos bloquean la cuenta; la desbloquea el administrador en Cat
 | CU7 Dashboard de KPIs (RF17), RF18 Exportación | Dirección → Dashboard (S9, S10) |
 | RF19 Bitácora de auditoría | Dirección → Bitácora |
 
-Fuera de esta versión: inventario físico (CU3), devoluciones con documento original (CU4), landed cost (RF15), modo sin conexión, respaldos automáticos.
+Fuera de esta versión: landed cost (RF15), modo sin conexión, respaldos automáticos.
 
 ## Arquitectura
 

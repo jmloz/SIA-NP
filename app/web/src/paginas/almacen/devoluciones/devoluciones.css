@@ -1,0 +1,11 @@
+/* Estilos propios de CU4 Devolución de cliente (complementan estilos.css y almacen.css). */
+.dev-vacio{padding:14px;text-align:center;color:#64748b;font-size:13.5px;border:1px dashed #cbd5e1;border-radius:8px}
+.dev-producto{border:1px solid #e2e8f0;border-radius:10px;padding:14px;margin-top:14px;background:#fff}
+.dev-producto.con-error{border-color:#fca5a5}
+.dev-prod-fila{display:flex;gap:8px;align-items:center}
+.dev-prod-fila .static{flex:1}
+.dev-danada{color:#991b1b}
+.dev-resultado{margin-bottom:14px}
+.dev-resultado .alm-resumen{margin-top:8px}
+.dev-aviso{margin-top:12px}
+.campo + .dev-vacio,.campo + .tabla-env{margin-top:12px}
