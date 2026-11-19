@@ -2,6 +2,9 @@
 # Crea la BD SIA_NP en el contenedor de SQL Server: scripts 01, 02 y 04 (y 03 para comprobar).
 # Uso: bash app/db/init-docker.sh   (desde la raíz del repo; requiere `docker compose up -d` en app/)
 set -euo pipefail
+# Toma la contraseña de app/.env (la misma que usan docker compose y la app)
+ENV="$(dirname "$0")/../.env"
+[ -f "$ENV" ] && DB_PASSWORD="${DB_PASSWORD:-$(grep -E '^DB_PASSWORD=' "$ENV" | cut -d= -f2-)}"
 PASS="${DB_PASSWORD:-SiaNp_2026!}"
 SQLCMD=(docker exec sianp-sql /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$PASS" -C -f 65001 -b)
 until "${SQLCMD[@]}" -Q "SELECT 1" >/dev/null 2>&1; do echo "Esperando a SQL Server..."; sleep 3; done
