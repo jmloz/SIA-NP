@@ -16,7 +16,7 @@
   [
     "IE-003",
     "Alta y edición de productos del catálogo.",
-    "RF20 Catálogo de productos; RF5 Ubicaciones",
+    "RF2 Catálogo de productos; RF5 Ubicaciones",
     "Código interno único; máximo ≥ mínimo; reorden entre mínimo y máximo; precios ≥ 0; unidad de la lista.",
     "Encargado de Almacén; Administrador"
   ],

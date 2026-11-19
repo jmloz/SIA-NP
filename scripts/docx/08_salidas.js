@@ -85,7 +85,7 @@ SALIDAS.push(salida("S1", "Nota de salida", {
   ],
   fuentes: [
     "Orden de surtido confirmada por el vendedor (pedido del cliente).",
-    "Catálogo de productos — clase Producto (RF20): código, descripción, unidad.",
+    "Catálogo de productos — clase Producto (RF2): código, descripción, unidad.",
     "Movimiento de salida que descuenta la existencia — clase Movimiento/Salida (RF3).",
     "Datos del cliente registrados en el sistema.",
   ],
@@ -133,7 +133,7 @@ SALIDAS.push(salida("S2", "Orden de compra", {
   ],
   fuentes: [
     "Sugerencia automática de reorden — punto de reorden, mínimos y consumo (RF14).",
-    "Catálogo de productos — clase Producto (RF20).",
+    "Catálogo de productos — clase Producto (RF2).",
     "Proveedores y listas de precios por volumen — clase Proveedor (RF11).",
     "Clase OrdenDeCompra y DetalleOrden del diagrama de clases.",
   ],
@@ -182,7 +182,7 @@ SALIDAS.push(salida("S3", "Orden de surtido", {
   fuentes: [
     "Pedido del vendedor pendiente de surtir.",
     "Ubicaciones físicas del almacén — clase Ubicacion (RF5): pasillo, anaquel, nivel.",
-    "Catálogo con imagen del producto — clase Producto (RF10, RF20).",
+    "Catálogo con imagen del producto — clase Producto (RF10, RF2).",
   ],
   maqueta: [
     cabeceraDoc("ORDEN DE SURTIDO", "Folio: OS-2026-0455"),
@@ -221,7 +221,7 @@ SALIDAS.push(salida("S4", "Hoja de conteo de inventario físico", {
     ["Requerimiento", "RF6 Inventario físico cíclico y completo."],
   ],
   fuentes: [
-    "Catálogo de productos filtrado por familia — clase Producto (RF20).",
+    "Catálogo de productos filtrado por familia — clase Producto (RF2).",
     "Ubicaciones físicas — clase Ubicacion (RF5).",
     "Existencia del sistema — se usa al calcular diferencias, no se imprime (conteo ciego).",
   ],
@@ -253,18 +253,18 @@ SALIDAS.push(salida("S4", "Hoja de conteo de inventario físico", {
 
 // S5. Consulta de existencias con imagen (pantalla móvil) -----------------
 SALIDAS.push(salida("S5", "Consulta de existencias con imagen y ubicación", {
-  resumen: "Pantalla interactiva, pensada para tablet o teléfono en el piso del almacén, que muestra la fotografía del producto, su existencia, ubicación física y movimientos recientes. Evita confundir piezas visualmente similares (RF2, RF5, RF10).",
+  resumen: "Pantalla interactiva, pensada para tablet o teléfono en el piso del almacén, que muestra la fotografía del producto, su existencia, ubicación física y movimientos recientes. Evita confundir piezas visualmente similares (RF4, RF5, RF10).",
   ficha: [
     ["Tipo (Kendall)", "Salida interna, en pantalla, interactiva (dinámica)."],
     ["Tecnología", "Pantalla de tablet/teléfono (navegador web responsivo)."],
     ["Formato", "Vista de consulta; se actualiza en tiempo real, no se imprime."],
     ["Destino / actor", "Encargado y Auxiliar de Almacén; también mostrador."],
-    ["Requerimiento", "RF2 existencias/kardex, RF5 ubicaciones, RF10 acceso móvil con imagen."],
+    ["Requerimiento", "RF4 existencias/kardex, RF5 ubicaciones, RF10 acceso móvil con imagen."],
   ],
   fuentes: [
-    "Clase Producto: código, descripción, imagen, mínimo, máximo, existencia (RF20).",
+    "Clase Producto: código, descripción, imagen, mínimo, máximo, existencia (RF2).",
     "Clase Ubicacion: pasillo, anaquel, nivel (RF5).",
-    "Clase Movimiento: últimos movimientos del producto (RF2).",
+    "Clase Movimiento: últimos movimientos del producto (RF4).",
   ],
   maqueta: [
     tabla([3200, 6160], [
@@ -295,13 +295,13 @@ SALIDAS.push(salida("S5", "Consulta de existencias con imagen y ubicación", {
 
 // S6. Kardex del producto (pantalla) --------------------------------------
 SALIDAS.push(salida("S6", "Kardex del producto", {
-  resumen: "Vista en pantalla con el historial cronológico de movimientos de un producto (entradas, salidas, ajustes y devoluciones) con fecha, documento, usuario y saldo resultante. Es el registro confiable que pidió el Encargado de Almacén (RF2).",
+  resumen: "Vista en pantalla con el historial cronológico de movimientos de un producto (entradas, salidas, ajustes y devoluciones) con fecha, documento, usuario y saldo resultante. Es el registro confiable que pidió el Encargado de Almacén (RF4).",
   ficha: [
     ["Tipo (Kendall)", "Salida interna, en pantalla, interactiva."],
     ["Tecnología", "Pantalla (PC, tablet); exportable a Excel/CSV (ver S10)."],
     ["Formato", "Tabla cronológica; dinámica."],
     ["Destino / actor", "Encargado y Auxiliar de Almacén; Dirección para auditoría."],
-    ["Requerimiento", "RF2 Consulta de existencias y kardex."],
+    ["Requerimiento", "RF4 Consulta de existencias y kardex."],
   ],
   fuentes: [
     "Clase Movimiento y sus subclases Entrada, Salida, Ajuste, Devolución (RF3).",
@@ -335,16 +335,16 @@ SALIDAS.push(salida("S6", "Kardex del producto", {
 
 // S7. Reporte de productos bajo punto de reorden --------------------------
 SALIDAS.push(salida("S7", "Reporte de productos bajo punto de reorden", {
-  resumen: "Reporte que lista los productos cuya existencia cayó por debajo del punto de reorden, con la cantidad sugerida a comprar y el proveedor con su lead time. Alimenta la generación de órdenes de compra (RF6 reportes operativos, RF14 reorden).",
+  resumen: "Reporte que lista los productos cuya existencia cayó por debajo del punto de reorden, con la cantidad sugerida a comprar y el proveedor con su lead time. Alimenta la generación de órdenes de compra (RF14 reorden, RF20 reportes operativos).",
   ficha: [
     ["Tipo (Kendall)", "Salida interna; en pantalla y exportable."],
     ["Tecnología", "Pantalla + exportación a Excel/CSV + impresión opcional."],
     ["Formato", "Tabla filtrable; dinámica."],
     ["Destino / actor", "Encargada de Compras (y Encargado de Almacén)."],
-    ["Requerimiento", "RF6, RF14; enlaza con RF12 órdenes de compra."],
+    ["Requerimiento", "RF14, RF20; enlaza con RF12 órdenes de compra."],
   ],
   fuentes: [
-    "Clase Producto: existencia, mínimo, punto de reorden (RF20).",
+    "Clase Producto: existencia, mínimo, punto de reorden (RF2).",
     "Clase Proveedor: lead time y clasificación (RF11).",
     "Consumo histórico de los movimientos (RF14).",
   ],
@@ -379,11 +379,11 @@ SALIDAS.push(salida("S8", "Reporte de diferencias físico vs sistema", {
     ["Tecnología", "Pantalla + exportación a Excel/CSV; impresión opcional."],
     ["Formato", "Tabla con totales y porcentaje; dinámica."],
     ["Destino / actor", "Encargado de Almacén y Dirección General."],
-    ["Requerimiento", "RF6 reportes operativos; soporta RNF2 confiabilidad."],
+    ["Requerimiento", "RF6 inventario físico y RF20 reportes operativos; soporta RNF2 confiabilidad."],
   ],
   fuentes: [
     "Clase InventarioFisico: cantidades contadas (RF6).",
-    "Clase Producto: existencia del sistema (RF20).",
+    "Clase Producto: existencia del sistema (RF2).",
     "Ajustes generados — clase Movimiento/Ajuste (RF3).",
   ],
   maqueta: [
@@ -412,17 +412,17 @@ SALIDAS.push(salida("S8", "Reporte de diferencias físico vs sistema", {
 
 // S9. Dashboard ejecutivo de KPIs -----------------------------------------
 SALIDAS.push(salida("S9", "Dashboard ejecutivo de KPIs", {
-  resumen: "Tablero directivo en pantalla con los indicadores semanales (ventas por línea, rotación, agotados, OC abiertas) y mensuales (margen por familia, top 20, sin movimiento, exactitud físico vs sistema). Es salida dinámica tipo tablero de control (Kendall, pp. 346) para la Dirección (RF16).",
+  resumen: "Tablero directivo en pantalla con los indicadores semanales (ventas por línea, rotación, agotados, OC abiertas) y mensuales (margen por familia, top 20, sin movimiento, exactitud físico vs sistema). Es salida dinámica tipo tablero de control (Kendall, pp. 346) para la Dirección (RF17).",
   ficha: [
     ["Tipo (Kendall)", "Salida interna, en pantalla, dinámica (tablero de control web)."],
     ["Tecnología", "Pantalla (web); tecnología pull/push, se actualiza sola."],
     ["Formato", "Tarjetas de KPI + gráficas; interactiva, con filtros."],
     ["Destino / actor", "Dirección General (Paulina Pérez)."],
-    ["Requerimiento", "RF16 Dashboard ejecutivo con KPIs; exportable por RF17."],
+    ["Requerimiento", "RF17 Dashboard ejecutivo con KPIs; exportable por RF18."],
   ],
   fuentes: [
-    "Agregados de movimientos, ventas y existencias (RF3, RF6).",
-    "Clase OrdenDeCompra: órdenes abiertas y vencidas (RF12, RF15).",
+    "Agregados de movimientos, ventas y existencias (RF3, RF4).",
+    "Clase OrdenDeCompra: órdenes abiertas y vencidas (RF12, RF16).",
     "Clase DashboardEjecutivo y Reporte del diagrama de clases.",
   ],
   maqueta: [
@@ -444,7 +444,7 @@ SALIDAS.push(salida("S9", "Dashboard ejecutivo de KPIs", {
     "Apoyar decisiones estratégicas con indicadores de un vistazo.",
     "En tiempo casi real; se actualiza al entrar y con cada periodo.",
     "Frecuente para la dirección: semanal y mensual, con consultas diarias.",
-    "No se almacena como documento; cada periodo queda en los históricos; se puede exportar (RF17).",
+    "No se almacena como documento; cada periodo queda en los históricos; se puede exportar (RF18).",
     "Interno; debe evitar el sesgo de presentación (escalas, colores) según el libro.",
     "El costo está en el desarrollo de las gráficas; operación sin consumibles.",
     "Mínimos: equipo con navegador; se beneficia de pantalla amplia.",
@@ -453,13 +453,13 @@ SALIDAS.push(salida("S9", "Dashboard ejecutivo de KPIs", {
 
 // S10. Exportación a Excel y CSV ------------------------------------------
 SALIDAS.push(salida("S10", "Exportación a Excel y CSV", {
-  resumen: "Salida electrónica en archivo: cualquier reporte o vista tabular puede descargarse en Excel (XLSX) o CSV para procesarlo en CONTPAQi (contabilidad) y para que el contador timbre los CFDI 4.0 desde un PAC externo (RF17).",
+  resumen: "Salida electrónica en archivo: cualquier reporte o vista tabular puede descargarse en Excel (XLSX) o CSV para procesarlo en CONTPAQi (contabilidad) y para que el contador timbre los CFDI 4.0 desde un PAC externo (RF18).",
   ficha: [
     ["Tipo (Kendall)", "Salida electrónica (archivo), interna→externa (al contador/PAC)."],
     ["Tecnología", "Archivo descargable XLSX/CSV; formatos abiertos."],
     ["Formato", "Archivo de datos; las columnas replican la vista de origen."],
     ["Destino / actor", "Dirección, Compras y el contador externo."],
-    ["Requerimiento", "RF17 Exportación a Excel y CSV."],
+    ["Requerimiento", "RF18 Exportación a Excel y CSV."],
   ],
   fuentes: [
     "Cualquier reporte o vista tabular del sistema (S6, S7, S8 y catálogos).",
@@ -508,12 +508,12 @@ const inventario = [
   ["S2 Orden de compra", "Externa", "PDF correo / impresa", "Proveedor / Compras", "RF12"],
   ["S3 Orden de surtido", "Interna", "Impresa / tablet", "Auxiliar de Almacén", "RF8"],
   ["S4 Hoja de conteo", "Interna", "Impresa", "Encargado de Almacén", "RF6"],
-  ["S5 Consulta de existencias", "Interna", "Pantalla móvil (interactiva)", "Almacén / mostrador", "RF2, RF5, RF10"],
-  ["S6 Kardex del producto", "Interna", "Pantalla (dinámica)", "Almacén / auditoría", "RF2"],
-  ["S7 Reporte de reorden", "Interna", "Pantalla + exportación", "Compras", "RF6, RF14"],
+  ["S5 Consulta de existencias", "Interna", "Pantalla móvil (interactiva)", "Almacén / mostrador", "RF4, RF5, RF10"],
+  ["S6 Kardex del producto", "Interna", "Pantalla (dinámica)", "Almacén / auditoría", "RF4"],
+  ["S7 Reporte de reorden", "Interna", "Pantalla + exportación", "Compras", "RF14, RF20"],
   ["S8 Diferencias físico vs sistema", "Interna", "Pantalla + exportación", "Almacén / Dirección", "RF6"],
-  ["S9 Dashboard de KPIs", "Interna", "Pantalla web (dinámica)", "Dirección General", "RF16"],
-  ["S10 Exportación Excel/CSV", "Electrónica", "Archivo XLSX/CSV", "Dirección / contador", "RF17"],
+  ["S9 Dashboard de KPIs", "Interna", "Pantalla web (dinámica)", "Dirección General", "RF17"],
+  ["S10 Exportación Excel/CSV", "Electrónica", "Archivo XLSX/CSV", "Dirección / contador", "RF18"],
 ];
 
 const hijos = [
