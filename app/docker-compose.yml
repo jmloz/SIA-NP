@@ -1,0 +1,17 @@
+# SQL Server 2022 para correr SIA-NP en Linux (en Windows basta con SQL Server Express + SSMS).
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sianp-sql
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: "${DB_PASSWORD:-SiaNp_2026!}"
+      MSSQL_COLLATION: "Modern_Spanish_CI_AS"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sianp-datos:/var/opt/mssql
+      - ../base-de-datos/sql:/sql:ro
+volumes:
+  sianp-datos:

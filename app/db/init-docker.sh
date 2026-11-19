@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Crea la BD SIA_NP en el contenedor de SQL Server: scripts 01, 02 y 04 (y 03 para comprobar).
+# Uso: bash app/db/init-docker.sh   (desde la raíz del repo; requiere `docker compose up -d` en app/)
+set -euo pipefail
+PASS="${DB_PASSWORD:-SiaNp_2026!}"
+SQLCMD=(docker exec sianp-sql /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$PASS" -C -f 65001 -b)
+until "${SQLCMD[@]}" -Q "SELECT 1" >/dev/null 2>&1; do echo "Esperando a SQL Server..."; sleep 3; done
+for s in 01_creacion_SIA_NP 02_datos_prueba 04_ajustes_app; do
+  echo "== $s"; "${SQLCMD[@]}" -i "/sql/$s.sql" >/dev/null
+done
+echo "== 03_pruebas_integridad (deben fallar las 28 operaciones)"
+docker exec sianp-sql /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$PASS" -C -f 65001 -i /sql/03_pruebas_integridad.sql | grep -E "^(OK  |FALLÓ)" | cut -c1-5 | sort | uniq -c
+echo "Listo."

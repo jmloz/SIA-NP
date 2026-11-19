@@ -1,0 +1,14 @@
+{
+  "name": "sianp-app",
+  "private": true,
+  "scripts": {
+    "instalar": "npm install && npm --prefix server install && npm --prefix web install",
+    "dev": "concurrently -n api,web -c blue,magenta \"npm --prefix server run dev\" \"npm --prefix web run dev\"",
+    "build": "npm --prefix web run build",
+    "start": "npm run build && npm --prefix server start",
+    "test": "npm --prefix server test"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.7"
+  }
+}
