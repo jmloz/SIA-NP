@@ -11,6 +11,8 @@ import catalogos from './rutas/catalogos.js';
 import almacen from './rutas/almacen.js';
 import compras from './rutas/compras.js';
 import direccion from './rutas/direccion.js';
+import inventario from './rutas/inventario.js';
+import devoluciones from './rutas/devoluciones.js';
 
 const app = express();
 app.use(express.json({ limit: '1mb' }));
@@ -26,6 +28,8 @@ app.use('/api/catalogos', requiereSesion, catalogos);   // productos, ubicacione
 app.use('/api/almacen', requiereSesion, almacen);       // CU1 movimientos, notas de salida, CU2 kardex/existencias
 app.use('/api/compras', requiereSesion, compras);       // CU5 órdenes de compra, CU6 recepción, reorden
 app.use('/api/direccion', requiereSesion, direccion);   // bitácora, dashboard, exportaciones
+app.use('/api/inventario', requiereSesion, inventario); // CU3 inventario físico (S4, S8)
+app.use('/api/devoluciones', requiereSesion, devoluciones); // CU4 devoluciones de cliente
 
 // En la demo (npm start) el mismo servidor entrega la app compilada de web/dist.
 const dist = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../web/dist');

@@ -3,7 +3,8 @@
    Ejecutar después de 01 y 02. No modifica los scripts ya entregados.
 
    1. CLIENTE y NOTA_SALIDA (CU4, RF8): una nota de salida con varias partidas.
-   2. DETALLE_ORDEN.cantidad_no_conforme (CU6 alterno 6a).
+   2. DETALLE_ORDEN.cantidad_no_conforme (CU6 alterno 6a), DETALLE_CONTEO.contado (CU3)
+      y DEVOLUCION_CLIENTE (CU4).
    3. FOLIO_CONSECUTIVO + sp_siguiente_folio: folios OC-2026-0001, etc.
    4. sp_registrar_movimiento (CU1): todo o nada (RNF2).
    5. sp_registrar_recepcion (CU6): recepción + entradas + estado de la OC.
@@ -55,6 +56,48 @@ GO
 ALTER TABLE DETALLE_ORDEN ADD CONSTRAINT CK_DETORD_no_conforme CHECK (cantidad_no_conforme >= 0);
 GO
 
+/* ---------- 2b. Inventario físico (CU3): distinguir "contado en 0" de "pendiente" (alterno 4a) ---------- */
+ALTER TABLE DETALLE_CONTEO ADD contado BIT NOT NULL CONSTRAINT DF_DETCON_contado DEFAULT (0);
+GO
+-- El conteo de prueba del script 02 ya estaba capturado
+UPDATE DETALLE_CONTEO SET contado = 1;
+GO
+
+/* ---------- 2c. Devoluciones de cliente (CU4) ----------
+   Una fila por producto devuelto. Si la mercancía está dañada (alterno 7a) no genera
+   movimiento ni suma a la existencia (id_movimiento queda NULL). Sin nota original
+   (alterno 3a) se exige quién autorizó. */
+CREATE TABLE DEVOLUCION_CLIENTE (
+    id_devolucion     INT            IDENTITY(1,1) NOT NULL,
+    folio             VARCHAR(20)    NOT NULL,
+    id_cliente        INT            NOT NULL,
+    id_nota_salida    INT            NULL,
+    id_producto       INT            NOT NULL,
+    cantidad          DECIMAL(10,2)  NOT NULL,
+    estado_mercancia  VARCHAR(7)     NOT NULL,
+    motivo            VARCHAR(200)   NOT NULL,
+    autorizado_por    INT            NULL,
+    id_movimiento     INT            NULL,
+    id_usuario        INT            NOT NULL,
+    fecha             DATETIME2(0)   NOT NULL CONSTRAINT DF_DEV_fecha DEFAULT (SYSDATETIME()),
+    CONSTRAINT PK_DEVOLUCION_CLIENTE PRIMARY KEY (id_devolucion),
+    CONSTRAINT FK_DEV_CLIENTE     FOREIGN KEY (id_cliente)     REFERENCES CLIENTE (id_cliente),
+    CONSTRAINT FK_DEV_NOTA        FOREIGN KEY (id_nota_salida) REFERENCES NOTA_SALIDA (id_nota_salida),
+    CONSTRAINT FK_DEV_PRODUCTO    FOREIGN KEY (id_producto)    REFERENCES PRODUCTO (id_producto),
+    CONSTRAINT FK_DEV_AUTORIZA    FOREIGN KEY (autorizado_por) REFERENCES USUARIO (id_usuario),
+    CONSTRAINT FK_DEV_MOVIMIENTO  FOREIGN KEY (id_movimiento)  REFERENCES MOVIMIENTO (id_movimiento),
+    CONSTRAINT FK_DEV_USUARIO     FOREIGN KEY (id_usuario)     REFERENCES USUARIO (id_usuario),
+    CONSTRAINT CK_DEV_cantidad    CHECK (cantidad > 0),
+    CONSTRAINT CK_DEV_estado      CHECK (estado_mercancia IN ('BUENA','DANADA')),
+    -- Sin documento original debe registrarse quién autorizó (alterno 3a)
+    CONSTRAINT CK_DEV_autoriza    CHECK (id_nota_salida IS NOT NULL OR autorizado_por IS NOT NULL),
+    -- Solo la mercancía en buen estado entra al inventario (alterno 7a)
+    CONSTRAINT CK_DEV_movimiento  CHECK (estado_mercancia = 'BUENA' OR id_movimiento IS NULL)
+);
+GO
+CREATE INDEX IX_DEV_nota ON DEVOLUCION_CLIENTE (id_nota_salida, id_producto);
+GO
+
 /* ---------- 3. Folios consecutivos ---------- */
 CREATE TABLE FOLIO_CONSECUTIVO (
     prefijo   VARCHAR(5)  NOT NULL,
@@ -64,7 +107,7 @@ CREATE TABLE FOLIO_CONSECUTIVO (
 GO
 -- Continúa la numeración de los datos de prueba (script 02)
 INSERT INTO FOLIO_CONSECUTIVO (prefijo, ultimo) VALUES
- ('OC', 2), ('MOV', 4), ('REC', 1), ('INV', 1), ('NS', 0);
+ ('OC', 2), ('MOV', 4), ('REC', 1), ('INV', 1), ('NS', 0), ('DEV', 0);
 GO
 
 CREATE PROCEDURE sp_siguiente_folio
