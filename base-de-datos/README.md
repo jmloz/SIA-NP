@@ -2,7 +2,7 @@
 
 Base de datos del Sistema de Inventario y Almacén de Neumática del Pacífico, en SQL Server.
 
-Integrantes: Hernández Castro José Martín, Moreno Ramos Adolfo, Peñuñuri Fernández Sara Alejandra, Rivera Torres Edgardo.
+Integrantes: Hernández Castro José Martín, Moreno Ramos Adolfo, Olivas Villareal Andrea, Rivera Torres Edgardo.
 
 | Archivo | Contenido |
 |---|---|

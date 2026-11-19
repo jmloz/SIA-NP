@@ -19,7 +19,7 @@ const catalogos = [
   {
     num: 3,
     nombre: 'Usuarios y seguridad',
-    responsable: 'Peñuñuri Fernández Sara Alejandra',
+    responsable: 'Olivas Villareal Andrea',
     tablas: ['ROL', 'USUARIO', 'BITACORA_AUDITORIA'],
     rf: 'RF1, RF19',
   },

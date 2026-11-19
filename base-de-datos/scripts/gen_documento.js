@@ -18,7 +18,7 @@ const FECHA = '7 de noviembre de 2026';
 const INTEGRANTES = [
   'Hernández Castro José Martín',
   'Moreno Ramos Adolfo',
-  'Peñuñuri Fernández Sara Alejandra',
+  'Olivas Villareal Andrea',
   'Rivera Torres Edgardo',
 ];
 const GRIS = 'E6E6E6';

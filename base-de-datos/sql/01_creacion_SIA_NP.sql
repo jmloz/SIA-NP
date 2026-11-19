@@ -27,7 +27,7 @@ GO
 
 /* =====================================================================
    CATÁLOGO 3 — USUARIOS Y SEGURIDAD
-   Responsable: Peñuñuri Fernández Sara Alejandra
+   Responsable: Olivas Villareal Andrea
    ===================================================================== */
 
 CREATE TABLE ROL (
