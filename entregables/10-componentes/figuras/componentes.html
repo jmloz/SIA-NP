@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      background: white; 
+      width: 1100px; 
+      height: 600px;
+      font-family: Arial, sans-serif;
+    }
+    .diagram { 
+      width: 100%; 
+      height: 100%;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    .capas {
+      display: flex;
+      gap: 15px;
+      height: 340px;
+    }
+    .capa {
+      flex: 1;
+      border: 2px solid #000;
+      border-radius: 5px;
+      padding: 10px;
+      background: #f5f5f5;
+    }
+    .capa-titulo {
+      font-weight: bold;
+      font-size: 12px;
+      text-align: center;
+      margin-bottom: 10px;
+      padding: 5px;
+      background: #E6E6E6;
+      border-radius: 3px;
+    }
+    .componente {
+      border: 1px solid #000;
+      background: white;
+      margin: 8px 0;
+      padding: 8px;
+      border-radius: 3px;
+      position: relative;
+    }
+    .componente::before {
+      content: "";
+      position: absolute;
+      left: -8px;
+      top: 5px;
+      width: 12px;
+      height: 8px;
+      border: 1px solid #000;
+      background: white;
+    }
+    .componente::after {
+      content: "";
+      position: absolute;
+      left: -8px;
+      top: 15px;
+      width: 12px;
+      height: 8px;
+      border: 1px solid #000;
+      background: white;
+    }
+    .comp-nombre {
+      font-weight: bold;
+      font-size: 11px;
+    }
+    .comp-estereotipo {
+      font-size: 9px;
+      font-style: italic;
+      color: #666;
+    }
+    .comp-desc {
+      font-size: 9px;
+      color: #333;
+      margin-top: 3px;
+    }
+    .subcomp {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 5px;
+    }
+    .subcomp span {
+      font-size: 8px;
+      background: #f0f0f0;
+      padding: 2px 5px;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+    }
+    .interfaz {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin: 5px 0;
+    }
+    .lollipop {
+      width: 12px;
+      height: 12px;
+      border: 1px solid #000;
+      border-radius: 50%;
+      background: white;
+    }
+    .linea {
+      width: 20px;
+      height: 1px;
+      background: #000;
+    }
+    .int-nombre {
+      font-size: 9px;
+    }
+    .flecha {
+      text-align: center;
+      font-size: 20px;
+      color: #000;
+    }
+    .leyenda {
+      display: flex;
+      gap: 20px;
+      margin-top: 15px;
+      padding: 10px;
+      background: #FFFFCC;
+      border: 1px solid #000;
+      font-size: 9px;
+    }
+    .leyenda-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .db-icon {
+      width: 50px;
+      height: 35px;
+      border: 1px solid #000;
+      background: white;
+      border-radius: 50% / 20%;
+      position: relative;
+    }
+    .db-icon::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 10px;
+      border: 1px solid #000;
+      border-radius: 50%;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="diagram">
+    <h1>Diagrama de Componentes — SIA-NP (Sistema de Inventario y Almacén)</h1>
+    
+    <div class="capas">
+      <!-- Capa Presentación -->
+      <div class="capa" style="flex: 0.9;">
+        <div class="capa-titulo">«subsystem»<br>Capa de Presentación</div>
+        
+        <div class="componente">
+          <div class="comp-estereotipo">«component»</div>
+          <div class="comp-nombre">Navegador Web</div>
+          <div class="comp-desc">Chrome, Firefox, Edge</div>
+        </div>
+        
+        <div class="componente" style="min-height: 120px;">
+          <div class="comp-estereotipo">«component»</div>
+          <div class="comp-nombre">SIA-NP Web</div>
+          <div class="comp-desc">React 18 + Vite (JavaScript/JSX)</div>
+          <div class="subcomp">
+            <span>Páginas</span>
+            <span>Componentes</span>
+            <span>api.js</span>
+            <span>sesion.jsx</span>
+            <span>estilos.css</span>
+          </div>
+          <div class="interfaz" style="margin-top:10px;">
+            <div class="lollipop"></div>
+            <div class="linea"></div>
+            <span class="int-nombre">IVistas</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Flecha -->
+      <div style="display:flex; flex-direction:column; justify-content:center; gap:5px;">
+        <div style="font-size:10px; text-align:center;">HTTP<br>JSON</div>
+        <div class="flecha">→</div>
+        <div style="font-size:9px; text-align:center;">fetch<br>:3001</div>
+      </div>
+      
+      <!-- Capa Lógica -->
+      <div class="capa" style="flex: 1.2;">
+        <div class="capa-titulo">«subsystem»<br>Capa de Lógica de Negocio</div>
+        
+        <div class="componente" style="min-height: 200px;">
+          <div class="comp-estereotipo">«component»</div>
+          <div class="comp-nombre">API REST</div>
+          <div class="comp-desc">Node.js + Express (puerto 3001)</div>
+          
+          <div style="display:flex; gap:10px; margin-top:10px;">
+            <div class="componente" style="flex:1; margin:0;">
+              <div class="comp-estereotipo" style="font-size:8px;">«component»</div>
+              <div class="comp-nombre" style="font-size:10px;">Rutas</div>
+              <div class="comp-desc">/productos<br>/movimientos<br>/ordenes<br>/recepcion</div>
+            </div>
+            <div class="componente" style="flex:1; margin:0;">
+              <div class="comp-estereotipo" style="font-size:8px;">«component»</div>
+              <div class="comp-nombre" style="font-size:10px;">Controladores</div>
+              <div class="comp-desc">movimientos.js<br>ordenes.js<br>recepcion.js<br>inventario.js</div>
+            </div>
+          </div>
+          
+          <div style="display:flex; gap:10px; margin-top:5px;">
+            <div class="componente" style="flex:1; margin:0;">
+              <div class="comp-estereotipo" style="font-size:8px;">«component»</div>
+              <div class="comp-nombre" style="font-size:10px;">Entidades</div>
+              <div class="comp-desc">Producto.js<br>Movimiento.js<br>OrdenCompra.js</div>
+            </div>
+            <div class="componente" style="flex:1; margin:0;">
+              <div class="comp-estereotipo" style="font-size:8px;">«component»</div>
+              <div class="comp-nombre" style="font-size:10px;">Autenticación</div>
+              <div class="comp-desc">auth.js<br>JWT, bcrypt</div>
+            </div>
+          </div>
+          
+          <div class="componente" style="margin-top:5px;">
+            <div class="comp-estereotipo" style="font-size:8px;">«component»</div>
+            <div class="comp-nombre" style="font-size:10px;">Conexión BD</div>
+            <div class="comp-desc">db.js (mssql) — Pool de conexiones</div>
+          </div>
+          
+          <div class="interfaz">
+            <div class="lollipop"></div>
+            <div class="linea"></div>
+            <span class="int-nombre">IREST</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Flecha -->
+      <div style="display:flex; flex-direction:column; justify-content:center; gap:5px;">
+        <div style="font-size:10px; text-align:center;">TDS<br>SQL</div>
+        <div class="flecha">→</div>
+        <div style="font-size:9px; text-align:center;">mssql<br>:1433</div>
+      </div>
+      
+      <!-- Capa Datos -->
+      <div class="capa" style="flex: 0.9;">
+        <div class="capa-titulo">«subsystem»<br>Capa de Datos</div>
+        
+        <div class="componente" style="min-height: 100px;">
+          <div class="comp-estereotipo">«component»</div>
+          <div class="comp-nombre">SQL Server 2022</div>
+          <div class="comp-desc">Docker Container (puerto 1433)</div>
+          <div style="display:flex; align-items:center; gap:10px; margin-top:10px;">
+            <div style="width:50px; height:35px; border:2px solid #000; border-radius: 5px 5px 0 0; background:white; text-align:center; font-size:9px; font-weight:bold; padding-top:8px;">SIA_NP</div>
+            <div style="font-size:8px;">14 tablas<br>3 vistas<br>2 stored proc.</div>
+          </div>
+          <div class="interfaz">
+            <div class="lollipop"></div>
+            <div class="linea"></div>
+            <span class="int-nombre">ISQL</span>
+          </div>
+        </div>
+        
+        <div class="componente">
+          <div class="comp-estereotipo">«component»</div>
+          <div class="comp-nombre">Scripts SQL</div>
+          <div class="comp-desc">01_creacion_SIA_NP.sql<br>02_datos_prueba.sql<br>04_ajustes_app.sql</div>
+        </div>
+        
+        <div class="componente">
+          <div class="comp-estereotipo">«component»</div>
+          <div class="comp-nombre">Docker</div>
+          <div class="comp-desc">docker-compose.yml</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="leyenda">
+      <div><strong>Notación UML 2.x:</strong></div>
+      <div class="leyenda-item">
+        <div style="width:25px; height:15px; border:1px solid #000; background:white; position:relative;">
+          <div style="position:absolute; left:-5px; top:2px; width:8px; height:5px; border:1px solid #000; background:white;"></div>
+          <div style="position:absolute; left:-5px; top:8px; width:8px; height:5px; border:1px solid #000; background:white;"></div>
+        </div>
+        <span>= Componente</span>
+      </div>
+      <div class="leyenda-item">
+        <div class="lollipop" style="width:10px; height:10px;"></div>
+        <div class="linea" style="width:15px;"></div>
+        <span>= Interfaz proporcionada</span>
+      </div>
+      <div class="leyenda-item">
+        <div style="width:30px; border-top:1px dashed #000;"></div>
+        <span style="font-size:12px;">→</span>
+        <span>= Dependencia</span>
+      </div>
+      <div class="leyenda-item">
+        <div style="width:25px; height:12px; background:#E6E6E6; border:1px solid #000; border-radius:2px;"></div>
+        <span>= Subsistema</span>
+      </div>
+      <div style="margin-left:auto;"><strong>Arquitectura:</strong> 3 capas (Presentación → Lógica → Datos)</div>
+    </div>
+  </div>
+</body>
+</html>

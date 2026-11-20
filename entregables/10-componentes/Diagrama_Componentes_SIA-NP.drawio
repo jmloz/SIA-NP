@@ -1,355 +1,387 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mxfile host="Electron" modified="2026-11-20T12:00:00.000Z" agent="draw.io" version="24.7.8">
-  <diagram id="componentes-sianp" name="Diagrama de Componentes">
-    <mxGraphModel dx="1434" dy="876" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="#FFFFFF" math="0" shadow="0">
+<mxfile host="app.diagrams.net" modified="2026-11-20T19:30:00.000Z" agent="Hermes" version="21.0.0" type="device">
+  <diagram name="Diagrama de Componentes" id="comp-sia-np">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
         <mxCell id="0"/>
         <mxCell id="1" parent="0"/>
         
-        <!-- ==================== TÍTULO ==================== -->
-        <mxCell id="titulo" value="Diagrama de Componentes - SIA-NP" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=16;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="400" y="20" width="300" height="30" as="geometry"/>
+        <!-- Título -->
+        <mxCell id="titulo" value="Diagrama de Componentes — SIA-NP" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=18;fontStyle=1;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="350" y="20" width="400" height="30" as="geometry"/>
         </mxCell>
-
-        <!-- ==================== COMPONENTE: BaseDeDatos (CENTRAL) ==================== -->
-        <mxCell id="comp-bd" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="470" y="380" width="160" height="100" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-bd-header" value="«component»&#xa;BaseDeDatos" style="text;html=1;strokeColor=none;fillColor=#E6E6E6;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=11;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="470" y="380" width="160" height="40" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-bd-icon1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
-          <mxGeometry x="600" y="386" width="18" height="12" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-bd-icon2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
-          <mxGeometry x="600" y="400" width="18" height="12" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-bd-desc" value="SQL Server&#xa;Persistencia" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=10;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="470" y="430" width="160" height="40" as="geometry"/>
-        </mxCell>
-        <!-- Interface proporcionada: IPersistencia -->
-        <mxCell id="iface-persist" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="540" y="360" width="20" height="20" as="geometry"/>
-        </mxCell>
-        <mxCell id="iface-persist-line" value="" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1;" edge="1" parent="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="550" y="380" as="sourcePoint"/>
-            <mxPoint x="550" y="380" as="targetPoint"/>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="iface-persist-label" value="IPersistencia" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="510" y="340" width="80" height="20" as="geometry"/>
-        </mxCell>
-
-        <!-- ==================== COMPONENTE: GestionMovimientos ==================== -->
-        <mxCell id="comp-mov" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="40" y="80" width="180" height="100" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-mov-header" value="«component»&#xa;GestionMovimientos" style="text;html=1;strokeColor=none;fillColor=#E6E6E6;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=11;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="40" y="80" width="180" height="40" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-mov-icon1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
-          <mxGeometry x="190" y="86" width="18" height="12" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-mov-icon2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
-          <mxGeometry x="190" y="100" width="18" height="12" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-mov-desc" value="CU1, CU4&#xa;Entradas, Salidas,&#xa;Ajustes, Devoluciones" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="40" y="125" width="180" height="50" as="geometry"/>
-        </mxCell>
-        <!-- Interface proporcionada: IMovimientos -->
-        <mxCell id="iface-mov" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="20" y="120" width="20" height="20" as="geometry"/>
-        </mxCell>
-        <mxCell id="iface-mov-label" value="IMovimientos" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="0" y="100" width="70" height="20" as="geometry"/>
-        </mxCell>
-
-        <!-- ==================== COMPONENTE: GestionInventario ==================== -->
-        <mxCell id="comp-inv" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="260" y="80" width="180" height="100" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-inv-header" value="«component»&#xa;GestionInventario" style="text;html=1;strokeColor=none;fillColor=#E6E6E6;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=11;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="260" y="80" width="180" height="40" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-inv-icon1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
-          <mxGeometry x="410" y="86" width="18" height="12" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-inv-icon2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
-          <mxGeometry x="410" y="100" width="18" height="12" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-inv-desc" value="CU2, CU3&#xa;Existencias, Conteos&#xa;físicos, Kardex" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="260" y="125" width="180" height="50" as="geometry"/>
-        </mxCell>
-        <!-- Interface proporcionada: IInventario -->
-        <mxCell id="iface-inv" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="240" y="120" width="20" height="20" as="geometry"/>
-        </mxCell>
-        <mxCell id="iface-inv-label" value="IInventario" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="225" y="100" width="60" height="20" as="geometry"/>
-        </mxCell>
-
-        <!-- ==================== COMPONENTE: GestionOrdenes ==================== -->
-        <mxCell id="comp-ord" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="480" y="80" width="180" height="100" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-ord-header" value="«component»&#xa;GestionOrdenes" style="text;html=1;strokeColor=none;fillColor=#E6E6E6;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=11;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="480" y="80" width="180" height="40" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-ord-icon1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
-          <mxGeometry x="630" y="86" width="18" height="12" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-ord-icon2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
-          <mxGeometry x="630" y="100" width="18" height="12" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-ord-desc" value="CU5, CU6&#xa;Órdenes de compra,&#xa;Recepción mercancía" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="480" y="125" width="180" height="50" as="geometry"/>
-        </mxCell>
-        <!-- Interface proporcionada: IOrdenes -->
-        <mxCell id="iface-ord" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="460" y="120" width="20" height="20" as="geometry"/>
-        </mxCell>
-        <mxCell id="iface-ord-label" value="IOrdenes" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="445" y="100" width="55" height="20" as="geometry"/>
-        </mxCell>
-
-        <!-- ==================== COMPONENTE: GestionProveedores ==================== -->
-        <mxCell id="comp-prov" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="700" y="80" width="160" height="100" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-prov-header" value="«component»&#xa;GestionProveedores" style="text;html=1;strokeColor=none;fillColor=#E6E6E6;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=11;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="700" y="80" width="160" height="40" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-prov-icon1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
-          <mxGeometry x="830" y="86" width="18" height="12" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-prov-icon2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
-          <mxGeometry x="830" y="100" width="18" height="12" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-prov-desc" value="CU5&#xa;Catálogo de&#xa;proveedores" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="700" y="125" width="160" height="50" as="geometry"/>
-        </mxCell>
-        <!-- Interface proporcionada: IProveedores -->
-        <mxCell id="iface-prov" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="680" y="120" width="20" height="20" as="geometry"/>
-        </mxCell>
-        <mxCell id="iface-prov-label" value="IProveedores" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="660" y="100" width="70" height="20" as="geometry"/>
-        </mxCell>
-
-        <!-- ==================== COMPONENTE: GestionProductos ==================== -->
-        <mxCell id="comp-prod" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="40" y="240" width="180" height="100" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-prod-header" value="«component»&#xa;GestionProductos" style="text;html=1;strokeColor=none;fillColor=#E6E6E6;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=11;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="40" y="240" width="180" height="40" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-prod-icon1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
-          <mxGeometry x="190" y="246" width="18" height="12" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-prod-icon2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
-          <mxGeometry x="190" y="260" width="18" height="12" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-prod-desc" value="CU2&#xa;Catálogo productos&#xa;y ubicaciones" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="40" y="285" width="180" height="50" as="geometry"/>
-        </mxCell>
-        <!-- Interface proporcionada: IProductos -->
-        <mxCell id="iface-prod" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="20" y="260" width="20" height="20" as="geometry"/>
-        </mxCell>
-        <mxCell id="iface-prod-label" value="IProductos" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="0" y="240" width="60" height="20" as="geometry"/>
-        </mxCell>
-        <!-- Interface proporcionada: IUbicaciones -->
-        <mxCell id="iface-ubic" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="20" y="300" width="20" height="20" as="geometry"/>
-        </mxCell>
-        <mxCell id="iface-ubic-label" value="IUbicaciones" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="0" y="320" width="70" height="20" as="geometry"/>
-        </mxCell>
-
-        <!-- ==================== COMPONENTE: GestionReportes ==================== -->
-        <mxCell id="comp-rep" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="880" y="240" width="180" height="100" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-rep-header" value="«component»&#xa;GestionReportes" style="text;html=1;strokeColor=none;fillColor=#E6E6E6;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=11;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="880" y="240" width="180" height="40" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-rep-icon1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
-          <mxGeometry x="1030" y="246" width="18" height="12" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-rep-icon2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
-          <mxGeometry x="1030" y="260" width="18" height="12" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-rep-desc" value="CU7, CU8&#xa;Dashboard ejecutivo,&#xa;Reportes operativos" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="880" y="285" width="180" height="50" as="geometry"/>
-        </mxCell>
-        <!-- Interface proporcionada: IReportes -->
-        <mxCell id="iface-rep" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="1060" y="260" width="20" height="20" as="geometry"/>
-        </mxCell>
-        <mxCell id="iface-rep-label" value="IReportes" style="text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="1065" y="240" width="55" height="20" as="geometry"/>
-        </mxCell>
-        <!-- Interface proporcionada: IDashboard -->
-        <mxCell id="iface-dash" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="1060" y="300" width="20" height="20" as="geometry"/>
-        </mxCell>
-        <mxCell id="iface-dash-label" value="IDashboard" style="text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="1060" y="320" width="60" height="20" as="geometry"/>
-        </mxCell>
-
-        <!-- ==================== COMPONENTE: GestionUsuarios ==================== -->
-        <mxCell id="comp-usr" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="40" y="400" width="180" height="100" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-usr-header" value="«component»&#xa;GestionUsuarios" style="text;html=1;strokeColor=none;fillColor=#E6E6E6;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=11;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="40" y="400" width="180" height="40" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-usr-icon1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
-          <mxGeometry x="190" y="406" width="18" height="12" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-usr-icon2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
-          <mxGeometry x="190" y="420" width="18" height="12" as="geometry"/>
-        </mxCell>
-        <mxCell id="comp-usr-desc" value="Autenticación,&#xa;Roles, Bitácora" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="40" y="445" width="180" height="50" as="geometry"/>
-        </mxCell>
-        <!-- Interface proporcionada: IAutenticacion -->
-        <mxCell id="iface-auth" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="20" y="420" width="20" height="20" as="geometry"/>
-        </mxCell>
-        <mxCell id="iface-auth-label" value="IAutenticacion" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="0" y="400" width="75" height="20" as="geometry"/>
-        </mxCell>
-        <!-- Interface proporcionada: IBitacora -->
-        <mxCell id="iface-bit" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="20" y="460" width="20" height="20" as="geometry"/>
-        </mxCell>
-        <mxCell id="iface-bit-label" value="IBitacora" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="0" y="480" width="55" height="20" as="geometry"/>
-        </mxCell>
-
-        <!-- ==================== CONEXIONES DE DEPENDENCIA A BaseDeDatos ==================== -->
         
-        <!-- GestionMovimientos → BaseDeDatos -->
-        <mxCell id="dep-mov-bd" value="" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0.5;exitY=1;entryX=0;entryY=0.5;" edge="1" parent="1" source="comp-mov" target="comp-bd">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="130" y="190" as="sourcePoint"/>
-            <Array as="points">
-              <mxPoint x="130" y="430"/>
-            </Array>
-          </mxGeometry>
+        <!-- ========== CAPA PRESENTACIÓN (React) ========== -->
+        <mxCell id="paquete-web" value="«subsystem»&#xa;Capa de Presentación" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=20;tabPosition=left;html=1;fillColor=#E6E6E6;strokeColor=#000000;fontSize=12;fontFamily=Arial;verticalAlign=top;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="40" y="70" width="320" height="280" as="geometry"/>
         </mxCell>
-
-        <!-- GestionInventario → BaseDeDatos -->
-        <mxCell id="dep-inv-bd" value="" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0.5;exitY=1;entryX=0.25;entryY=0;" edge="1" parent="1" source="comp-inv" target="comp-bd">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="350" y="190" as="sourcePoint"/>
-            <Array as="points">
-              <mxPoint x="350" y="300"/>
-              <mxPoint x="510" y="300"/>
-            </Array>
-          </mxGeometry>
-        </mxCell>
-
-        <!-- GestionOrdenes → BaseDeDatos -->
-        <mxCell id="dep-ord-bd" value="" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="comp-ord" target="comp-bd">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="570" y="190" as="sourcePoint"/>
-            <Array as="points">
-              <mxPoint x="570" y="300"/>
-              <mxPoint x="550" y="300"/>
-            </Array>
-          </mxGeometry>
-        </mxCell>
-
-        <!-- GestionProveedores → BaseDeDatos -->
-        <mxCell id="dep-prov-bd" value="" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0.5;exitY=1;entryX=0.75;entryY=0;" edge="1" parent="1" source="comp-prov" target="comp-bd">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="780" y="190" as="sourcePoint"/>
-            <Array as="points">
-              <mxPoint x="780" y="300"/>
-              <mxPoint x="590" y="300"/>
-            </Array>
-          </mxGeometry>
-        </mxCell>
-
-        <!-- GestionProductos → BaseDeDatos -->
-        <mxCell id="dep-prod-bd" value="" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=1;exitY=0.5;entryX=0;entryY=0.25;" edge="1" parent="1" source="comp-prod" target="comp-bd">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="230" y="290" as="sourcePoint"/>
-            <Array as="points">
-              <mxPoint x="350" y="290"/>
-              <mxPoint x="350" y="405"/>
-            </Array>
-          </mxGeometry>
-        </mxCell>
-
-        <!-- GestionReportes → BaseDeDatos -->
-        <mxCell id="dep-rep-bd" value="" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0;exitY=0.5;entryX=1;entryY=0.25;" edge="1" parent="1" source="comp-rep" target="comp-bd">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="870" y="290" as="sourcePoint"/>
-            <Array as="points">
-              <mxPoint x="750" y="290"/>
-              <mxPoint x="750" y="405"/>
-            </Array>
-          </mxGeometry>
-        </mxCell>
-
-        <!-- GestionUsuarios → BaseDeDatos -->
-        <mxCell id="dep-usr-bd" value="" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=1;exitY=0.5;entryX=0;entryY=0.75;" edge="1" parent="1" source="comp-usr" target="comp-bd">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="230" y="450" as="sourcePoint"/>
-            <Array as="points">
-              <mxPoint x="350" y="450"/>
-              <mxPoint x="350" y="455"/>
-            </Array>
-          </mxGeometry>
-        </mxCell>
-
-        <!-- ==================== DEPENDENCIAS INTER-COMPONENTES ==================== -->
         
-        <!-- GestionMovimientos usa IProductos (de GestionProductos) -->
-        <mxCell id="dep-mov-prod" value="" style="endArrow=open;endSize=8;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="comp-mov" target="comp-prod">
+        <!-- Componente: Navegador -->
+        <mxCell id="comp-navegador" value="«component»&#xa;Navegador Web" style="html=1;dropTarget=0;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;fontSize=11;fontStyle=1;verticalAlign=top;spacingTop=2;" vertex="1" parent="1">
+          <mxGeometry x="60" y="110" width="140" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-navegador-icon" value="" style="shape=component;jettyWidth=8;jettyHeight=4;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="comp-navegador">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-24" y="4" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="navegador-desc" value="Chrome, Firefox, Edge&#xa;Cliente HTTP" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="60" y="145" width="140" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- Componente: React App -->
+        <mxCell id="comp-react" value="«component»&#xa;SIA-NP Web" style="html=1;dropTarget=0;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;fontSize=11;fontStyle=1;verticalAlign=top;spacingTop=2;" vertex="1" parent="1">
+          <mxGeometry x="60" y="200" width="280" height="130" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-react-icon" value="" style="shape=component;jettyWidth=8;jettyHeight=4;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="comp-react">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-24" y="4" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="react-tech" value="React 18 + Vite&#xa;JavaScript/JSX" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="60" y="235" width="100" height="25" as="geometry"/>
+        </mxCell>
+        
+        <!-- Subcomponentes de React -->
+        <mxCell id="sub-paginas" value="Páginas" style="rounded=0;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="70" y="270" width="60" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="sub-componentes" value="Componentes" style="rounded=0;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="140" y="270" width="70" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="sub-api-client" value="api.js" style="rounded=0;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="220" y="270" width="50" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="sub-sesion" value="sesion.jsx" style="rounded=0;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="280" y="270" width="55" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="sub-estilos" value="estilos.css" style="rounded=0;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="70" y="300" width="60" height="20" as="geometry"/>
+        </mxCell>
+        
+        <!-- Interfaz proporcionada: IVistas -->
+        <mxCell id="int-vistas" value="IVistas" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="210" y="92" width="50" height="15" as="geometry"/>
+        </mxCell>
+        <mxCell id="int-vistas-circle" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="225" y="107" width="16" height="16" as="geometry"/>
+        </mxCell>
+        <mxCell id="int-vistas-line" value="" style="endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="233" y="123" as="sourcePoint"/>
+            <mxPoint x="233" y="200" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- ========== CAPA LÓGICA DE NEGOCIO (Express) ========== -->
+        <mxCell id="paquete-server" value="«subsystem»&#xa;Capa de Lógica de Negocio" style="shape=folder;fontStyle=1;tabWidth=140;tabHeight=20;tabPosition=left;html=1;fillColor=#E6E6E6;strokeColor=#000000;fontSize=12;fontFamily=Arial;verticalAlign=top;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="400" y="70" width="340" height="350" as="geometry"/>
+        </mxCell>
+        
+        <!-- Componente: Express API -->
+        <mxCell id="comp-express" value="«component»&#xa;API REST" style="html=1;dropTarget=0;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;fontSize=11;fontStyle=1;verticalAlign=top;spacingTop=2;" vertex="1" parent="1">
+          <mxGeometry x="420" y="110" width="300" height="290" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-express-icon" value="" style="shape=component;jettyWidth=8;jettyHeight=4;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="comp-express">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-24" y="4" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="express-tech" value="Node.js + Express&#xa;Puerto 3001" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="420" y="145" width="100" height="25" as="geometry"/>
+        </mxCell>
+        
+        <!-- Subcomponente: Rutas -->
+        <mxCell id="sub-rutas" value="«component»&#xa;Rutas" style="html=1;dropTarget=0;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;fontSize=10;fontStyle=1;verticalAlign=top;spacingTop=0;" vertex="1" parent="1">
+          <mxGeometry x="435" y="180" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="sub-rutas-icon" value="" style="shape=component;jettyWidth=6;jettyHeight=3;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="sub-rutas">
+          <mxGeometry x="1" width="15" height="15" relative="1" as="geometry">
+            <mxPoint x="-18" y="3" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rutas-list" value="/productos&#xa;/movimientos&#xa;/ordenes" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=8;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="440" y="205" width="70" height="35" as="geometry"/>
+        </mxCell>
+        
+        <!-- Subcomponente: Controladores -->
+        <mxCell id="sub-controladores" value="«component»&#xa;Controladores" style="html=1;dropTarget=0;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;fontSize=10;fontStyle=1;verticalAlign=top;spacingTop=0;" vertex="1" parent="1">
+          <mxGeometry x="570" y="180" width="135" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="sub-ctrl-icon" value="" style="shape=component;jettyWidth=6;jettyHeight=3;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="sub-controladores">
+          <mxGeometry x="1" width="15" height="15" relative="1" as="geometry">
+            <mxPoint x="-18" y="3" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ctrl-list" value="movimientos.js&#xa;ordenes.js&#xa;recepcion.js" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=8;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="575" y="205" width="80" height="35" as="geometry"/>
+        </mxCell>
+        
+        <!-- Subcomponente: Entidades -->
+        <mxCell id="sub-entidades" value="«component»&#xa;Entidades" style="html=1;dropTarget=0;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;fontSize=10;fontStyle=1;verticalAlign=top;spacingTop=0;" vertex="1" parent="1">
+          <mxGeometry x="435" y="255" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="sub-ent-icon" value="" style="shape=component;jettyWidth=6;jettyHeight=3;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="sub-entidades">
+          <mxGeometry x="1" width="15" height="15" relative="1" as="geometry">
+            <mxPoint x="-18" y="3" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ent-list" value="Producto.js&#xa;Movimiento.js&#xa;OrdenCompra.js" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=8;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="440" y="280" width="80" height="35" as="geometry"/>
+        </mxCell>
+        
+        <!-- Subcomponente: Autenticación -->
+        <mxCell id="sub-auth" value="«component»&#xa;Autenticación" style="html=1;dropTarget=0;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;fontSize=10;fontStyle=1;verticalAlign=top;spacingTop=0;" vertex="1" parent="1">
+          <mxGeometry x="570" y="255" width="135" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="sub-auth-icon" value="" style="shape=component;jettyWidth=6;jettyHeight=3;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="sub-auth">
+          <mxGeometry x="1" width="15" height="15" relative="1" as="geometry">
+            <mxPoint x="-18" y="3" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="auth-list" value="auth.js&#xa;JWT, bcrypt" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=8;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="575" y="285" width="70" height="25" as="geometry"/>
+        </mxCell>
+        
+        <!-- Subcomponente: Conexión BD -->
+        <mxCell id="sub-db" value="«component»&#xa;Conexión BD" style="html=1;dropTarget=0;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;fontSize=10;fontStyle=1;verticalAlign=top;spacingTop=0;" vertex="1" parent="1">
+          <mxGeometry x="500" y="330" width="130" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="sub-db-icon" value="" style="shape=component;jettyWidth=6;jettyHeight=3;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="sub-db">
+          <mxGeometry x="1" width="15" height="15" relative="1" as="geometry">
+            <mxPoint x="-18" y="3" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="db-list" value="db.js (mssql)&#xa;Pool de conexiones" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=8;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="505" y="355" width="90" height="25" as="geometry"/>
+        </mxCell>
+        
+        <!-- Interfaz proporcionada: IREST -->
+        <mxCell id="int-rest" value="IREST" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="373" y="140" width="40" height="15" as="geometry"/>
+        </mxCell>
+        <mxCell id="int-rest-circle" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="385" y="155" width="16" height="16" as="geometry"/>
+        </mxCell>
+        <mxCell id="int-rest-line" value="" style="endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="401" y="163" as="sourcePoint"/>
+            <mxPoint x="420" y="163" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- ========== CAPA DE DATOS (SQL Server) ========== -->
+        <mxCell id="paquete-db" value="«subsystem»&#xa;Capa de Datos" style="shape=folder;fontStyle=1;tabWidth=80;tabHeight=20;tabPosition=left;html=1;fillColor=#E6E6E6;strokeColor=#000000;fontSize=12;fontFamily=Arial;verticalAlign=top;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="780" y="70" width="280" height="350" as="geometry"/>
+        </mxCell>
+        
+        <!-- Componente: SQL Server -->
+        <mxCell id="comp-sqlserver" value="«component»&#xa;SQL Server 2022" style="html=1;dropTarget=0;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;fontSize=11;fontStyle=1;verticalAlign=top;spacingTop=2;" vertex="1" parent="1">
+          <mxGeometry x="800" y="110" width="240" height="130" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-sql-icon" value="" style="shape=component;jettyWidth=8;jettyHeight=4;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="comp-sqlserver">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-24" y="4" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sql-tech" value="Docker Container&#xa;Puerto 1433" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="800" y="145" width="100" height="25" as="geometry"/>
+        </mxCell>
+        
+        <!-- Base de datos SIA_NP -->
+        <mxCell id="db-sianp" value="SIA_NP" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="820" y="175" width="70" height="50" as="geometry"/>
+        </mxCell>
+        
+        <!-- Tablas -->
+        <mxCell id="tablas-list" value="14 tablas&#xa;3 vistas&#xa;2 stored procedures" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=8;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="900" y="175" width="100" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- Componente: Scripts SQL -->
+        <mxCell id="comp-scripts" value="«component»&#xa;Scripts SQL" style="html=1;dropTarget=0;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;fontSize=11;fontStyle=1;verticalAlign=top;spacingTop=2;" vertex="1" parent="1">
+          <mxGeometry x="800" y="260" width="240" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-scripts-icon" value="" style="shape=component;jettyWidth=8;jettyHeight=4;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="comp-scripts">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-24" y="4" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="scripts-list" value="01_creacion_SIA_NP.sql&#xa;02_datos_prueba.sql&#xa;03_pruebas_integridad.sql&#xa;04_ajustes_app.sql" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=8;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="810" y="290" width="120" height="45" as="geometry"/>
+        </mxCell>
+        
+        <!-- Componente: Docker -->
+        <mxCell id="comp-docker" value="«component»&#xa;Docker" style="html=1;dropTarget=0;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;fontSize=11;fontStyle=1;verticalAlign=top;spacingTop=2;" vertex="1" parent="1">
+          <mxGeometry x="800" y="355" width="240" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-docker-icon" value="" style="shape=component;jettyWidth=8;jettyHeight=4;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="comp-docker">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-24" y="4" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="docker-desc" value="docker-compose.yml, init-docker.sh" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=8;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="810" y="380" width="150" height="15" as="geometry"/>
+        </mxCell>
+        
+        <!-- Interfaz proporcionada: ISQL -->
+        <mxCell id="int-sql" value="ISQL" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=9;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="755" y="140" width="35" height="15" as="geometry"/>
+        </mxCell>
+        <mxCell id="int-sql-circle" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="765" y="155" width="16" height="16" as="geometry"/>
+        </mxCell>
+        <mxCell id="int-sql-line" value="" style="endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="781" y="163" as="sourcePoint"/>
+            <mxPoint x="800" y="163" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- ========== CONEXIONES ========== -->
+        
+        <!-- Navegador usa React (dentro del paquete) -->
+        <mxCell id="nav-react" value="" style="endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="180" as="sourcePoint"/>
+            <mxPoint x="130" y="200" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- React requiere IREST (semicírculo) -->
+        <mxCell id="react-req-rest" value="" style="curved=1;endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340" y="250" as="sourcePoint"/>
+            <mxPoint x="385" y="171" as="targetPoint"/>
+            <Array as="points">
+              <mxPoint x="365" y="250"/>
+              <mxPoint x="375" y="200"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="react-socket" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#FFFFFF;strokeColor=#000000;startSize=0;arcSize=50;" vertex="1" parent="1">
+          <mxGeometry x="377" y="163" width="16" height="16" as="geometry"/>
+        </mxCell>
+        
+        <!-- API requiere ISQL (semicírculo) -->
+        <mxCell id="api-req-sql" value="" style="curved=1;endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="720" y="250" as="sourcePoint"/>
+            <mxPoint x="765" y="171" as="targetPoint"/>
+            <Array as="points">
+              <mxPoint x="740" y="250"/>
+              <mxPoint x="755" y="200"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="api-socket" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="757" y="163" width="16" height="16" as="geometry"/>
+        </mxCell>
+        
+        <!-- Dependencias internas rutas -> controladores -->
+        <mxCell id="dep-rutas-ctrl" value="" style="endArrow=open;dashed=1;html=1;strokeColor=#000000;endFill=0;" edge="1" parent="1" source="sub-rutas" target="sub-controladores">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
         
-        <!-- GestionInventario usa IProductos -->
-        <mxCell id="dep-inv-prod" value="" style="endArrow=open;endSize=8;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0;exitY=1;entryX=1;entryY=0;" edge="1" parent="1" source="comp-inv" target="comp-prod">
+        <!-- Dependencias internas controladores -> entidades -->
+        <mxCell id="dep-ctrl-ent" value="" style="endArrow=open;dashed=1;html=1;strokeColor=#000000;endFill=0;" edge="1" parent="1" source="sub-controladores" target="sub-entidades">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
         
-        <!-- GestionOrdenes usa IProveedores -->
-        <mxCell id="dep-ord-prov" value="" style="endArrow=open;endSize=8;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="comp-ord" target="comp-prov">
+        <!-- Dependencias internas entidades -> db -->
+        <mxCell id="dep-ent-db" value="" style="endArrow=open;dashed=1;html=1;strokeColor=#000000;endFill=0;" edge="1" parent="1" source="sub-entidades" target="sub-db">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
         
-        <!-- GestionOrdenes usa IProductos -->
-        <mxCell id="dep-ord-prod" value="" style="endArrow=open;endSize=8;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0;exitY=1;entryX=1;entryY=0;" edge="1" parent="1" source="comp-ord" target="comp-prod">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="420" y="200"/>
-              <mxPoint x="260" y="200"/>
-            </Array>
-          </mxGeometry>
+        <!-- Dependencias internas rutas -> auth -->
+        <mxCell id="dep-rutas-auth" value="" style="endArrow=open;dashed=1;html=1;strokeColor=#000000;endFill=0;" edge="1" parent="1" source="sub-rutas" target="sub-auth">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
         
-        <!-- GestionReportes usa IInventario (para datos) -->
-        <mxCell id="dep-rep-inv" value="" style="endArrow=open;endSize=8;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0;exitY=0;entryX=1;entryY=1;" edge="1" parent="1" source="comp-rep" target="comp-inv">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="700" y="200"/>
-              <mxPoint x="440" y="200"/>
-            </Array>
+        <!-- ========== LEYENDA ========== -->
+        <mxCell id="leyenda" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFCC;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="40" y="440" width="300" height="130" as="geometry"/>
+        </mxCell>
+        <mxCell id="leyenda-titulo" value="Notación UML 2.x" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontStyle=1;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="50" y="445" width="120" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="ley-comp" value="" style="html=1;dropTarget=0;fillColor=#FFFFFF;strokeColor=#000000;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="50" y="470" width="40" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="ley-comp-icon" value="" style="shape=component;jettyWidth=4;jettyHeight=2;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="ley-comp">
+          <mxGeometry x="1" width="10" height="10" relative="1" as="geometry">
+            <mxPoint x="-12" y="2" as="offset"/>
           </mxGeometry>
         </mxCell>
-
-        <!-- ==================== NOTA EXPLICATIVA ==================== -->
-        <mxCell id="nota" value="Notación UML 2.x&#xa;○ = Interface proporcionada (lollipop)&#xa;- - → = Dependencia&#xa;Los componentes acceden a la BD&#xa;mediante IPersistencia" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;strokeColor=#000000;fillColor=#FFFFCC;fontFamily=Arial;fontSize=9;align=left;verticalAlign=top;spacingLeft=5;spacingTop=5;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="880" y="400" width="180" height="90" as="geometry"/>
+        <mxCell id="ley-comp-text" value="= Componente" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="95" y="472" width="80" height="15" as="geometry"/>
         </mxCell>
-
+        
+        <mxCell id="ley-int-prov" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="55" y="495" width="12" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="ley-int-prov-line" value="" style="endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="67" y="501" as="sourcePoint"/>
+            <mxPoint x="85" y="501" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ley-int-prov-text" value="= Interfaz proporcionada (lollipop)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="95" y="494" width="170" height="15" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="ley-int-req" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="67" y="515" width="12" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="ley-int-req-line" value="" style="endArrow=none;html=1;strokeColor=#000000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="50" y="521" as="sourcePoint"/>
+            <mxPoint x="67" y="521" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ley-int-req-text" value="= Interfaz requerida (socket)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="95" y="514" width="150" height="15" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="ley-dep" value="" style="endArrow=open;dashed=1;html=1;strokeColor=#000000;endFill=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="50" y="541" as="sourcePoint"/>
+            <mxPoint x="85" y="541" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ley-dep-text" value="= Dependencia" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="95" y="534" width="80" height="15" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="ley-pkg" value="" style="shape=folder;fontStyle=0;tabWidth=30;tabHeight=10;tabPosition=left;html=1;fillColor=#E6E6E6;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="50" y="550" width="40" height="15" as="geometry"/>
+        </mxCell>
+        <mxCell id="ley-pkg-text" value="= Subsistema/Paquete" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="95" y="550" width="110" height="15" as="geometry"/>
+        </mxCell>
+        
+        <!-- Arquitectura 3 capas -->
+        <mxCell id="arq-nota" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFCC;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="360" y="440" width="340" height="130" as="geometry"/>
+        </mxCell>
+        <mxCell id="arq-titulo" value="Arquitectura de 3 capas" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontStyle=1;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="370" y="445" width="150" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="arq-desc" value="1. Presentación (React): interfaz de usuario SPA&#xa;2. Lógica de negocio (Express): API REST, validaciones&#xa;3. Datos (SQL Server): persistencia, stored procedures&#xa;&#xa;Comunicación:&#xa;• React → Express: HTTP/JSON (fetch, puerto 3001)&#xa;• Express → SQL Server: TDS/mssql (puerto 1433)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;fontFamily=Arial;spacingLeft=5;" vertex="1" parent="1">
+          <mxGeometry x="370" y="465" width="320" height="100" as="geometry"/>
+        </mxCell>
+        
+        <!-- Tecnologías -->
+        <mxCell id="tech-nota" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFCC;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="720" y="440" width="340" height="130" as="geometry"/>
+        </mxCell>
+        <mxCell id="tech-titulo" value="Tecnologías utilizadas" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontStyle=1;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="730" y="445" width="150" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="tech-desc" value="Frontend: React 18, Vite, JavaScript/JSX&#xa;Backend: Node.js, Express, mssql&#xa;Base de datos: Microsoft SQL Server 2022&#xa;Contenedores: Docker, docker-compose&#xa;Autenticación: JWT, bcrypt&#xa;&#xa;Repositorio: github.com/jmloz/SIA-NP" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;fontFamily=Arial;spacingLeft=5;" vertex="1" parent="1">
+          <mxGeometry x="730" y="465" width="320" height="100" as="geometry"/>
+        </mxCell>
+        
       </root>
     </mxGraphModel>
   </diagram>

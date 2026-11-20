@@ -6251,65 +6251,32 @@ BitacoraDeAuditoria:{registrarEvento:'Registrar cada operación',registrarAcceso
 <section id="comp" data-title="10 Componentes">
   <h2>10. Diagrama de Componentes</h2>
   <p>
-    El <strong>diagrama de componentes</strong> UML muestra la organización y dependencias entre los módulos lógicos del sistema.
-    Cada componente encapsula un conjunto de funcionalidades relacionadas y expone interfaces para comunicarse con otros.
+    El <strong>diagrama de componentes</strong> UML muestra la arquitectura del sistema dividida en módulos de software
+    con sus dependencias e interfaces. Para el SIA-NP se utiliza una <strong>arquitectura de 3 capas</strong>.
   </p>
 
-  <h3>Componentes del SIA-NP</h3>
-  <p>El sistema se divide en <strong>8 componentes</strong> lógicos, organizados según los casos de uso:</p>
-
+  <h3>Arquitectura de 3 Capas</h3>
   <table class="tabla-ent">
     <thead>
-      <tr><th>Componente</th><th>CU</th><th>Descripción</th><th>Interfaces</th></tr>
+      <tr><th>Capa</th><th>Tecnología</th><th>Componentes</th><th>Comunicación</th></tr>
     </thead>
     <tbody>
       <tr>
-        <td><code>GestionMovimientos</code></td>
-        <td>CU1, CU4</td>
-        <td>Registra entradas, salidas, ajustes y devoluciones de mercancía</td>
-        <td>IMovimientos</td>
+        <td><strong>Presentación</strong></td>
+        <td>React 18 + Vite</td>
+        <td>SIA-NP Web, Páginas, Componentes, api.js, sesion.jsx</td>
+        <td rowspan="2">HTTP/JSON<br>(fetch, puerto 3001)</td>
       </tr>
       <tr>
-        <td><code>GestionInventario</code></td>
-        <td>CU2, CU3</td>
-        <td>Control de existencias, conteos físicos y kardex</td>
-        <td>IInventario</td>
+        <td><strong>Lógica de Negocio</strong></td>
+        <td>Node.js + Express</td>
+        <td>API REST, Rutas, Controladores, Entidades, Autenticación, db.js</td>
       </tr>
       <tr>
-        <td><code>GestionOrdenes</code></td>
-        <td>CU5, CU6</td>
-        <td>Órdenes de compra y recepción de mercancía</td>
-        <td>IOrdenes</td>
-      </tr>
-      <tr>
-        <td><code>GestionProveedores</code></td>
-        <td>CU5</td>
-        <td>Catálogo de proveedores</td>
-        <td>IProveedores</td>
-      </tr>
-      <tr>
-        <td><code>GestionProductos</code></td>
-        <td>CU2</td>
-        <td>Catálogo de productos y ubicaciones</td>
-        <td>IProductos, IUbicaciones</td>
-      </tr>
-      <tr>
-        <td><code>GestionReportes</code></td>
-        <td>CU7, CU8</td>
-        <td>Dashboard ejecutivo y reportes operativos</td>
-        <td>IReportes, IDashboard</td>
-      </tr>
-      <tr>
-        <td><code>GestionUsuarios</code></td>
-        <td>—</td>
-        <td>Autenticación, roles y bitácora de auditoría</td>
-        <td>IAutenticacion, IBitacora</td>
-      </tr>
-      <tr>
-        <td><code>BaseDeDatos</code></td>
-        <td>—</td>
-        <td>Persistencia en SQL Server</td>
-        <td>IPersistencia</td>
+        <td><strong>Datos</strong></td>
+        <td>SQL Server 2022</td>
+        <td>BD SIA_NP (14 tablas, 3 vistas, 2 SP), Scripts SQL, Docker</td>
+        <td>TDS/SQL<br>(mssql, puerto 1433)</td>
       </tr>
     </tbody>
   </table>
@@ -6317,30 +6284,72 @@ BitacoraDeAuditoria:{registrarEvento:'Registrar cada operación',registrarAcceso
   <h3>Diagrama</h3>
   <figure class="figura-grande">
     <img src="../entregables/10-componentes/figuras/componentes.png" alt="Diagrama de componentes del SIA-NP" style="max-width:100%; border:1px solid var(--borde);">
-    <figcaption>Figura 1. Diagrama de componentes del SIA-NP (notación UML 2.x)</figcaption>
+    <figcaption>Figura 1. Diagrama de componentes del SIA-NP (arquitectura de 3 capas)</figcaption>
   </figure>
+
+  <h3>Componentes por Capa</h3>
+  
+  <h4>Capa de Presentación (React)</h4>
+  <ul>
+    <li><code>Navegador Web</code>: Chrome, Firefox, Edge — cliente HTTP</li>
+    <li><code>SIA-NP Web</code>: aplicación SPA (Single Page Application)
+      <ul>
+        <li><code>Páginas</code>: login, movimientos, órdenes, recepción, inventario</li>
+        <li><code>Componentes</code>: elementos reutilizables de la UI</li>
+        <li><code>api.js</code>: cliente HTTP para la API REST</li>
+        <li><code>sesion.jsx</code>: contexto React para JWT y sesión</li>
+      </ul>
+    </li>
+  </ul>
+  
+  <h4>Capa de Lógica de Negocio (Express)</h4>
+  <ul>
+    <li><code>API REST</code>: servidor Express en puerto 3001
+      <ul>
+        <li><code>Rutas</code>: /productos, /movimientos, /ordenes, /recepcion</li>
+        <li><code>Controladores</code>: lógica de cada CU (movimientos.js, ordenes.js, etc.)</li>
+        <li><code>Entidades</code>: modelos de dominio (Producto.js, Movimiento.js)</li>
+        <li><code>Autenticación</code>: auth.js con JWT y bcrypt</li>
+        <li><code>Conexión BD</code>: db.js con pool de conexiones mssql</li>
+      </ul>
+    </li>
+  </ul>
+  
+  <h4>Capa de Datos (SQL Server)</h4>
+  <ul>
+    <li><code>SQL Server 2022</code>: motor de BD en Docker (puerto 1433)
+      <ul>
+        <li><code>SIA_NP</code>: 14 tablas, 3 vistas, 2 stored procedures</li>
+      </ul>
+    </li>
+    <li><code>Scripts SQL</code>: 01_creacion, 02_datos_prueba, 04_ajustes_app</li>
+    <li><code>Docker</code>: docker-compose.yml, init-docker.sh</li>
+  </ul>
+
+  <h3>Interfaces</h3>
+  <table class="tabla-ent">
+    <thead>
+      <tr><th>Interfaz</th><th>Componente</th><th>Tipo</th><th>Descripción</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>IVistas</td><td>SIA-NP Web</td><td>Proporcionada</td><td>Renderizar páginas y capturar eventos de usuario</td></tr>
+      <tr><td>IREST</td><td>API REST</td><td>Proporcionada</td><td>GET, POST, PUT, DELETE sobre recursos (/productos, /movimientos, etc.)</td></tr>
+      <tr><td>ISQL</td><td>SQL Server</td><td>Proporcionada</td><td>SELECT, INSERT, UPDATE, DELETE, EXEC stored procedures</td></tr>
+    </tbody>
+  </table>
 
   <h3>Notación UML 2.x</h3>
   <ul>
     <li><strong>Componente</strong>: rectángulo con estereotipo «component» e icono (dos rectángulos pequeños)</li>
-    <li><strong>Interfaz proporcionada</strong>: círculo (lollipop) conectado al componente que la ofrece</li>
-    <li><strong>Interfaz requerida</strong>: semicírculo que se conecta a la interfaz proporcionada de otro componente</li>
+    <li><strong>Subsistema</strong>: paquete con estereotipo «subsystem» que agrupa componentes</li>
+    <li><strong>Interfaz proporcionada</strong>: círculo (lollipop) conectado al componente</li>
     <li><strong>Dependencia</strong>: flecha punteada del componente que depende hacia el que provee</li>
   </ul>
 
-  <h3>Dependencias principales</h3>
-  <ul>
-    <li>Todos los componentes dependen de <code>BaseDeDatos</code> mediante <code>IPersistencia</code></li>
-    <li><code>GestionMovimientos</code> → <code>GestionProductos</code>, <code>GestionInventario</code></li>
-    <li><code>GestionOrdenes</code> → <code>GestionProveedores</code>, <code>GestionProductos</code>, <code>GestionInventario</code></li>
-    <li><code>GestionReportes</code> → <code>GestionInventario</code>, <code>GestionMovimientos</code></li>
-  </ul>
-
   <div class="nota">
-    <strong>Relación con el diagrama de clases:</strong> cada componente agrupa las clases de entidad, control e interfaz
-    que implementan sus casos de uso. Por ejemplo, <code>GestionMovimientos</code> contiene las clases
-    <code>Movimiento</code>, <code>Entrada</code>, <code>Salida</code>, <code>Ajuste</code>, <code>Devolucion</code>,
-    <code>ControladorMovimientos</code> e <code>InterfazRegistroMovimientos</code>.
+    <strong>Relación con el PPTX:</strong> Este diagrama sigue el material del Tema 3 "Arquitectura de Software"
+    de la materia, mostrando componentes reales de software (React, Express, SQL Server), no solo
+    componentes lógicos del dominio. Es similar a los ejemplos de "tienda en línea" y "cajero" del PPTX.
   </div>
 </section>
 </main>
