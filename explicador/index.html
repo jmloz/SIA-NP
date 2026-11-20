@@ -6251,11 +6251,29 @@ BitacoraDeAuditoria:{registrarEvento:'Registrar cada operación',registrarAcceso
 <section id="comp" data-title="10 Componentes">
   <h2>10. Diagrama de Componentes</h2>
   <p>
-    El <strong>diagrama de componentes</strong> UML muestra la arquitectura del sistema dividida en módulos de software
-    con sus dependencias e interfaces. Para el SIA-NP se utiliza una <strong>arquitectura de 3 capas</strong>.
+    El <strong>diagrama de componentes</strong> UML muestra la arquitectura del sistema dividida en componentes
+    de software y hardware con sus dependencias e interfaces. Para el SIA-NP se utiliza una 
+    <strong>arquitectura de 3 capas</strong> desplegada en infraestructura <strong>cliente-servidor</strong>.
   </p>
 
-  <h3>Arquitectura de 3 Capas</h3>
+  <h3>Componentes de Hardware</h3>
+  <table class="tabla-ent">
+    <thead>
+      <tr><th>Dispositivo</th><th>Especificación</th><th>Función</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>PC Escritorio</td><td>Windows 10/11, Chrome/Firefox, red LAN</td><td>Estación de trabajo almacén/compras</td></tr>
+      <tr><td>Laptop</td><td>Windows/macOS, Wi-Fi</td><td>Acceso móvil para dirección</td></tr>
+      <tr><td>Tablet/Smartphone</td><td>Android/iOS, navegador móvil</td><td>Consultas y conteo en piso</td></tr>
+      <tr><td>Lector código de barras</td><td>USB o Bluetooth, emulación teclado</td><td>Captura rápida de códigos</td></tr>
+      <tr><td>Servidor de aplicaciones</td><td>Linux/Docker, Node.js, 4GB RAM</td><td>Ejecuta API REST (:3001)</td></tr>
+      <tr><td>Servidor de base de datos</td><td>Linux/Docker, SQL Server, 8GB RAM</td><td>Almacena BD SIA_NP (:1433)</td></tr>
+      <tr><td>Impresora</td><td>Láser o inyección, red o USB</td><td>Notas, órdenes, hojas de conteo</td></tr>
+      <tr><td>Switch/Router/AP</td><td>Red LAN 1 Gbps, Wi-Fi 802.11ac</td><td>Conecta clientes con servidores</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Componentes de Software (3 Capas)</h3>
   <table class="tabla-ent">
     <thead>
       <tr><th>Capa</th><th>Tecnología</th><th>Componentes</th><th>Comunicación</th></tr>
@@ -6284,47 +6302,8 @@ BitacoraDeAuditoria:{registrarEvento:'Registrar cada operación',registrarAcceso
   <h3>Diagrama</h3>
   <figure class="figura-grande">
     <img src="../entregables/10-componentes/figuras/componentes.png" alt="Diagrama de componentes del SIA-NP" style="max-width:100%; border:1px solid var(--borde);">
-    <figcaption>Figura 1. Diagrama de componentes del SIA-NP (arquitectura de 3 capas)</figcaption>
+    <figcaption>Figura 1. Diagrama de componentes del SIA-NP (software y hardware)</figcaption>
   </figure>
-
-  <h3>Componentes por Capa</h3>
-  
-  <h4>Capa de Presentación (React)</h4>
-  <ul>
-    <li><code>Navegador Web</code>: Chrome, Firefox, Edge — cliente HTTP</li>
-    <li><code>SIA-NP Web</code>: aplicación SPA (Single Page Application)
-      <ul>
-        <li><code>Páginas</code>: login, movimientos, órdenes, recepción, inventario</li>
-        <li><code>Componentes</code>: elementos reutilizables de la UI</li>
-        <li><code>api.js</code>: cliente HTTP para la API REST</li>
-        <li><code>sesion.jsx</code>: contexto React para JWT y sesión</li>
-      </ul>
-    </li>
-  </ul>
-  
-  <h4>Capa de Lógica de Negocio (Express)</h4>
-  <ul>
-    <li><code>API REST</code>: servidor Express en puerto 3001
-      <ul>
-        <li><code>Rutas</code>: /productos, /movimientos, /ordenes, /recepcion</li>
-        <li><code>Controladores</code>: lógica de cada CU (movimientos.js, ordenes.js, etc.)</li>
-        <li><code>Entidades</code>: modelos de dominio (Producto.js, Movimiento.js)</li>
-        <li><code>Autenticación</code>: auth.js con JWT y bcrypt</li>
-        <li><code>Conexión BD</code>: db.js con pool de conexiones mssql</li>
-      </ul>
-    </li>
-  </ul>
-  
-  <h4>Capa de Datos (SQL Server)</h4>
-  <ul>
-    <li><code>SQL Server 2022</code>: motor de BD en Docker (puerto 1433)
-      <ul>
-        <li><code>SIA_NP</code>: 14 tablas, 3 vistas, 2 stored procedures</li>
-      </ul>
-    </li>
-    <li><code>Scripts SQL</code>: 01_creacion, 02_datos_prueba, 04_ajustes_app</li>
-    <li><code>Docker</code>: docker-compose.yml, init-docker.sh</li>
-  </ul>
 
   <h3>Interfaces</h3>
   <table class="tabla-ent">
@@ -6332,24 +6311,27 @@ BitacoraDeAuditoria:{registrarEvento:'Registrar cada operación',registrarAcceso
       <tr><th>Interfaz</th><th>Componente</th><th>Tipo</th><th>Descripción</th></tr>
     </thead>
     <tbody>
-      <tr><td>IVistas</td><td>SIA-NP Web</td><td>Proporcionada</td><td>Renderizar páginas y capturar eventos de usuario</td></tr>
-      <tr><td>IREST</td><td>API REST</td><td>Proporcionada</td><td>GET, POST, PUT, DELETE sobre recursos (/productos, /movimientos, etc.)</td></tr>
-      <tr><td>ISQL</td><td>SQL Server</td><td>Proporcionada</td><td>SELECT, INSERT, UPDATE, DELETE, EXEC stored procedures</td></tr>
+      <tr><td>IVistas</td><td>SIA-NP Web</td><td>Proporcionada</td><td>Renderizar páginas y capturar eventos</td></tr>
+      <tr><td>IREST</td><td>API REST</td><td>Proporcionada</td><td>GET, POST, PUT, DELETE sobre recursos</td></tr>
+      <tr><td>ISQL</td><td>SQL Server</td><td>Proporcionada</td><td>SELECT, INSERT, UPDATE, DELETE, EXEC</td></tr>
+      <tr><td>IUSB</td><td>Lector código</td><td>Proporcionada</td><td>Envío de código escaneado como texto</td></tr>
+      <tr><td>IImpresión</td><td>Impresora</td><td>Proporcionada</td><td>Recepción de documentos para imprimir</td></tr>
     </tbody>
   </table>
 
   <h3>Notación UML 2.x</h3>
   <ul>
-    <li><strong>Componente</strong>: rectángulo con estereotipo «component» e icono (dos rectángulos pequeños)</li>
-    <li><strong>Subsistema</strong>: paquete con estereotipo «subsystem» que agrupa componentes</li>
+    <li><strong>«component»</strong>: rectángulo con icono de componente (dos rectángulos pequeños)</li>
+    <li><strong>«device»</strong>: caja amarilla que representa hardware físico</li>
+    <li><strong>«subsystem»</strong>: paquete que agrupa componentes de software</li>
+    <li><strong>«executionEnvironment»</strong>: infraestructura donde se ejecutan componentes</li>
     <li><strong>Interfaz proporcionada</strong>: círculo (lollipop) conectado al componente</li>
-    <li><strong>Dependencia</strong>: flecha punteada del componente que depende hacia el que provee</li>
   </ul>
 
   <div class="nota">
-    <strong>Relación con el PPTX:</strong> Este diagrama sigue el material del Tema 3 "Arquitectura de Software"
-    de la materia, mostrando componentes reales de software (React, Express, SQL Server), no solo
-    componentes lógicos del dominio. Es similar a los ejemplos de "tienda en línea" y "cajero" del PPTX.
+    <strong>Relación con el PPTX:</strong> Este diagrama sigue el material del Tema 3 "Arquitectura de Software",
+    mostrando tanto componentes de software (React, Express, SQL Server) como de hardware (PC, servidores, 
+    impresora, red), similar a los ejemplos del PPTX.
   </div>
 </section>
 </main>
