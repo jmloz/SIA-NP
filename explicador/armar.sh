@@ -3,7 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 tmp=$(mktemp)
-for f in secciones/0*.html; do
+for f in secciones/[0-9]*.html; do
   printf '\n<!-- ===== %s ===== -->\n' "$f" >> "$tmp"
   cat "$f" >> "$tmp"
 done
@@ -12,4 +12,4 @@ awk -v archivo="$tmp" '
   { print }
 ' marco.html > index.html
 rm -f "$tmp"
-echo "index.html: $(wc -c < index.html) bytes, secciones: $(ls secciones/0*.html | wc -l)"
+echo "index.html: $(wc -c < index.html) bytes, secciones: $(ls secciones/[0-9]*.html | wc -l)"

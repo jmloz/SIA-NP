@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="Electron" modified="2026-11-20T12:00:00.000Z" agent="draw.io" version="24.7.8">
+  <diagram id="componentes-sianp" name="Diagrama de Componentes">
+    <mxGraphModel dx="1434" dy="876" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="#FFFFFF" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- ==================== TÍTULO ==================== -->
+        <mxCell id="titulo" value="Diagrama de Componentes - SIA-NP" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=16;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="300" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== COMPONENTE: BaseDeDatos (CENTRAL) ==================== -->
+        <mxCell id="comp-bd" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="470" y="380" width="160" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-bd-header" value="«component»&#xa;BaseDeDatos" style="text;html=1;strokeColor=none;fillColor=#E6E6E6;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=11;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="470" y="380" width="160" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-bd-icon1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="386" width="18" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-bd-icon2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="400" width="18" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-bd-desc" value="SQL Server&#xa;Persistencia" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=10;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="470" y="430" width="160" height="40" as="geometry"/>
+        </mxCell>
+        <!-- Interface proporcionada: IPersistencia -->
+        <mxCell id="iface-persist" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="540" y="360" width="20" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="iface-persist-line" value="" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="550" y="380" as="sourcePoint"/>
+            <mxPoint x="550" y="380" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iface-persist-label" value="IPersistencia" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="510" y="340" width="80" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== COMPONENTE: GestionMovimientos ==================== -->
+        <mxCell id="comp-mov" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="180" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-mov-header" value="«component»&#xa;GestionMovimientos" style="text;html=1;strokeColor=none;fillColor=#E6E6E6;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=11;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="180" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-mov-icon1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="86" width="18" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-mov-icon2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="100" width="18" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-mov-desc" value="CU1, CU4&#xa;Entradas, Salidas,&#xa;Ajustes, Devoluciones" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="40" y="125" width="180" height="50" as="geometry"/>
+        </mxCell>
+        <!-- Interface proporcionada: IMovimientos -->
+        <mxCell id="iface-mov" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="20" y="120" width="20" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="iface-mov-label" value="IMovimientos" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="0" y="100" width="70" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== COMPONENTE: GestionInventario ==================== -->
+        <mxCell id="comp-inv" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="260" y="80" width="180" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-inv-header" value="«component»&#xa;GestionInventario" style="text;html=1;strokeColor=none;fillColor=#E6E6E6;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=11;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="260" y="80" width="180" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-inv-icon1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="410" y="86" width="18" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-inv-icon2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="410" y="100" width="18" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-inv-desc" value="CU2, CU3&#xa;Existencias, Conteos&#xa;físicos, Kardex" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="260" y="125" width="180" height="50" as="geometry"/>
+        </mxCell>
+        <!-- Interface proporcionada: IInventario -->
+        <mxCell id="iface-inv" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="240" y="120" width="20" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="iface-inv-label" value="IInventario" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="225" y="100" width="60" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== COMPONENTE: GestionOrdenes ==================== -->
+        <mxCell id="comp-ord" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="480" y="80" width="180" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-ord-header" value="«component»&#xa;GestionOrdenes" style="text;html=1;strokeColor=none;fillColor=#E6E6E6;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=11;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="480" y="80" width="180" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-ord-icon1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="630" y="86" width="18" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-ord-icon2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="630" y="100" width="18" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-ord-desc" value="CU5, CU6&#xa;Órdenes de compra,&#xa;Recepción mercancía" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="480" y="125" width="180" height="50" as="geometry"/>
+        </mxCell>
+        <!-- Interface proporcionada: IOrdenes -->
+        <mxCell id="iface-ord" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="460" y="120" width="20" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="iface-ord-label" value="IOrdenes" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="445" y="100" width="55" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== COMPONENTE: GestionProveedores ==================== -->
+        <mxCell id="comp-prov" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="700" y="80" width="160" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-prov-header" value="«component»&#xa;GestionProveedores" style="text;html=1;strokeColor=none;fillColor=#E6E6E6;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=11;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="700" y="80" width="160" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-prov-icon1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="830" y="86" width="18" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-prov-icon2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="830" y="100" width="18" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-prov-desc" value="CU5&#xa;Catálogo de&#xa;proveedores" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="700" y="125" width="160" height="50" as="geometry"/>
+        </mxCell>
+        <!-- Interface proporcionada: IProveedores -->
+        <mxCell id="iface-prov" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="680" y="120" width="20" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="iface-prov-label" value="IProveedores" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="660" y="100" width="70" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== COMPONENTE: GestionProductos ==================== -->
+        <mxCell id="comp-prod" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="40" y="240" width="180" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-prod-header" value="«component»&#xa;GestionProductos" style="text;html=1;strokeColor=none;fillColor=#E6E6E6;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=11;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="40" y="240" width="180" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-prod-icon1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="246" width="18" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-prod-icon2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="260" width="18" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-prod-desc" value="CU2&#xa;Catálogo productos&#xa;y ubicaciones" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="40" y="285" width="180" height="50" as="geometry"/>
+        </mxCell>
+        <!-- Interface proporcionada: IProductos -->
+        <mxCell id="iface-prod" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="20" y="260" width="20" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="iface-prod-label" value="IProductos" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="0" y="240" width="60" height="20" as="geometry"/>
+        </mxCell>
+        <!-- Interface proporcionada: IUbicaciones -->
+        <mxCell id="iface-ubic" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="20" y="300" width="20" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="iface-ubic-label" value="IUbicaciones" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="0" y="320" width="70" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== COMPONENTE: GestionReportes ==================== -->
+        <mxCell id="comp-rep" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="880" y="240" width="180" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-rep-header" value="«component»&#xa;GestionReportes" style="text;html=1;strokeColor=none;fillColor=#E6E6E6;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=11;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="880" y="240" width="180" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-rep-icon1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="246" width="18" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-rep-icon2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="260" width="18" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-rep-desc" value="CU7, CU8&#xa;Dashboard ejecutivo,&#xa;Reportes operativos" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="880" y="285" width="180" height="50" as="geometry"/>
+        </mxCell>
+        <!-- Interface proporcionada: IReportes -->
+        <mxCell id="iface-rep" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="260" width="20" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="iface-rep-label" value="IReportes" style="text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="1065" y="240" width="55" height="20" as="geometry"/>
+        </mxCell>
+        <!-- Interface proporcionada: IDashboard -->
+        <mxCell id="iface-dash" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="300" width="20" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="iface-dash-label" value="IDashboard" style="text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="320" width="60" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== COMPONENTE: GestionUsuarios ==================== -->
+        <mxCell id="comp-usr" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="40" y="400" width="180" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-usr-header" value="«component»&#xa;GestionUsuarios" style="text;html=1;strokeColor=none;fillColor=#E6E6E6;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=11;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="40" y="400" width="180" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-usr-icon1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="406" width="18" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-usr-icon2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="420" width="18" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp-usr-desc" value="Autenticación,&#xa;Roles, Bitácora" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="40" y="445" width="180" height="50" as="geometry"/>
+        </mxCell>
+        <!-- Interface proporcionada: IAutenticacion -->
+        <mxCell id="iface-auth" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="20" y="420" width="20" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="iface-auth-label" value="IAutenticacion" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="0" y="400" width="75" height="20" as="geometry"/>
+        </mxCell>
+        <!-- Interface proporcionada: IBitacora -->
+        <mxCell id="iface-bit" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#FFFFFF;strokeWidth=2;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="20" y="460" width="20" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="iface-bit-label" value="IBitacora" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=9;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="0" y="480" width="55" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== CONEXIONES DE DEPENDENCIA A BaseDeDatos ==================== -->
+        
+        <!-- GestionMovimientos → BaseDeDatos -->
+        <mxCell id="dep-mov-bd" value="" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0.5;exitY=1;entryX=0;entryY=0.5;" edge="1" parent="1" source="comp-mov" target="comp-bd">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="190" as="sourcePoint"/>
+            <Array as="points">
+              <mxPoint x="130" y="430"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- GestionInventario → BaseDeDatos -->
+        <mxCell id="dep-inv-bd" value="" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0.5;exitY=1;entryX=0.25;entryY=0;" edge="1" parent="1" source="comp-inv" target="comp-bd">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="350" y="190" as="sourcePoint"/>
+            <Array as="points">
+              <mxPoint x="350" y="300"/>
+              <mxPoint x="510" y="300"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- GestionOrdenes → BaseDeDatos -->
+        <mxCell id="dep-ord-bd" value="" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="comp-ord" target="comp-bd">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="570" y="190" as="sourcePoint"/>
+            <Array as="points">
+              <mxPoint x="570" y="300"/>
+              <mxPoint x="550" y="300"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- GestionProveedores → BaseDeDatos -->
+        <mxCell id="dep-prov-bd" value="" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0.5;exitY=1;entryX=0.75;entryY=0;" edge="1" parent="1" source="comp-prov" target="comp-bd">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="780" y="190" as="sourcePoint"/>
+            <Array as="points">
+              <mxPoint x="780" y="300"/>
+              <mxPoint x="590" y="300"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- GestionProductos → BaseDeDatos -->
+        <mxCell id="dep-prod-bd" value="" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=1;exitY=0.5;entryX=0;entryY=0.25;" edge="1" parent="1" source="comp-prod" target="comp-bd">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="230" y="290" as="sourcePoint"/>
+            <Array as="points">
+              <mxPoint x="350" y="290"/>
+              <mxPoint x="350" y="405"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- GestionReportes → BaseDeDatos -->
+        <mxCell id="dep-rep-bd" value="" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0;exitY=0.5;entryX=1;entryY=0.25;" edge="1" parent="1" source="comp-rep" target="comp-bd">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="870" y="290" as="sourcePoint"/>
+            <Array as="points">
+              <mxPoint x="750" y="290"/>
+              <mxPoint x="750" y="405"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- GestionUsuarios → BaseDeDatos -->
+        <mxCell id="dep-usr-bd" value="" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=1;exitY=0.5;entryX=0;entryY=0.75;" edge="1" parent="1" source="comp-usr" target="comp-bd">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="230" y="450" as="sourcePoint"/>
+            <Array as="points">
+              <mxPoint x="350" y="450"/>
+              <mxPoint x="350" y="455"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== DEPENDENCIAS INTER-COMPONENTES ==================== -->
+        
+        <!-- GestionMovimientos usa IProductos (de GestionProductos) -->
+        <mxCell id="dep-mov-prod" value="" style="endArrow=open;endSize=8;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="comp-mov" target="comp-prod">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- GestionInventario usa IProductos -->
+        <mxCell id="dep-inv-prod" value="" style="endArrow=open;endSize=8;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0;exitY=1;entryX=1;entryY=0;" edge="1" parent="1" source="comp-inv" target="comp-prod">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- GestionOrdenes usa IProveedores -->
+        <mxCell id="dep-ord-prov" value="" style="endArrow=open;endSize=8;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="comp-ord" target="comp-prov">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- GestionOrdenes usa IProductos -->
+        <mxCell id="dep-ord-prod" value="" style="endArrow=open;endSize=8;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0;exitY=1;entryX=1;entryY=0;" edge="1" parent="1" source="comp-ord" target="comp-prod">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="420" y="200"/>
+              <mxPoint x="260" y="200"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- GestionReportes usa IInventario (para datos) -->
+        <mxCell id="dep-rep-inv" value="" style="endArrow=open;endSize=8;dashed=1;html=1;strokeColor=#000000;strokeWidth=1;exitX=0;exitY=0;entryX=1;entryY=1;" edge="1" parent="1" source="comp-rep" target="comp-inv">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="200"/>
+              <mxPoint x="440" y="200"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== NOTA EXPLICATIVA ==================== -->
+        <mxCell id="nota" value="Notación UML 2.x&#xa;○ = Interface proporcionada (lollipop)&#xa;- - → = Dependencia&#xa;Los componentes acceden a la BD&#xa;mediante IPersistencia" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;strokeColor=#000000;fillColor=#FFFFCC;fontFamily=Arial;fontSize=9;align=left;verticalAlign=top;spacingLeft=5;spacingTop=5;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="880" y="400" width="180" height="90" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

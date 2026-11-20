@@ -1,0 +1,95 @@
+<section id="comp" data-title="10 Componentes">
+  <h2>10. Diagrama de Componentes</h2>
+  <p>
+    El <strong>diagrama de componentes</strong> UML muestra la organización y dependencias entre los módulos lógicos del sistema.
+    Cada componente encapsula un conjunto de funcionalidades relacionadas y expone interfaces para comunicarse con otros.
+  </p>
+
+  <h3>Componentes del SIA-NP</h3>
+  <p>El sistema se divide en <strong>8 componentes</strong> lógicos, organizados según los casos de uso:</p>
+
+  <table class="tabla-ent">
+    <thead>
+      <tr><th>Componente</th><th>CU</th><th>Descripción</th><th>Interfaces</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>GestionMovimientos</code></td>
+        <td>CU1, CU4</td>
+        <td>Registra entradas, salidas, ajustes y devoluciones de mercancía</td>
+        <td>IMovimientos</td>
+      </tr>
+      <tr>
+        <td><code>GestionInventario</code></td>
+        <td>CU2, CU3</td>
+        <td>Control de existencias, conteos físicos y kardex</td>
+        <td>IInventario</td>
+      </tr>
+      <tr>
+        <td><code>GestionOrdenes</code></td>
+        <td>CU5, CU6</td>
+        <td>Órdenes de compra y recepción de mercancía</td>
+        <td>IOrdenes</td>
+      </tr>
+      <tr>
+        <td><code>GestionProveedores</code></td>
+        <td>CU5</td>
+        <td>Catálogo de proveedores</td>
+        <td>IProveedores</td>
+      </tr>
+      <tr>
+        <td><code>GestionProductos</code></td>
+        <td>CU2</td>
+        <td>Catálogo de productos y ubicaciones</td>
+        <td>IProductos, IUbicaciones</td>
+      </tr>
+      <tr>
+        <td><code>GestionReportes</code></td>
+        <td>CU7, CU8</td>
+        <td>Dashboard ejecutivo y reportes operativos</td>
+        <td>IReportes, IDashboard</td>
+      </tr>
+      <tr>
+        <td><code>GestionUsuarios</code></td>
+        <td>—</td>
+        <td>Autenticación, roles y bitácora de auditoría</td>
+        <td>IAutenticacion, IBitacora</td>
+      </tr>
+      <tr>
+        <td><code>BaseDeDatos</code></td>
+        <td>—</td>
+        <td>Persistencia en SQL Server</td>
+        <td>IPersistencia</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Diagrama</h3>
+  <figure class="figura-grande">
+    <img src="../entregables/10-componentes/figuras/componentes.png" alt="Diagrama de componentes del SIA-NP" style="max-width:100%; border:1px solid var(--borde);">
+    <figcaption>Figura 1. Diagrama de componentes del SIA-NP (notación UML 2.x)</figcaption>
+  </figure>
+
+  <h3>Notación UML 2.x</h3>
+  <ul>
+    <li><strong>Componente</strong>: rectángulo con estereotipo «component» e icono (dos rectángulos pequeños)</li>
+    <li><strong>Interfaz proporcionada</strong>: círculo (lollipop) conectado al componente que la ofrece</li>
+    <li><strong>Interfaz requerida</strong>: semicírculo que se conecta a la interfaz proporcionada de otro componente</li>
+    <li><strong>Dependencia</strong>: flecha punteada del componente que depende hacia el que provee</li>
+  </ul>
+
+  <h3>Dependencias principales</h3>
+  <ul>
+    <li>Todos los componentes dependen de <code>BaseDeDatos</code> mediante <code>IPersistencia</code></li>
+    <li><code>GestionMovimientos</code> → <code>GestionProductos</code>, <code>GestionInventario</code></li>
+    <li><code>GestionOrdenes</code> → <code>GestionProveedores</code>, <code>GestionProductos</code>, <code>GestionInventario</code></li>
+    <li><code>GestionReportes</code> → <code>GestionInventario</code>, <code>GestionMovimientos</code></li>
+  </ul>
+
+  <div class="nota">
+    <strong>Relación con el diagrama de clases:</strong> cada componente agrupa las clases de entidad, control e interfaz
+    que implementan sus casos de uso. Por ejemplo, <code>GestionMovimientos</code> contiene las clases
+    <code>Movimiento</code>, <code>Entrada</code>, <code>Salida</code>, <code>Ajuste</code>, <code>Devolucion</code>,
+    <code>ControladorMovimientos</code> e <code>InterfazRegistroMovimientos</code>.
+  </div>
+</section>
